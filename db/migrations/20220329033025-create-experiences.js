@@ -1,39 +1,39 @@
-'use strict';
+"use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Experiences', {
+    await queryInterface.createTable("Experiences", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       id_publisher_user: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       id_status: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       start_datetime: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       end_datetime: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       num_allow_users: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Experiences');
-  }
+    await queryInterface.dropTable("Experiences");
+  },
 };
