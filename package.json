@@ -1,0 +1,37 @@
+{
+  "name": "cathot-backend-sql",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Backend API RestFul SQL to CatHot web",
+  "scripts": {
+    "start": "node ./bin/www",
+    "devstart": "nodemon ./bin/www",
+    "test": "PORT=4001 NODE_ENV=test jest --silent --config ./config/jest.config.js",
+    "prettier:check": "prettier --check . --config ./config/.prettierrc.json --ignore-path ./config/.prettierignore ",
+    "prettier:write": "prettier --write . --ignore-unknown  --config ./config/.prettierrc.json --ignore-path ./config/.prettierignore "
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.0",
+    "express": "~4.16.1",
+    "express-list-routes": "^1.1.3",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "~1.9.1",
+    "sequelize": "^6.17.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
+    "lint-staged": "^12.3.7",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.6.1",
+    "sequelize-cli": "^6.4.1",
+    "supertest": "^6.2.2"
+  }
+}
