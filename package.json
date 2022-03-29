@@ -8,7 +8,8 @@
     "devstart": "nodemon ./bin/www",
     "test": "PORT=4001 NODE_ENV=test jest --silent --config ./config/jest.config.js",
     "prettier:check": "prettier --check . --config ./config/.prettierrc.json --ignore-path ./config/.prettierignore ",
-    "prettier:write": "prettier --write . --ignore-unknown  --config ./config/.prettierrc.json --ignore-path ./config/.prettierignore "
+    "prettier:write": "prettier --write . --ignore-unknown  --config ./config/.prettierrc.json --ignore-path ./config/.prettierignore ",
+    "prepare": "husky install"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
