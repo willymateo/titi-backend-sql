@@ -4,8 +4,8 @@
   "private": true,
   "description": "Backend API RestFul SQL to CatHot web",
   "scripts": {
-    "start": "node ./bin/www",
-    "devstart": "nodemon ./bin/www",
+    "start": "NODE_ENV=production node ./bin/www",
+    "devstart": "NODE_ENV=development nodemon ./bin/www",
     "test": "PORT=4001 NODE_ENV=test jest --silent --config ./config/jest.config.js",
     "prettier:check": "prettier --check . --config ./config/.prettierrc.json --ignore-path ./config/.prettierignore ",
     "prettier:write": "prettier --write . --ignore-unknown  --config ./config/.prettierrc.json --ignore-path ./config/.prettierignore ",
