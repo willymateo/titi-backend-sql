@@ -13,13 +13,25 @@ module.exports = (sequelize, DataTypes) => {
   }
   Island_members.init(
     {
-      id_island: DataTypes.STRING,
-      id_user: DataTypes.STRING,
-      is_admin: DataTypes.BOOLEAN,
+      id_island: {
+        primaryKey: true,
+        type: DataTypes.UUIDV4,
+        allowNull: false,
+      },
+      id_user: {
+        primaryKey: true,
+        type: DataTypes.UUIDV4,
+        allowNull: false,
+      },
+      is_admin: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
     },
     {
       sequelize,
       modelName: "Island_members",
+      tableName: "island_members",
     }
   );
   return Island_members;

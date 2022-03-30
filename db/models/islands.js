@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const uuid = require("uuid");
 module.exports = (sequelize, DataTypes) => {
   class Islands extends Model {
     /**
@@ -13,14 +14,34 @@ module.exports = (sequelize, DataTypes) => {
   }
   Islands.init(
     {
-      name: DataTypes.STRING,
-      description: DataTypes.STRING,
-      photo_url: DataTypes.STRING,
-      is_public: DataTypes.BOOLEAN,
+      id: {
+        type: DataTypes.UUIDV4,
+        primaryKey: true,
+        unique: true,
+        allowNull: false,
+        defaultValue: () => uuid.v4(),
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      photo_url: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      is_public: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
     },
     {
       sequelize,
       modelName: "Islands",
+      tableName: "islands",
     }
   );
   return Islands;

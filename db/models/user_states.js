@@ -13,13 +13,26 @@ module.exports = (sequelize, DataTypes) => {
   }
   User_states.init(
     {
-      id: DataTypes.STRING,
-      state: DataTypes.STRING,
-      description: DataTypes.STRING,
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+        unique: true,
+      },
+      state: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       sequelize,
       modelName: "User_states",
+      tableName: "user_states",
     }
   );
   return User_states;
