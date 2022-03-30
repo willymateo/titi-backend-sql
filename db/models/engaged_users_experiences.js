@@ -1,8 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
-const uuid = require("uuid");
 module.exports = (sequelize, DataTypes) => {
-  class Locations extends Model {
+  class Engaged_users_experiences extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,35 +11,24 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Locations.init(
+  Engaged_users_experiences.init(
     {
-      id: {
+      id_experience: {
         type: DataTypes.UUID,
         primaryKey: true,
-        unique: true,
         allowNull: false,
-        defaultValue: () => uuid.v4(),
+        unique: "compositeIndex",
       },
       id_user: {
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
+        primaryKey: true,
         allowNull: false,
+        unique: "compositeIndex",
       },
-      latitude: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      longitude: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      address: {
-        type: DataTypes.STRING,
-        allowNull: false, //I think can be true.
-      },
-      current: {
+      is_publisher: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true,
+        defaultValue: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -63,9 +51,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Locations",
-      tableName: "locations",
+      modelName: "Engaged_users_experiences",
+      tableName: "engaged_users_experiences",
     }
   );
-  return Locations;
+  return Engaged_users_experiences;
 };

@@ -1,14 +1,14 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("island_members", {
-      id_island: {
+    await queryInterface.createTable("engaged_users_experiences", {
+      id_experience: {
         type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
         unique: "compositeIndex",
         references: {
-          model: "islands", //Table name.
+          model: "experiences", //Table name.
           key: "id",
         },
       },
@@ -22,7 +22,7 @@ module.exports = {
           key: "id",
         },
       },
-      is_admin: {
+      is_publisher: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
@@ -48,6 +48,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("island_members");
+    await queryInterface.dropTable("engaged_users_experiences");
   },
 };
