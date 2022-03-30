@@ -22,13 +22,11 @@ module.exports = {
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        //PostgreSQL ??????????
         defaultValue: Sequelize.fn("NOW"),
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        //PostgreSQL ??????????
         defaultValue: Sequelize.fn("NOW"),
       },
     });

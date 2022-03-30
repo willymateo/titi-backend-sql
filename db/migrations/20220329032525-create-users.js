@@ -7,8 +7,6 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         unique: true,
-        //PostgreSQL ??????????
-        //defaultValue: Sequelize.UUID,
       },
       id_current_state: {
         type: Sequelize.INTEGER,
@@ -70,13 +68,11 @@ module.exports = {
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        //PostgreSQL ??????????
         defaultValue: Sequelize.fn("NOW"),
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        //PostgreSQL ??????????
         defaultValue: Sequelize.fn("NOW"),
       },
     });
