@@ -6,6 +6,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
+        unique: "compositeIndex",
         references: {
           model: "islands", //Table name.
           key: "id",
@@ -15,6 +16,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
+        unique: "compositeIndex",
         references: {
           model: "users", //Table name.
           key: "id",
@@ -28,13 +30,11 @@ module.exports = {
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        //PostgreSQL ??????????
         defaultValue: Sequelize.fn("NOW"),
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        //PostgreSQL ??????????
         defaultValue: Sequelize.fn("NOW"),
       },
     });

@@ -24,6 +24,8 @@ module.exports = (sequelize, DataTypes) => {
       id_current_state: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        //To define
+        //defaultValue:
       },
       username: {
         type: DataTypes.STRING,

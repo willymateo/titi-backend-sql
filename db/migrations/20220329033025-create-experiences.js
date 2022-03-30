@@ -7,8 +7,6 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         unique: true,
-        //PostgreSQL ??????????
-        //defaultValue: Sequelize.UUID,
       },
       id_publisher_user: {
         type: Sequelize.UUID,
@@ -31,7 +29,6 @@ module.exports = {
       start_datetime: {
         type: Sequelize.DATE,
         allowNull: false,
-        //PostgreSQL ??????????
         defaultValue: Sequelize.fn("NOW"),
       },
       end_datetime: {
@@ -46,13 +43,11 @@ module.exports = {
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        //PostgreSQL ??????????
         defaultValue: Sequelize.fn("NOW"),
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        //PostgreSQL ??????????
         defaultValue: Sequelize.fn("NOW"),
       },
     });

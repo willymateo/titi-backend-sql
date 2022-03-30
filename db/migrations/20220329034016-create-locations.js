@@ -7,8 +7,6 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         unique: true,
-        //PostgreSQL ??????????
-        //defaultValue: Sequelize.UUID,
       },
       id_user: {
         type: Sequelize.UUID,
@@ -38,13 +36,11 @@ module.exports = {
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        //PostgreSQL ??????????
         defaultValue: Sequelize.fn("NOW"),
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        //PostgreSQL ??????????
         defaultValue: Sequelize.fn("NOW"),
       },
     });

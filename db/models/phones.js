@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       country_code: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        defaultValue: 593,
       },
       phone_number: {
         type: DataTypes.STRING,
