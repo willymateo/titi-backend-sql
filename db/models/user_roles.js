@@ -1,8 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
-const uuid = require("uuid");
 module.exports = (sequelize, DataTypes) => {
-  class Locations extends Model {
+  class User_roles extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,35 +11,23 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Locations.init(
+  User_roles.init(
     {
       id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
         unique: true,
-        allowNull: false,
-        defaultValue: () => uuid.v4(),
       },
-      id_user: {
-        type: DataTypes.UUIDV4,
-        allowNull: false,
-      },
-      latitude: {
+      rol: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
-      longitude: {
+      description: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      address: {
-        type: DataTypes.STRING,
-        allowNull: false, //I think can be true.
-      },
-      current: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -63,9 +50,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Locations",
-      tableName: "locations",
+      modelName: "User_roles",
+      tableName: "user_roles",
     }
   );
-  return Locations;
+  return User_roles;
 };

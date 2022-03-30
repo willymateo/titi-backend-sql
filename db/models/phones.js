@@ -15,14 +15,14 @@ module.exports = (sequelize, DataTypes) => {
   Phones.init(
     {
       id: {
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
         primaryKey: true,
         unique: true,
         allowNull: false,
         defaultValue: () => uuid.v4(),
       },
       id_user: {
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
         allowNull: false,
       },
       country_code: {
@@ -33,6 +33,24 @@ module.exports = (sequelize, DataTypes) => {
       phone_number: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+        comment: "The creation datetime.",
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+        comment: "The datetime of last modification.",
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null,
+        comment: "The datetime of deletion.",
       },
     },
     {
