@@ -1,39 +1,55 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Locations", {
+    await queryInterface.createTable("locations", {
       id: {
+        type: Sequelize.UUID,
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        unique: true,
+        //PostgreSQL ??????????
+        //defaultValue: Sequelize.UUID,
       },
       id_user: {
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: "users", //Table name.
+          key: "id",
+        },
       },
       latitude: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       longitude: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       address: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       current: {
         type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        //PostgreSQL ??????????
+        defaultValue: Sequelize.fn("NOW"),
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        //PostgreSQL ??????????
+        defaultValue: Sequelize.fn("NOW"),
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Locations");
+    await queryInterface.dropTable("locations");
   },
 };

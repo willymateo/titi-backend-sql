@@ -74,6 +74,7 @@ npx sequelize-cli db:seed:all
 ```
 
 ## Run server
+
 ### Production
 
 ```cmd
