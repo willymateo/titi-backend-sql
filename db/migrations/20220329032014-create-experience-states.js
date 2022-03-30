@@ -1,30 +1,39 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Experience_states", {
+    await queryInterface.createTable("experience_states", {
       id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
         type: Sequelize.INTEGER,
+        autoIncrement: true,
+        allowNull: false,
+        primaryKey: true,
+        unique: true,
       },
       state: {
         type: Sequelize.STRING,
+        allowNull: false,
+        //to define
+        //defaultValue: Sequelize.UUID,
       },
       description: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        //PostgreSQL ??????????
+        defaultValue: Sequelize.fn("NOW"),
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        //PostgreSQL ??????????
+        defaultValue: Sequelize.fn("NOW"),
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Experience_states");
+    await queryInterface.dropTable("experience_states");
   },
 };

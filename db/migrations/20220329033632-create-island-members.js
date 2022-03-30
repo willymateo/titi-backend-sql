@@ -1,33 +1,45 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Island_members", {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
+    await queryInterface.createTable("island_members", {
       id_island: {
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
+        allowNull: false,
+        primaryKey: true,
+        references: {
+          model: "islands", //Table name.
+          key: "id",
+        },
       },
       id_user: {
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
+        allowNull: false,
+        primaryKey: true,
+        references: {
+          model: "users", //Table name.
+          key: "id",
+        },
       },
       is_admin: {
         type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        //PostgreSQL ??????????
+        defaultValue: Sequelize.fn("NOW"),
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        //PostgreSQL ??????????
+        defaultValue: Sequelize.fn("NOW"),
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Island_members");
+    await queryInterface.dropTable("island_members");
   },
 };
