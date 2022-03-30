@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const uuid = require("uuid");
 module.exports = (sequelize, DataTypes) => {
   class Locations extends Model {
     /**
@@ -13,15 +14,38 @@ module.exports = (sequelize, DataTypes) => {
   }
   Locations.init(
     {
-      id_user: DataTypes.STRING,
-      latitude: DataTypes.STRING,
-      longitude: DataTypes.STRING,
-      address: DataTypes.STRING,
-      current: DataTypes.BOOLEAN,
+      id: {
+        type: DataTypes.UUIDV4,
+        primaryKey: true,
+        unique: true,
+        allowNull: false,
+        defaultValue: () => uuid.v4(),
+      },
+      id_user: {
+        type: DataTypes.UUIDV4,
+        allowNull: false,
+      },
+      latitude: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      longitude: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      address: {
+        type: DataTypes.STRING,
+        allowNull: false, //I think can be true.
+      },
+      current: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
     },
     {
       sequelize,
       modelName: "Locations",
+      tableName: "locations",
     }
   );
   return Locations;

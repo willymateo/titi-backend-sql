@@ -11,6 +11,8 @@ module.exports = {
     dialectOptions: {
       bigNumberStrings: true,
     },
+    //Ecuador timezone
+    timezone: "-05:00",
   },
   test: {
     username: process.env.TEST_DB_USERNAME,
@@ -22,6 +24,8 @@ module.exports = {
     dialectOptions: {
       bigNumberStrings: true,
     },
+    //Ecuador timezone
+    timezone: "-05:00",
   },
   production: {
     username: process.env.PROD_DB_USERNAME,
@@ -32,9 +36,12 @@ module.exports = {
     dialect: "postgres",
     dialectOptions: {
       bigNumberStrings: true,
+      supportBigNumbers: true,
       //ssl: {
       //ca: fs.readFileSync(__dirname + '/mysql-ca-main.crt')
       //}
     },
+    //Ecuador timezone
+    timezone: "-05:00",
   },
 };
