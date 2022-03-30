@@ -12,22 +12,32 @@ module.exports = {
       state: {
         type: Sequelize.STRING,
         allowNull: false,
-        //to define
-        //defaultValue: Sequelize.UUID,
+        unique: true,
+        comment:
+          "Short identifier of user state. If it contains 2 or more words, they must be separated between '_' underscore.",
       },
       description: {
         type: Sequelize.STRING,
         allowNull: false,
+        comment: "Description of user state.",
       },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn("NOW"),
+        comment: "The creation datetime.",
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn("NOW"),
+        comment: "The datetime of last modification.",
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
+        allowNull: true,
+        defaultValue: null,
+        comment: "The datetime of deletion.",
       },
     });
   },

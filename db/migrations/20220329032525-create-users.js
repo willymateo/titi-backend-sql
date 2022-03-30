@@ -8,6 +8,16 @@ module.exports = {
         primaryKey: true,
         unique: true,
       },
+      id_rol: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        //to define
+        //defaultValue: Sequelize.UUID,
+        references: {
+          model: "user_roles", //Table name.
+          key: "id",
+        },
+      },
       id_current_state: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -69,11 +79,19 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn("NOW"),
+        comment: "The creation datetime.",
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn("NOW"),
+        comment: "The datetime of last modification.",
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
+        allowNull: true,
+        defaultValue: null,
+        comment: "The datetime of deletion.",
       },
     });
   },

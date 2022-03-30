@@ -15,13 +15,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       id_island: {
         primaryKey: true,
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
         allowNull: false,
         unique: "compositeIndex",
       },
       id_user: {
         primaryKey: true,
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
         allowNull: false,
         unique: "compositeIndex",
       },
@@ -29,6 +29,24 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+        comment: "The creation datetime.",
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+        comment: "The datetime of last modification.",
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null,
+        comment: "The datetime of deletion.",
       },
     },
     {

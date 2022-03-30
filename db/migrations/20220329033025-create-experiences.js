@@ -8,14 +8,6 @@ module.exports = {
         primaryKey: true,
         unique: true,
       },
-      id_publisher_user: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        references: {
-          model: "users", //Table name.
-          key: "id",
-        },
-      },
       id_status: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -35,7 +27,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      num_allow_users: {
+      num_invitations: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 1,
@@ -44,11 +36,19 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn("NOW"),
+        comment: "The creation datetime.",
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn("NOW"),
+        comment: "The datetime of last modification.",
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
+        allowNull: true,
+        defaultValue: null,
+        comment: "The datetime of deletion.",
       },
     });
   },

@@ -15,15 +15,11 @@ module.exports = (sequelize, DataTypes) => {
   Experiences.init(
     {
       id: {
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
         primaryKey: true,
         unique: true,
         allowNull: false,
         defaultValue: () => uuid.v4(),
-      },
-      id_publisher_user: {
-        type: DataTypes.UUIDV4,
-        allowNull: false,
       },
       id_status: {
         type: DataTypes.INTEGER,
@@ -40,10 +36,28 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      num_allow_users: {
+      num_invitations: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 1,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+        comment: "The creation datetime.",
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+        comment: "The datetime of last modification.",
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null,
+        comment: "The datetime of deletion.",
       },
     },
     {

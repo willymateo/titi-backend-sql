@@ -1,31 +1,22 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("island_members", {
-      id_island: {
-        type: Sequelize.UUID,
+    await queryInterface.createTable("user_roles", {
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         allowNull: false,
         primaryKey: true,
-        unique: "compositeIndex",
-        references: {
-          model: "islands", //Table name.
-          key: "id",
-        },
+        unique: true,
       },
-      id_user: {
-        type: Sequelize.UUID,
+      rol: {
+        type: Sequelize.STRING,
         allowNull: false,
-        primaryKey: true,
-        unique: "compositeIndex",
-        references: {
-          model: "users", //Table name.
-          key: "id",
-        },
+        unique: true,
       },
-      is_admin: {
-        type: Sequelize.BOOLEAN,
+      description: {
+        type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: false,
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -48,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("island_members");
+    await queryInterface.dropTable("user_roles");
   },
 };
