@@ -28,10 +28,13 @@ module.exports = (sequelize, DataTypes) => {
       id_status: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        //To define
+        //defaultValue:
       },
       start_datetime: {
         type: DataTypes.DATE,
         allowNull: false,
+        defaultValue: DataTypes.NOW,
       },
       end_datetime: {
         type: DataTypes.DATE,
@@ -40,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       num_allow_users: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        defaultValue: 1,
       },
     },
     {
