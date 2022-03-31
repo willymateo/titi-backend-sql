@@ -1,31 +1,22 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("engaged_users_experiences", {
-      id_experience: {
-        type: Sequelize.UUID,
+    await queryInterface.createTable("adventure_states", {
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         allowNull: false,
         primaryKey: true,
-        unique: "compositeIndex",
-        references: {
-          model: "experiences", //Table name.
-          key: "id",
-        },
+        unique: true,
       },
-      id_user: {
-        type: Sequelize.UUID,
+      state: {
+        type: Sequelize.STRING,
         allowNull: false,
-        primaryKey: true,
-        unique: "compositeIndex",
-        references: {
-          model: "users", //Table name.
-          key: "id",
-        },
+        unique: true,
       },
-      is_publisher: {
-        type: Sequelize.BOOLEAN,
+      description: {
+        type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: false,
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -48,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("engaged_users_experiences");
+    await queryInterface.dropTable("adventure_states");
   },
 };

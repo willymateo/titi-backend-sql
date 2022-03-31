@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("experiences", {
+    await queryInterface.createTable("adventures", {
       id: {
         type: Sequelize.UUID,
         allowNull: false,
@@ -14,7 +14,7 @@ module.exports = {
         //to define
         //defaultValue: Sequelize.UUID,
         references: {
-          model: "experience_states", //Table name.
+          model: "adventure_states", //Table name.
           key: "id",
         },
       },
@@ -53,6 +53,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("experiences");
+    await queryInterface.dropTable("adventures");
   },
 };

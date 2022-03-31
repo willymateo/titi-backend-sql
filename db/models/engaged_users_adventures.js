@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Experience_states extends Model {
+  class Engaged_users_adventures extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,23 +11,24 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Experience_states.init(
+  Engaged_users_adventures.init(
     {
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+      id_adventure: {
+        type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false,
-        unique: true,
+        unique: "compositeIndex",
       },
-      state: {
-        type: DataTypes.STRING,
+      id_user: {
+        type: DataTypes.UUID,
+        primaryKey: true,
         allowNull: false,
-        unique: true,
+        unique: "compositeIndex",
       },
-      description: {
-        type: DataTypes.STRING,
+      is_publisher: {
+        type: DataTypes.BOOLEAN,
         allowNull: false,
+        defaultValue: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -50,9 +51,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Experience_states",
-      tableName: "experience_states",
+      modelName: "Engaged_users_adventures",
+      tableName: "engaged_users_adventures",
     }
   );
-  return Experience_states;
+  return Engaged_users_adventures;
 };
