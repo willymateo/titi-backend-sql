@@ -22,32 +22,38 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: () => uuid.v4(),
       },
       id_rol: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         allowNull: false,
         //to define
         //defaultValue: Sequelize.UUID,
       },
       id_current_state: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         allowNull: false,
         //To define
         //defaultValue:
       },
       username: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(30),
         allowNull: false,
         unique: true,
+        validate: {
+          is: /^\w{5,30}$/i,
+          len: [5, 30],
+          notNull: true,
+          notEmpty: true,
+        },
       },
       password_hash: {
         type: DataTypes.STRING(60),
         allowNull: false,
       },
       first_names: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
       },
       last_names: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
       },
       email: {
@@ -61,6 +67,9 @@ module.exports = (sequelize, DataTypes) => {
       photo_url: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          isUrl: true,
+        },
       },
       is_admin: {
         type: DataTypes.BOOLEAN,
@@ -72,14 +81,20 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       num_later: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         allowNull: false,
         defaultValue: 0,
+        validate: {
+          min: 0,
+        },
       },
       num_missing: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         allowNull: false,
         defaultValue: 0,
+        validate: {
+          min: 0,
+        },
       },
       createdAt: {
         type: DataTypes.DATE,

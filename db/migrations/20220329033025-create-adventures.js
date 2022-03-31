@@ -9,7 +9,7 @@ module.exports = {
         unique: true,
       },
       id_status: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.SMALLINT,
         allowNull: false,
         //to define
         //defaultValue: Sequelize.UUID,
@@ -28,7 +28,7 @@ module.exports = {
         allowNull: false,
       },
       num_invitations: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.SMALLINT,
         allowNull: false,
         defaultValue: 1,
       },

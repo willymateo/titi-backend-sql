@@ -14,16 +14,22 @@ module.exports = (sequelize, DataTypes) => {
   User_roles.init(
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
         unique: true,
       },
       rol: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         allowNull: false,
         unique: true,
+        validate: {
+          len: [1, 50],
+          notNull: true,
+          notEmpty: true,
+          isLowercase: true,
+        },
       },
       description: {
         type: DataTypes.STRING,

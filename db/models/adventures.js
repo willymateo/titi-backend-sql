@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: () => uuid.v4(),
       },
       id_status: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         allowNull: false,
         //To define
         //defaultValue:
@@ -37,9 +37,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       num_invitations: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         allowNull: false,
         defaultValue: 1,
+        validate: {
+          min: 1,
+        },
       },
       createdAt: {
         type: DataTypes.DATE,
