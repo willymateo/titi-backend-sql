@@ -3,14 +3,14 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("adventure_states", {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.SMALLINT,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true,
         unique: true,
       },
       state: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         allowNull: false,
         unique: true,
       },

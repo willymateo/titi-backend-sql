@@ -11,6 +11,20 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
+    await queryInterface.bulkInsert(
+      "user_roles",
+      [
+        {
+          rol: "administrator",
+          description: "Staff member, Data Base and web administrator.",
+        },
+        {
+          rol: "normal_user",
+          description: "Web user or client.",
+        },
+      ],
+      {}
+    );
   },
 
   async down(queryInterface, Sequelize) {
@@ -20,5 +34,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    await queryInterface.bulkDelete("user_roles", null, {});
   },
 };

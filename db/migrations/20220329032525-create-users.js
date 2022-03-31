@@ -9,7 +9,7 @@ module.exports = {
         unique: true,
       },
       id_rol: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.SMALLINT,
         allowNull: false,
         //to define
         //defaultValue: Sequelize.UUID,
@@ -19,7 +19,7 @@ module.exports = {
         },
       },
       id_current_state: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.SMALLINT,
         allowNull: false,
         //to define
         //defaultValue: Sequelize.UUID,
@@ -29,7 +29,7 @@ module.exports = {
         },
       },
       username: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(30),
         allowNull: false,
         unique: true,
       },
@@ -38,11 +38,11 @@ module.exports = {
         allowNull: false,
       },
       first_names: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
       last_names: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
       email: {
@@ -66,12 +66,12 @@ module.exports = {
         allowNull: false,
       },
       num_later: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.SMALLINT,
         allowNull: false,
         defaultValue: 0,
       },
       num_missing: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.SMALLINT,
         allowNull: false,
         defaultValue: 0,
       },

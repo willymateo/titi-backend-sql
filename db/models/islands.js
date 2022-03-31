@@ -32,6 +32,9 @@ module.exports = (sequelize, DataTypes) => {
       photo_url: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          isUrl: true,
+        },
       },
       is_public: {
         type: DataTypes.BOOLEAN,
