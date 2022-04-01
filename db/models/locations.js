@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUUID: 4,
         },
+        comment: "PK, unique identifier.",
       },
       id_user: {
         type: DataTypes.UUIDV4,
@@ -30,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUUID: 4,
         },
+        comment: "FK to user that is in the location.",
       },
       latitude: {
         type: DataTypes.STRING(100),
@@ -47,18 +49,11 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true,
         },
       },
-      address: {
-        type: DataTypes.STRING,
-        allowNull: false, //I think can be true.
-        validate: {
-          notNull: true,
-          notEmpty: true,
-        },
-      },
       current: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true,
+        comment: "Is true when it is the current user location to play.",
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -76,7 +71,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     },
     {

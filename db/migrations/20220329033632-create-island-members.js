@@ -11,6 +11,7 @@ module.exports = {
           model: "islands", //Table name.
           key: "id",
         },
+        comment: "PK, composite unique identifier. FK to an island.",
       },
       id_user: {
         type: Sequelize.UUID,
@@ -21,11 +22,14 @@ module.exports = {
           model: "users", //Table name.
           key: "id",
         },
+        comment:
+          "PK, composite unique identifier. FK to an member user of the island.",
       },
       is_admin: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+        comment: "Is true when the user is an island administrator.",
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -43,7 +47,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     });
   },

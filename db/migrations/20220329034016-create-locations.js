@@ -7,6 +7,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         unique: true,
+        comment: "PK, unique identifier.",
       },
       id_user: {
         type: Sequelize.UUID,
@@ -15,6 +16,7 @@ module.exports = {
           model: "users", //Table name.
           key: "id",
         },
+        comment: "FK to user that is in the location.",
       },
       latitude: {
         type: Sequelize.STRING(100),
@@ -24,14 +26,11 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
-      address: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       current: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: true,
+        comment: "Is true when it is the current user location to play.",
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -49,7 +48,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     });
   },

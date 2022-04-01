@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUUID: 4,
         },
+        comment: "PK, composite unique identifier. FK to an adventure.",
       },
       id_user: {
         type: DataTypes.UUID,
@@ -30,11 +31,15 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUUID: 4,
         },
+        comment:
+          "PK, composite unique identifier. FK to an engaged user with the adventure.",
       },
       is_publisher: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+        comment:
+          "Is true when the user is the owner/publisher of the adventure.",
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -52,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     },
     {

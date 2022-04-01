@@ -8,18 +8,19 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         unique: true,
+        comment: "PK, unique identifier.",
       },
       state: {
         type: Sequelize.STRING(50),
         allowNull: false,
         unique: true,
         comment:
-          "Short identifier of user state. If it contains 2 or more words, they must be separated between '_' underscore.",
+          "Unique user state identifier. If it contains 2 or more words, they can be separate between underscores.",
       },
       description: {
         type: Sequelize.STRING,
         allowNull: false,
-        comment: "Description of user state.",
+        comment: "Description of the use case.",
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -37,7 +38,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     });
   },

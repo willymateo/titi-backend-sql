@@ -7,6 +7,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         unique: true,
+        comment: "PK, unique identifier.",
       },
       name: {
         type: Sequelize.STRING(100),
@@ -19,11 +20,13 @@ module.exports = {
       photo_url: {
         type: Sequelize.STRING,
         allowNull: true,
+        comment: "The url to profile photo.",
       },
       is_public: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+        comment: "Is true when the island visibility is open to public.",
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -41,7 +44,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     });
   },

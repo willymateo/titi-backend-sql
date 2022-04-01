@@ -7,6 +7,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         unique: true,
+        comment: "PK, unique identifier.",
       },
       id_rol: {
         type: Sequelize.SMALLINT,
@@ -16,6 +17,7 @@ module.exports = {
           model: "user_roles", //Table name.
           key: "id",
         },
+        comment: "FK to current user rol.",
       },
       id_current_state: {
         type: Sequelize.SMALLINT,
@@ -25,17 +27,19 @@ module.exports = {
           model: "user_states", //Table name.
           key: "id",
         },
+        comment: "FK to current status.",
       },
       username: {
         type: Sequelize.STRING(30),
         allowNull: false,
         unique: true,
         comment:
-          "Must contain between 5-30 characters. The allow characters are letters in lowercase, numbers and underscores. It must contain at least 1 letter in lowercase.",
+          "Unique. Must contain between 5-30 characters. The allow characters are letters in lowercase, numbers and underscores. It must contain at least 1 letter in lowercase.",
       },
       password_hash: {
         type: Sequelize.STRING(60),
         allowNull: false,
+        comment: "Encrypted password.",
       },
       first_names: {
         type: Sequelize.STRING(100),
@@ -49,29 +53,31 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: false,
         unique: true,
+        comment: "Email linked with the account. It must be unique.",
       },
       photo_url: {
         type: Sequelize.STRING,
         allowNull: true,
-      },
-      is_admin: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
+        comment: "The url to profile photo.",
       },
       description: {
         type: Sequelize.STRING,
         allowNull: true,
+        comment: "User description or biography.",
       },
       num_later: {
         type: Sequelize.SMALLINT,
         allowNull: false,
         defaultValue: 0,
+        comment:
+          "Number of times the user has been engaged in an adventure and he arrived late.",
       },
       num_missing: {
         type: Sequelize.SMALLINT,
         allowNull: false,
         defaultValue: 0,
+        comment:
+          "Number of times the user has been engaged in an adventure and he did not attend.",
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -89,7 +95,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     });
   },
