@@ -11,12 +11,19 @@ module.exports = {
       id_status: {
         type: Sequelize.SMALLINT,
         allowNull: false,
-        //to define
-        //defaultValue: Sequelize.UUID,
+        defaultValue: 1,
         references: {
           model: "adventure_states", //Table name.
           key: "id",
         },
+      },
+      title: {
+        type: Sequelize.STRING(100),
+        allowNull: false,
+      },
+      description: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       start_datetime: {
         type: Sequelize.DATE,

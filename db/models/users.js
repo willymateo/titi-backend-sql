@@ -20,18 +20,19 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
         defaultValue: () => uuid.v4(),
+        validate: {
+          isUUID: 4,
+        },
       },
       id_rol: {
         type: DataTypes.SMALLINT,
         allowNull: false,
-        //to define
-        //defaultValue: Sequelize.UUID,
+        defaultValue: 1,
       },
       id_current_state: {
         type: DataTypes.SMALLINT,
         allowNull: false,
-        //To define
-        //defaultValue:
+        defaultValue: 1,
       },
       username: {
         type: DataTypes.STRING(30),
@@ -47,17 +48,29 @@ module.exports = (sequelize, DataTypes) => {
       password_hash: {
         type: DataTypes.STRING(60),
         allowNull: false,
+        validate: {
+          notNull: true,
+          notEmpty: true,
+        },
       },
       first_names: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          notNull: true,
+          notEmpty: true,
+        },
       },
       last_names: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          notNull: true,
+          notEmpty: true,
+        },
       },
       email: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
         unique: true,
         validate: {
@@ -79,6 +92,10 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: true,
+          notEmpty: true,
+        },
       },
       num_later: {
         type: DataTypes.SMALLINT,

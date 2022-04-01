@@ -17,12 +17,12 @@ module.exports = {
         },
       },
       country_code: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.SMALLINT,
         allowNull: false,
         defaultValue: 593,
       },
       phone_number: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(15),
         allowNull: false,
       },
       createdAt: {

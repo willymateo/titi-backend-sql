@@ -11,8 +11,7 @@ module.exports = {
       id_rol: {
         type: Sequelize.SMALLINT,
         allowNull: false,
-        //to define
-        //defaultValue: Sequelize.UUID,
+        defaultValue: 1,
         references: {
           model: "user_roles", //Table name.
           key: "id",
@@ -21,8 +20,7 @@ module.exports = {
       id_current_state: {
         type: Sequelize.SMALLINT,
         allowNull: false,
-        //to define
-        //defaultValue: Sequelize.UUID,
+        defaultValue: 1,
         references: {
           model: "user_states", //Table name.
           key: "id",
@@ -46,7 +44,7 @@ module.exports = {
         allowNull: false,
       },
       email: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: false,
         unique: true,
       },

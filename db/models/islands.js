@@ -20,14 +20,25 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
         defaultValue: () => uuid.v4(),
+        validate: {
+          isUUID: 4,
+        },
       },
       name: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          notNull: true,
+          notEmpty: true,
+        },
       },
       description: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: true,
+          notEmpty: true,
+        },
       },
       photo_url: {
         type: DataTypes.STRING,

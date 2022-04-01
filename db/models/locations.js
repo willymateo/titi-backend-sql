@@ -20,22 +20,40 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
         defaultValue: () => uuid.v4(),
+        validate: {
+          isUUID: 4,
+        },
       },
       id_user: {
         type: DataTypes.UUIDV4,
         allowNull: false,
+        validate: {
+          isUUID: 4,
+        },
       },
       latitude: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          notNull: true,
+          notEmpty: true,
+        },
       },
       longitude: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          notNull: true,
+          notEmpty: true,
+        },
       },
       address: {
         type: DataTypes.STRING,
         allowNull: false, //I think can be true.
+        validate: {
+          notNull: true,
+          notEmpty: true,
+        },
       },
       current: {
         type: DataTypes.BOOLEAN,
