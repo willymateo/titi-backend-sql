@@ -39,11 +39,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
         validate: {
-          is: /^\w{5,30}$/i,
+          is: /^[a-z0-9_]*[a-z]+[a-z0-9_]*$/i,
+          isLowercase: true,
           len: [5, 30],
           notNull: true,
           notEmpty: true,
         },
+        comment:
+          "Must contain between 5-30 characters. The allow characters are letters in lowercase, numbers and underscores. It must contain at least 1 letter in lowercase.",
       },
       password_hash: {
         type: DataTypes.STRING(60),
@@ -79,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       photo_url: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
           isUrl: true,
         },
@@ -91,9 +94,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       description: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
-          notNull: true,
           notEmpty: true,
         },
       },

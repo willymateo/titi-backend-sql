@@ -30,6 +30,8 @@ module.exports = {
         type: Sequelize.STRING(30),
         allowNull: false,
         unique: true,
+        comment:
+          "Must contain between 5-30 characters. The allow characters are letters in lowercase, numbers and underscores. It must contain at least 1 letter in lowercase.",
       },
       password_hash: {
         type: Sequelize.STRING(60),
@@ -50,9 +52,7 @@ module.exports = {
       },
       photo_url: {
         type: Sequelize.STRING,
-        allowNull: false,
-        //to define
-        //defaultValue: Sequelize.UUID,
+        allowNull: true,
       },
       is_admin: {
         type: Sequelize.BOOLEAN,
@@ -61,7 +61,7 @@ module.exports = {
       },
       description: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       num_later: {
         type: Sequelize.SMALLINT,
