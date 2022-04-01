@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
           isUUID: 4,
         },
         comment:
-          "PK, composite unique identifier. FK to an member user of the island.",
+          "PK, composite unique identifier. FK to an user member of the island.",
       },
       is_admin: {
         type: DataTypes.BOOLEAN,
