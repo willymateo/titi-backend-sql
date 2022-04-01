@@ -14,13 +14,11 @@ module.exports = {
       },
       description: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       photo_url: {
         type: Sequelize.STRING,
-        allowNull: false,
-        //to define
-        //defaultValue: Sequelize.UUID,
+        allowNull: true,
       },
       is_public: {
         type: Sequelize.BOOLEAN,
