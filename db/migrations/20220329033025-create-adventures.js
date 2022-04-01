@@ -7,6 +7,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         unique: true,
+        comment: "PK, unique identifier.",
       },
       id_status: {
         type: Sequelize.SMALLINT,
@@ -16,6 +17,7 @@ module.exports = {
           model: "adventure_states", //Table name.
           key: "id",
         },
+        comment: "FK to current status.",
       },
       title: {
         type: Sequelize.STRING(100),
@@ -29,15 +31,20 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn("NOW"),
+        comment: "The datetime when the adventure was published.",
       },
       end_datetime: {
         type: Sequelize.DATE,
         allowNull: false,
+        comment:
+          "The datetime when the adventure will expire. Up to 24h since the start_datetime.",
       },
       num_invitations: {
         type: Sequelize.SMALLINT,
         allowNull: false,
         defaultValue: 1,
+        comment:
+          "Number of allow users that can engaged with the adventure. This number not include the publisher user.",
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -55,7 +62,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     });
   },

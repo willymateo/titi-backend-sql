@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUUID: 4,
         },
+        comment: "PK, unique identifier.",
       },
       name: {
         type: DataTypes.STRING(100),
@@ -45,11 +46,13 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUrl: true,
         },
+        comment: "The url to profile photo.",
       },
       is_public: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+        comment: "Is true when the island visibility is open to public.",
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -67,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     },
     {

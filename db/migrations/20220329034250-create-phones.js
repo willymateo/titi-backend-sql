@@ -7,6 +7,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         unique: true,
+        comment: "PK, unique identifier.",
       },
       id_user: {
         type: Sequelize.UUID,
@@ -15,6 +16,7 @@ module.exports = {
           model: "users", //Table name.
           key: "id",
         },
+        comment: "FK to owner user of the phone number.",
       },
       country_code: {
         type: Sequelize.SMALLINT,
@@ -24,6 +26,7 @@ module.exports = {
       phone_number: {
         type: Sequelize.STRING(15),
         allowNull: false,
+        comment: "Phone number without the county code.",
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -41,7 +44,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     });
   },

@@ -11,6 +11,7 @@ module.exports = {
           model: "adventures", //Table name.
           key: "id",
         },
+        comment: "PK, composite unique identifier. FK to an adventure.",
       },
       id_user: {
         type: Sequelize.UUID,
@@ -21,11 +22,15 @@ module.exports = {
           model: "users", //Table name.
           key: "id",
         },
+        comment:
+          "PK, composite unique identifier. FK to an engaged user with the adventure.",
       },
       is_publisher: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+        comment:
+          "Is true when the user is the owner/publisher of the adventure.",
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -43,7 +48,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     });
   },
