@@ -20,12 +20,30 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
         defaultValue: () => uuid.v4(),
+        validate: {
+          isUUID: 4,
+        },
       },
       id_status: {
         type: DataTypes.SMALLINT,
         allowNull: false,
-        //To define
-        //defaultValue:
+        defaultValue: 1,
+      },
+      title: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        validate: {
+          notNull: true,
+          notEmpty: true,
+        },
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: true,
+          notEmpty: true,
+        },
       },
       start_datetime: {
         type: DataTypes.DATE,
