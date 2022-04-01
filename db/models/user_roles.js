@@ -25,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
         validate: {
-          len: [1, 50],
           notNull: true,
           notEmpty: true,
           isLowercase: true,
@@ -34,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: true,
+          notEmpty: true,
+        },
       },
       createdAt: {
         type: DataTypes.DATE,

@@ -18,12 +18,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         unique: "compositeIndex",
+        validate: {
+          isUUID: 4,
+        },
       },
       id_user: {
         primaryKey: true,
         type: DataTypes.UUID,
         allowNull: false,
         unique: "compositeIndex",
+        validate: {
+          isUUID: 4,
+        },
       },
       is_admin: {
         type: DataTypes.BOOLEAN,
