@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
         unique: true,
+        comment: "PK, unique identifier.",
       },
       state: {
         type: DataTypes.STRING(50),
@@ -29,6 +30,8 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true,
           isLowercase: true,
         },
+        comment:
+          "Unique user state identifier. If it contains 2 or more words, they can be separate between underscores.",
       },
       description: {
         type: DataTypes.STRING,
@@ -37,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
           notNull: true,
           notEmpty: true,
         },
+        comment: "Description of the use case.",
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -54,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     },
     {

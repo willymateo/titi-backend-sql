@@ -23,16 +23,19 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUUID: 4,
         },
+        comment: "PK, unique identifier.",
       },
       id_rol: {
         type: DataTypes.SMALLINT,
         allowNull: false,
         defaultValue: 1,
+        comment: "FK to current user rol.",
       },
       id_current_state: {
         type: DataTypes.SMALLINT,
         allowNull: false,
         defaultValue: 1,
+        comment: "FK to current status.",
       },
       username: {
         type: DataTypes.STRING(30),
@@ -46,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true,
         },
         comment:
-          "Must contain between 5-30 characters. The allow characters are letters in lowercase, numbers and underscores. It must contain at least 1 letter in lowercase.",
+          "Unique. Must contain between 5-30 characters. The allow characters are letters in lowercase, numbers and underscores. It must contain at least 1 letter in lowercase.",
       },
       password_hash: {
         type: DataTypes.STRING(60),
@@ -55,6 +58,7 @@ module.exports = (sequelize, DataTypes) => {
           notNull: true,
           notEmpty: true,
         },
+        comment: "Encrypted password.",
       },
       first_names: {
         type: DataTypes.STRING(100),
@@ -79,6 +83,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isEmail: true,
         },
+        comment: "Email linked with the account. It must be unique.",
       },
       photo_url: {
         type: DataTypes.STRING,
@@ -86,11 +91,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUrl: true,
         },
-      },
-      is_admin: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
+        comment: "The url to profile photo.",
       },
       description: {
         type: DataTypes.STRING,
@@ -98,6 +99,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: true,
         },
+        comment: "User description or biography.",
       },
       num_later: {
         type: DataTypes.SMALLINT,
@@ -106,6 +108,8 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           min: 0,
         },
+        comment:
+          "Number of times the user has been engaged in an adventure and he arrived late.",
       },
       num_missing: {
         type: DataTypes.SMALLINT,
@@ -114,6 +118,8 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           min: 0,
         },
+        comment:
+          "Number of times the user has been engaged in an adventure and he did not attend.",
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -131,7 +137,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     },
     {

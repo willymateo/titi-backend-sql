@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUUID: 4,
         },
+        comment: "PK, composite unique identifier. FK to an island.",
       },
       id_user: {
         primaryKey: true,
@@ -30,11 +31,14 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUUID: 4,
         },
+        comment:
+          "PK, composite unique identifier. FK to an member user of the island.",
       },
       is_admin: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+        comment: "Is true when the user is an island administrator.",
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -52,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     },
     {

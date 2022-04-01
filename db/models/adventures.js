@@ -23,11 +23,13 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUUID: 4,
         },
+        comment: "PK, unique identifier.",
       },
       id_status: {
         type: DataTypes.SMALLINT,
         allowNull: false,
         defaultValue: 1,
+        comment: "FK to current status.",
       },
       title: {
         type: DataTypes.STRING(100),
@@ -49,10 +51,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
+        comment: "The datetime when the adventure was published.",
       },
       end_datetime: {
         type: DataTypes.DATE,
         allowNull: false,
+        comment:
+          "The datetime when the adventure will expire. Up to 24h since the start_datetime.",
       },
       num_invitations: {
         type: DataTypes.SMALLINT,
@@ -61,6 +66,8 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           min: 1,
         },
+        comment:
+          "Number of allow users that can engaged with the adventure. This number not include the publisher user.",
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -78,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     },
     {

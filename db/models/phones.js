@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUUID: 4,
         },
+        comment: "PK, unique identifier.",
       },
       id_user: {
         type: DataTypes.UUID,
@@ -30,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isUUID: 4,
         },
+        comment: "FK to owner user of the phone number.",
       },
       country_code: {
         type: DataTypes.SMALLINT,
@@ -47,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
           notNull: true,
           notEmpty: true,
         },
+        comment: "Phone number without the county code.",
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -64,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: null,
-        comment: "The datetime of deletion.",
+        comment: "The datetime of deletion. Is null when is an active entry.",
       },
     },
     {
