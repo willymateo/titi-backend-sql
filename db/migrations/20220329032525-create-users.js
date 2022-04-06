@@ -21,16 +21,6 @@ module.exports = {
           },
           comment: "FK to current user rol.",
         },
-        id_current_state: {
-          type: Sequelize.SMALLINT,
-          allowNull: false,
-          defaultValue: 1,
-          references: {
-            model: "user_states", //Table name.
-            key: "id",
-          },
-          comment: "FK to current status.",
-        },
         username: {
           type: Sequelize.STRING(30),
           allowNull: false,
@@ -56,30 +46,6 @@ module.exports = {
           allowNull: false,
           unique: true,
           comment: "Email linked with the account. It must be unique.",
-        },
-        photo_url: {
-          type: Sequelize.STRING,
-          allowNull: true,
-          comment: "The url to profile photo.",
-        },
-        description: {
-          type: Sequelize.STRING,
-          allowNull: true,
-          comment: "User description or biography.",
-        },
-        num_later: {
-          type: Sequelize.SMALLINT,
-          allowNull: false,
-          defaultValue: 0,
-          comment:
-            "Number of times the user has been engaged in an adventure and he arrived late.",
-        },
-        num_missing: {
-          type: Sequelize.SMALLINT,
-          allowNull: false,
-          defaultValue: 0,
-          comment:
-            "Number of times the user has been engaged in an adventure and he did not attend.",
         },
         createdAt: {
           type: Sequelize.DATE,

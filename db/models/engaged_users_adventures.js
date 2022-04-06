@@ -17,6 +17,16 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
+
+      this.belongsTo(models.Users, {
+        foreignKey: "id_user",
+      });
+
+      models.Users.hasMany(this, {
+        foreignKey: "id_user",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
     }
   }
   Engaged_users_adventures.init(
