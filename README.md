@@ -96,8 +96,3 @@ Run Data Base creation, migrations, and seeders commands if it's necessary.
 ```cmd
 npm run test
 ```
-
-## Staff credentials
-
-username: willymateo<br>
-password: cathot2022<br>
