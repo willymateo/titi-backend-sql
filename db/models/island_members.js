@@ -8,7 +8,25 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.belongsTo(models.Islands, {
+        foreignKey: "id_island",
+      });
+
+      models.Islands.hasMany(this, {
+        foreignKey: "id_island",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
+
+      this.belongsTo(models.Users, {
+        foreignKey: "id_user",
+      });
+
+      models.Users.hasMany(this, {
+        foreignKey: "id_user",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
     }
   }
   Island_members.init(
