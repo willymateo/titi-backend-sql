@@ -15,17 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 
       models.User_roles.hasMany(this, {
         foreignKey: "id_rol",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-      });
-
-      this.belongsTo(models.User_states, {
-        foreignKey: "id_current_state",
-      });
-
-      models.User_states.hasMany(this, {
-        foreignKey: "id_current_state",
-        onDelete: "CASCADE",
+        onDelete: "RESTRICT",
         onUpdate: "CASCADE",
       });
     }
@@ -48,12 +38,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 1,
         comment: "FK to current user rol.",
-      },
-      id_current_state: {
-        type: DataTypes.SMALLINT,
-        allowNull: false,
-        defaultValue: 1,
-        comment: "FK to current status.",
       },
       username: {
         type: DataTypes.STRING(30),
@@ -102,42 +86,6 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true,
         },
         comment: "Email linked with the account. It must be unique.",
-      },
-      photo_url: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-          isUrl: true,
-        },
-        comment: "The url to profile photo.",
-      },
-      description: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-          notEmpty: true,
-        },
-        comment: "User description or biography.",
-      },
-      num_later: {
-        type: DataTypes.SMALLINT,
-        allowNull: false,
-        defaultValue: 0,
-        validate: {
-          min: 0,
-        },
-        comment:
-          "Number of times the user has been engaged in an adventure and he arrived late.",
-      },
-      num_missing: {
-        type: DataTypes.SMALLINT,
-        allowNull: false,
-        defaultValue: 0,
-        validate: {
-          min: 0,
-        },
-        comment:
-          "Number of times the user has been engaged in an adventure and he did not attend.",
       },
       createdAt: {
         type: DataTypes.DATE,

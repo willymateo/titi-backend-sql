@@ -2,25 +2,35 @@
 const { Model } = require("sequelize");
 const uuid = require("uuid");
 module.exports = (sequelize, DataTypes) => {
-  class Adventures extends Model {
+  class Profile_information extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Adventure_states, {
-        foreignKey: "id_status",
+      this.belongsTo(models.Users, {
+        foreignKey: "id_user",
       });
 
-      models.Adventure_states.hasMany(this, {
-        foreignKey: "id_status",
+      models.Users.hasMany(this, {
+        foreignKey: "id_user",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
+
+      this.belongsTo(models.User_states, {
+        foreignKey: "id_current_state",
+      });
+
+      models.User_states.hasMany(this, {
+        foreignKey: "id_current_state",
         onDelete: "RESTRICT",
         onUpdate: "CASCADE",
       });
     }
   }
-  Adventures.init(
+  Profile_information.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -33,49 +43,55 @@ module.exports = (sequelize, DataTypes) => {
         },
         comment: "PK, unique identifier.",
       },
-      id_status: {
+      id_user: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        validate: {
+          isUUID: 4,
+        },
+        comment: "FK to owner user of profile information.",
+      },
+      id_current_state: {
         type: DataTypes.SMALLINT,
         allowNull: false,
         defaultValue: 1,
         comment: "FK to current status.",
       },
-      title: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
+      photo_url: {
+        type: DataTypes.STRING,
+        allowNull: true,
         validate: {
-          notNull: true,
-          notEmpty: true,
+          isUrl: true,
         },
+        comment: "The url to profile photo.",
       },
       description: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
-          notNull: true,
           notEmpty: true,
         },
+        comment: "User description or biography.",
       },
-      start_datetime: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-        comment: "The datetime when the adventure was published.",
-      },
-      end_datetime: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        comment:
-          "The datetime when the adventure will expire. Up to 24h since the start_datetime.",
-      },
-      num_invitations: {
+      num_later: {
         type: DataTypes.SMALLINT,
         allowNull: false,
-        defaultValue: 1,
+        defaultValue: 0,
         validate: {
-          min: 1,
+          min: 0,
         },
         comment:
-          "Number of allow users that can engaged with the adventure. This number not include the publisher user.",
+          "Number of times the user has been engaged in an adventure and he arrived late.",
+      },
+      num_missing: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+          min: 0,
+        },
+        comment:
+          "Number of times the user has been engaged in an adventure and he did not attend.",
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -98,9 +114,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Adventures",
-      tableName: "adventures",
+      modelName: "Profile_information",
+      tableName: "profile_information",
     }
   );
-  return Adventures;
+  return Profile_information;
 };
