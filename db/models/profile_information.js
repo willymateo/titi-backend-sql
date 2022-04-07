@@ -1,6 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 const uuid = require("uuid");
+
 module.exports = (sequelize, DataTypes) => {
   class Profile_information extends Model {
     /**
@@ -13,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "id_user",
       });
 
-      models.Users.hasMany(this, {
+      models.Users.hasOne(this, {
         foreignKey: "id_user",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
@@ -30,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   Profile_information.init(
     {
       id: {

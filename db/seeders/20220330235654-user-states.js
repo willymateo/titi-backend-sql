@@ -25,7 +25,7 @@ module.exports = {
             "User who have any adventures published with open state.",
         },
         {
-          state: "engaged",
+          state: "engaged_temporarily",
           description:
             "User who have engaged with other user in an adventure published by himself or by other user.",
         },
