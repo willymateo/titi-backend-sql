@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Engaged_users_adventures extends Model {
     /**
@@ -29,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   Engaged_users_adventures.init(
     {
       id_adventure: {

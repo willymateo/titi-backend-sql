@@ -1,6 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 const uuid = require("uuid");
+
 module.exports = (sequelize, DataTypes) => {
   class Adventures extends Model {
     /**
@@ -20,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   Adventures.init(
     {
       id: {
