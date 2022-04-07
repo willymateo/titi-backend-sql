@@ -1,6 +1,9 @@
 "use strict";
 const { Model } = require("sequelize");
+const bcrypt = require("bcrypt");
 const uuid = require("uuid");
+const saltRounds = 10;
+
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     /**
@@ -20,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   Users.init(
     {
       id: {
@@ -112,5 +116,23 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "users",
     }
   );
+
+  //Hooks.
+  //Usuario.beforeBulkCreate(async (usuario, {}) => {
+  //usuario.passwordHash = await bcrypt.hash(usuario.passwordHash, saltRounds);
+  //});
+
+  //Usuario.beforeBulkUpdate(async (usuario, {}) => {
+  //usuario.passwordHash = await bcrypt.hash(usuario.passwordHash, saltRounds);
+  //});
+
+  Users.beforeCreate(async (user, options) => {
+    user.password_hash = await bcrypt.hash(user.password_hash, saltRounds);
+  });
+
+  Users.beforeUpdate(async (user, options) => {
+    user.password_hash = await bcrypt.hash(user.password_hash, saltRounds);
+  });
+
   return Users;
 };
