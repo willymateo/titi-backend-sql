@@ -4,12 +4,9 @@ const { Users } = require("../db/models");
 const { serverRunning } = require("../bin/www");
 const { app } = require("../app");
 
-const username = "test_user";
-const password = "test1234";
-
 const testUser = {
-  username,
-  password_hash: password,
+  username: "test_user",
+  password_hash: "test1234",
   first_names: "User1",
   last_names: "Test",
   email: "testuser@cathot.com",
@@ -22,8 +19,8 @@ beforeAll(async () => {
 describe("Tests with CORRECT credentials", () => {
   describe("POST /login", () => {
     const credentials = {
-      username,
-      password,
+      username: testUser.username,
+      password: testUser.password_hash,
     };
 
     test("Should respond with a 200 OK", async () => {
@@ -37,7 +34,11 @@ describe("Tests with CORRECT credentials", () => {
 });
 
 describe("Tests with INCORRECT data", () => {
-  let credentials = [{}, { username }, { password }];
+  let credentials = [
+    {},
+    { username: testUser.username },
+    { password: testUser.password_hash },
+  ];
 
   credentials.forEach(credential => {
     describe("POST /login with incomplete params", () => {
@@ -80,10 +81,10 @@ describe("Tests with INCORRECT data", () => {
   credentials = [
     {
       username: "test_userX",
-      password,
+      password: testUser.password_hash,
     },
     {
-      username,
+      username: testUser.username,
       password: "test1234X",
     },
   ];
@@ -104,7 +105,7 @@ describe("Tests with INCORRECT data", () => {
 
 afterAll(async () => {
   await Users.destroy({
-    where: { username },
+    where: { username: testUser.username },
   });
 
   db.sequelize.close();

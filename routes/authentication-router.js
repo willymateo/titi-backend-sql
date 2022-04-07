@@ -5,7 +5,7 @@ const { Users } = require("../db/models");
 
 const router = express.Router();
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   if (typeof username === "undefined" || typeof password === "undefined") {
@@ -21,46 +21,48 @@ router.post("/login", (req, res) => {
     return;
   }
 
-  Users.findOne({
+  const user_result = await Users.findOne({
     where: { username },
-  })
-    .then(user => {
-      bcrypt.compare(password, user.password_hash, (err, result) => {
-        if (err) {
-          console.log(err);
-        }
-        if (result) {
-          //Token creation.
-          const payload = {
-            id: user.id,
-            username,
-            email: user.email,
-          };
+  });
 
-          jwt.sign(payload, process.env.TOKEN_PRIVATE_KEY, (err, token) => {
-            if (err) {
-              console.log(err);
-            }
-            res.status(200).send({
-              message: `Success authentication`,
-              token,
-            });
-          });
-        } else {
-          //Incorrect password.
-          res.status(401).send({
-            error: `Invalid user or password`,
-          });
-        }
-      });
-    })
-    //Not signed up user.
-    .catch(err => {
-      console.log(err);
-      res.status(401).send({
-        error: `Invalid user or password`,
-      });
+  //Not signed up user.
+  if (user_result === null) {
+    res.status(401).send({
+      error: `Invalid user or password`,
     });
+    return;
+  }
+
+  const match_password = await bcrypt.compare(
+    password,
+    user_result.password_hash
+  );
+
+  //Incorrect password.
+  if (!match_password) {
+    res.status(401).send({
+      error: `Invalid user or password`,
+    });
+    return;
+  }
+
+  //Token creation.
+  const payload = {
+    id: user_result.id,
+    id_rol: user_result.id_rol,
+    username,
+    email: user_result.email,
+  };
+
+  jwt.sign(payload, process.env.TOKEN_PRIVATE_KEY, (err, token) => {
+    if (err) {
+      console.log(err);
+    }
+    res.status(200).send({
+      message: `Success authentication`,
+      token,
+    });
+  });
 });
 
 module.exports = router;
