@@ -4,8 +4,8 @@ const logger = require("morgan");
 const cors = require("cors");
 
 const authenticationRouter = require("./routes/authentication-router");
-const usersRouter = require("./routes/users-router");
-const usersRouterAdmin = require("./routes/users-router-admin");
+const usersRouter = require("./routes/normal-users/users-router");
+const usersRouterAdmin = require("./routes/admin/users-router-admin");
 
 const app = express();
 

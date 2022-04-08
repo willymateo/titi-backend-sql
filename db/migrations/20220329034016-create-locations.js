@@ -18,6 +18,8 @@ module.exports = {
             model: "users", //Table name.
             key: "id",
           },
+          onDelete: "CASCADE",
+          onUpdate: "CASCADE",
           comment: "FK to user that is in the location.",
         },
         latitude: {
