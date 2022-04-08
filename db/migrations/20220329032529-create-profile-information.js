@@ -18,6 +18,8 @@ module.exports = {
             model: "users", //Table name.
             key: "id",
           },
+          onDelete: "CASCADE",
+          onUpdate: "CASCADE",
           comment: "FK to owner user of profile information.",
         },
         id_current_state: {
@@ -28,6 +30,8 @@ module.exports = {
             model: "user_states", //Table name.
             key: "id",
           },
+          onDelete: "RESTRICT",
+          onUpdate: "CASCADE",
           comment: "FK to current status.",
         },
         photo_url: {

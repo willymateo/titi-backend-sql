@@ -13,6 +13,8 @@ module.exports = {
             model: "islands", //Table name.
             key: "id",
           },
+          onDelete: "CASCADE",
+          onUpdate: "CASCADE",
           comment: "PK, composite unique identifier. FK to an island.",
         },
         id_user: {
@@ -24,6 +26,8 @@ module.exports = {
             model: "users", //Table name.
             key: "id",
           },
+          onDelete: "CASCADE",
+          onUpdate: "CASCADE",
           comment:
             "PK, composite unique identifier. FK to an user member of the island.",
         },

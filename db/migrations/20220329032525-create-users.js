@@ -19,6 +19,8 @@ module.exports = {
             model: "user_roles", //Table name.
             key: "id",
           },
+          onDelete: "RESTRICT",
+          onUpdate: "CASCADE",
           comment: "FK to current user rol.",
         },
         username: {
