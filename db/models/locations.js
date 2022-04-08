@@ -59,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true,
         },
       },
-      current: {
+      is_current: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true,
