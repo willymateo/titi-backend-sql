@@ -13,6 +13,8 @@ module.exports = {
             model: "adventures", //Table name.
             key: "id",
           },
+          onDelete: "CASCADE",
+          onUpdate: "CASCADE",
           comment: "PK, composite unique identifier. FK to an adventure.",
         },
         id_user: {
@@ -24,6 +26,8 @@ module.exports = {
             model: "users", //Table name.
             key: "id",
           },
+          onDelete: "CASCADE",
+          onUpdate: "CASCADE",
           comment:
             "PK, composite unique identifier. FK to an engaged user with the adventure.",
         },

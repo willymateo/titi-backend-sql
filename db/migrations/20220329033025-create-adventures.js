@@ -19,6 +19,8 @@ module.exports = {
             model: "adventure_states", //Table name.
             key: "id",
           },
+          onDelete: "RESTRICT",
+          onUpdate: "CASCADE",
           comment: "FK to current status.",
         },
         title: {
