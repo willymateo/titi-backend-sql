@@ -28,7 +28,7 @@ module.exports = {
           type: Sequelize.STRING(100),
           allowNull: false,
         },
-        current: {
+        is_current: {
           type: Sequelize.BOOLEAN,
           allowNull: false,
           defaultValue: true,

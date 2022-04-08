@@ -9,16 +9,14 @@ router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   if (typeof username === "undefined" || typeof password === "undefined") {
-    res.status(400).send({
+    return res.status(400).send({
       error:
         "Incomplete credentials. Should receive 'username' and 'password' params",
     });
-    return;
   } else if (!username || !password) {
-    res.status(400).send({
+    return res.status(400).send({
       error: "The params value can't be falsy values",
     });
-    return;
   }
 
   const user_result = await Users.findOne({
@@ -27,10 +25,9 @@ router.post("/login", async (req, res) => {
 
   //Not signed up user.
   if (user_result === null) {
-    res.status(401).send({
+    return res.status(401).send({
       error: `Invalid user or password`,
     });
-    return;
   }
 
   const match_password = await bcrypt.compare(
@@ -40,10 +37,9 @@ router.post("/login", async (req, res) => {
 
   //Incorrect password.
   if (!match_password) {
-    res.status(401).send({
+    return res.status(401).send({
       error: `Invalid user or password`,
     });
-    return;
   }
 
   //Token creation.
@@ -57,8 +53,11 @@ router.post("/login", async (req, res) => {
   jwt.sign(payload, process.env.TOKEN_PRIVATE_KEY, (err, token) => {
     if (err) {
       console.log(err);
+      return res.status(500).send({
+        error: `Some error occurred while signing in: ${err.message}`,
+      });
     }
-    res.status(200).send({
+    return res.status(200).send({
       message: `Success authentication`,
       token,
     });

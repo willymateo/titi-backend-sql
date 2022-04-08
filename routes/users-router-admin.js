@@ -1,14 +1,14 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const { Users } = require("../db/models");
 const { Phones } = require("../db/models");
 const { Locations } = require("../db/models");
-const { verifyTokenNormal } = require("./middlewares/token-authorization");
+const { User_roles } = require("../db/models");
+const { verifyTokenAdmin } = require("./middlewares/token-authorization");
 
 const router = express.Router();
 
 //Get all users.
-router.get("/", verifyTokenNormal, async (req, res) => {
+router.get("/", verifyTokenAdmin, async (req, res) => {
   const users_result = await Users.findAll({
     attributes: {
       exclude: [
@@ -21,8 +21,14 @@ router.get("/", verifyTokenNormal, async (req, res) => {
     },
     include: [
       {
+        model: User_roles,
+        as: "user_rol",
+        attributes: {
+          exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
+        },
+      },
+      {
         model: Locations,
-        where: { is_current: true },
         attributes: {
           exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
         },
@@ -38,16 +44,18 @@ router.get("/", verifyTokenNormal, async (req, res) => {
 
   //Not found user.
   if (users_result === null) {
-    return res.status(404).send({
+    res.status(401).send({
       error: "Users not found",
     });
+    return;
   }
 
-  return res.status(200).send(users_result);
+  res.status(200).send(users_result);
 });
 
 //Get user by username.
-router.get("/:username", verifyTokenNormal, async (req, res) => {
+//Verificar token.
+router.get("/:username", async (req, res) => {
   const { username } = req.params;
 
   const user_result = await Users.findOne({
@@ -63,8 +71,15 @@ router.get("/:username", verifyTokenNormal, async (req, res) => {
     },
     include: [
       {
+        model: User_roles,
+        as: "user_rol",
+        attributes: {
+          exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
+        },
+      },
+      {
         model: Locations,
-        where: { is_current: true },
+        //where: { is_current: true },
         attributes: {
           exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
         },
@@ -80,16 +95,20 @@ router.get("/:username", verifyTokenNormal, async (req, res) => {
 
   //Not found user.
   if (user_result === null) {
-    return res.status(404).send({
+    res.status(401).send({
       error: `User '${username}' not found`,
     });
+    return;
   }
 
-  return res.status(200).send(user_result);
+  res.status(200).send(user_result);
 });
 
 //Create an user.
-router.post("/", async (req, res) => {
+//Verificar el rol
+//Verificar envio de mensajes de error.
+//Quitar campos a enviar en la respuesta.
+router.post("/", function (req, res) {
   let newUser = {
     username: req.body.username,
     password_hash: req.body.password,
@@ -98,35 +117,17 @@ router.post("/", async (req, res) => {
     email: req.body.email,
   };
 
-  try {
-    newUser = await Users.create(newUser);
-  } catch (err) {
-    console.log(err);
-    return res.status(409).send({
-      error: `Some error occurred while creating the user '${newUser.username}': ${err.message}`,
-    });
-  }
-
-  //Token creation.
-  const payload = {
-    id: newUser.id,
-    id_rol: newUser.id_rol,
-    username: newUser.username,
-    email: newUser.email,
-  };
-
-  jwt.sign(payload, process.env.TOKEN_PRIVATE_KEY, (err, token) => {
-    if (err) {
+  Users.create(newUser)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
       console.log(err);
-      return res.status(500).send({
-        error: `Some error occurred while signing in: ${err.message}`,
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the client.",
       });
-    }
-    return res.status(200).send({
-      message: `Success sign up`,
-      token,
     });
-  });
 });
 
 //Update an user.
