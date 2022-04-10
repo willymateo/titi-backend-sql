@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const { Users } = require("../../db/models");
 const { Phones } = require("../../db/models");
 const { Locations } = require("../../db/models");
+const { User_states } = require("../../db/models");
+const { Profile_information } = require("../../db/models");
 const { verifyTokenNormal } = require("../middlewares/token-authorization");
 
 const router = express.Router();
@@ -21,17 +23,41 @@ router.get("/", verifyTokenNormal, async (req, res) => {
     },
     include: [
       {
+        model: Phones,
+        as: "phones",
+        attributes: {
+          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+        },
+      },
+      {
         model: Locations,
+        as: "locations",
         where: { is_current: true },
         attributes: {
           exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
         },
       },
       {
-        model: Phones,
+        model: Profile_information,
+        as: "profile_information",
         attributes: {
-          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+          exclude: [
+            "id_user",
+            "id_current_state",
+            "createdAt",
+            "updatedAt",
+            "deletedAt",
+          ],
         },
+        include: [
+          {
+            model: User_states,
+            as: "user_state",
+            attributes: {
+              exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
+            },
+          },
+        ],
       },
     ],
   });
@@ -63,17 +89,41 @@ router.get("/:username", verifyTokenNormal, async (req, res) => {
     },
     include: [
       {
+        model: Phones,
+        as: "phones",
+        attributes: {
+          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+        },
+      },
+      {
         model: Locations,
+        as: "locations",
         where: { is_current: true },
         attributes: {
           exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
         },
       },
       {
-        model: Phones,
+        model: Profile_information,
+        as: "profile_information",
         attributes: {
-          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+          exclude: [
+            "id_user",
+            "id_current_state",
+            "createdAt",
+            "updatedAt",
+            "deletedAt",
+          ],
         },
+        include: [
+          {
+            model: User_states,
+            as: "user_state",
+            attributes: {
+              exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
+            },
+          },
+        ],
       },
     ],
   });
@@ -89,8 +139,13 @@ router.get("/:username", verifyTokenNormal, async (req, res) => {
 });
 
 //Create an user.
+//Create test.
+//Check null undefined values.
 router.post("/", async (req, res) => {
-  let newUser = {
+  const { phone: newPhoneData } = req.body;
+  const { location: newLocationData } = req.body;
+  const { profile_information: newProfileInformationData } = req.body;
+  const newUserData = {
     username: req.body.username,
     password_hash: req.body.password,
     first_names: req.body.first_names,
@@ -98,30 +153,54 @@ router.post("/", async (req, res) => {
     email: req.body.email,
   };
 
+  let newUserInstance;
+  let newPhoneInstance;
+  let newLocationInstance;
+  let newProfileInformationInstance;
   try {
-    newUser = await Users.create(newUser);
+    newUserInstance = await Users.build(newUserData);
+    newPhoneInstance = await Phones.build({
+      ...newPhoneData,
+      id_user: newUserInstance.id,
+    });
+    newLocationInstance = await Locations.build({
+      ...newLocationData,
+      id_user: newUserInstance.id,
+    });
+    newProfileInformationInstance = await Profile_information.build({
+      ...newProfileInformationData,
+      id_user: newUserInstance.id,
+    });
+
+    //Save the registers in the DB.
+    await newUserInstance.save();
+    await newPhoneInstance.save();
+    await newLocationInstance.save();
+    await newProfileInformationInstance.save();
   } catch (err) {
     console.log(err);
     return res.status(409).send({
-      error: `Some error occurred while creating the user '${newUser.username}': ${err.message}`,
+      error: `Some error occurred while creating the user '${newUserData.username}': ${err.message}`,
     });
   }
 
   //Token creation.
   const payload = {
-    id: newUser.id,
-    id_rol: newUser.id_rol,
-    username: newUser.username,
-    email: newUser.email,
+    id: newUserInstance.id,
+    id_rol: newUserInstance.id_rol,
+    username: newUserInstance.username,
+    email: newUserInstance.email,
   };
 
-  jwt.sign(payload, process.env.TOKEN_PRIVATE_KEY, (err, token) => {
+  jwt.sign(payload, process.env.TOKEN_PRIVATE_KEY, async (err, token) => {
     if (err) {
       console.log(err);
       return res.status(500).send({
         error: `Some error occurred while signing in: ${err.message}`,
       });
     }
+
+    //Return the token.
     return res.status(200).send({
       message: `Success sign up`,
       token,
