@@ -1,9 +1,13 @@
+const jwt = require("jsonwebtoken");
 const request = require("supertest");
 const db = require("../db/models/index");
 const { Users } = require("../db/models");
 const { serverRunning } = require("../bin/www");
 const { app } = require("../app");
 
+//==========================================================
+//Test data
+//==========================================================
 const testUser = {
   username: "test_user",
   password_hash: "test1234",
@@ -11,11 +15,28 @@ const testUser = {
   last_names: "Test",
   email: "testuser@cathot.com",
 };
+//==========================================================
 
+//==========================================================
+//Test hooks
+//==========================================================
 beforeAll(async () => {
   await Users.create(testUser);
 });
 
+afterAll(async () => {
+  await Users.destroy({
+    where: { username: testUser.username },
+  });
+
+  db.sequelize.close();
+  serverRunning.close();
+});
+//==========================================================
+
+//==========================================================
+//Test scenarios
+//==========================================================
 describe("Tests with CORRECT credentials", () => {
   describe("POST /login", () => {
     const credentials = {
@@ -23,12 +44,24 @@ describe("Tests with CORRECT credentials", () => {
       password: testUser.password_hash,
     };
 
+    let token;
+
     test("Should respond with a 200 OK", async () => {
       const res = await request(app).post("/api/auth/login").send(credentials);
 
       expect(res.statusCode).toBe(200);
       expect(res.body).toHaveProperty("message", "Success authentication");
       expect(res.body).toHaveProperty("token");
+
+      token = res.body.token;
+    });
+
+    test("Verify the token integrity", async () => {
+      const decodedToken = jwt.verify(token, process.env.TOKEN_PRIVATE_KEY);
+      expect(decodedToken).toHaveProperty("id");
+      expect(decodedToken).toHaveProperty("id_rol");
+      expect(decodedToken).toHaveProperty("username", testUser.username);
+      expect(decodedToken).toHaveProperty("email", testUser.email);
     });
   });
 });
@@ -102,12 +135,4 @@ describe("Tests with INCORRECT data", () => {
     });
   });
 });
-
-afterAll(async () => {
-  await Users.destroy({
-    where: { username: testUser.username },
-  });
-
-  db.sequelize.close();
-  serverRunning.close();
-});
+//==========================================================
