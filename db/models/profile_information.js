@@ -15,14 +15,12 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       models.Users.hasOne(this, {
-        as: "profile_information",
         foreignKey: "id_user",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
 
       this.belongsTo(models.User_states, {
-        as: "user_state",
         foreignKey: "id_current_state",
       });
 

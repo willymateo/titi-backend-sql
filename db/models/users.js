@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.User_roles, {
-        as: "user_rol",
         foreignKey: "id_rol",
       });
 
@@ -49,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
         validate: {
-          is: /^[a-z0-9_]*[a-z]+[a-z0-9_]*$/i,
+          is: /^[a-z0-9_\.]*[a-z]+[a-z0-9_\.]*$/i,
           isLowercase: true,
           len: [5, 30],
           notNull: true,

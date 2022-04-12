@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const { Users } = require("../../db/models");
 const { Phones } = require("../../db/models");
 const { Locations } = require("../../db/models");
-const { User_states } = require("../../db/models");
 const { Profile_information } = require("../../db/models");
 const { verifyTokenNormal } = require("../middlewares/token-authorization");
 
@@ -11,7 +10,7 @@ const router = express.Router();
 
 //Get all users.
 router.get("/", verifyTokenNormal, async (req, res) => {
-  const users_result = await Users.findAll({
+  let users_result = await Users.findAll({
     attributes: {
       exclude: [
         "id_rol",
@@ -21,53 +20,58 @@ router.get("/", verifyTokenNormal, async (req, res) => {
         "deletedAt",
       ],
     },
-    include: [
-      {
-        model: Phones,
-        as: "phones",
-        attributes: {
-          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-        },
-      },
-      {
-        model: Locations,
-        as: "locations",
-        where: { is_current: true },
-        attributes: {
-          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-        },
-      },
-      {
-        model: Profile_information,
-        as: "profile_information",
-        attributes: {
-          exclude: [
-            "id_user",
-            "id_current_state",
-            "createdAt",
-            "updatedAt",
-            "deletedAt",
-          ],
-        },
-        include: [
-          {
-            model: User_states,
-            as: "user_state",
-            attributes: {
-              exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
-            },
-          },
-        ],
-      },
-    ],
   });
 
-  //Not found user.
+  //Not found users.
   if (users_result === null) {
     return res.status(404).send({
       error: "Users not found",
     });
   }
+
+  users_result = await Promise.all(
+    users_result.map(async user_result => {
+      const phone_result = await user_result.getPhones({
+        attributes: {
+          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+        },
+      });
+
+      const location_result = await user_result.getLocations({
+        where: { is_current: true },
+        attributes: {
+          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+        },
+      });
+
+      const profile_information_result =
+        await user_result.getProfile_information({
+          attributes: {
+            exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+          },
+        });
+
+      const user_state_result = await profile_information_result.getUser_state({
+        attributes: {
+          exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
+        },
+      });
+
+      return {
+        ...user_result.dataValues,
+        phones: phone_result,
+        location: location_result[0].dataValues,
+        profile_information: {
+          id: profile_information_result.id,
+          photo_url: profile_information_result.photo_url,
+          description: profile_information_result.description,
+          num_later: profile_information_result.num_later,
+          num_missing: profile_information_result.num_missing,
+          user_state: user_state_result.dataValues,
+        },
+      };
+    })
+  );
 
   return res.status(200).send(users_result);
 });
@@ -87,45 +91,6 @@ router.get("/:username", verifyTokenNormal, async (req, res) => {
         "deletedAt",
       ],
     },
-    include: [
-      {
-        model: Phones,
-        as: "phones",
-        attributes: {
-          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-        },
-      },
-      {
-        model: Locations,
-        as: "locations",
-        where: { is_current: true },
-        attributes: {
-          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-        },
-      },
-      {
-        model: Profile_information,
-        as: "profile_information",
-        attributes: {
-          exclude: [
-            "id_user",
-            "id_current_state",
-            "createdAt",
-            "updatedAt",
-            "deletedAt",
-          ],
-        },
-        include: [
-          {
-            model: User_states,
-            as: "user_state",
-            attributes: {
-              exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
-            },
-          },
-        ],
-      },
-    ],
   });
 
   //Not found user.
@@ -135,12 +100,51 @@ router.get("/:username", verifyTokenNormal, async (req, res) => {
     });
   }
 
-  return res.status(200).send(user_result);
+  const phone_result = await user_result.getPhones({
+    attributes: {
+      exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+    },
+  });
+
+  const location_result = await user_result.getLocations({
+    where: { is_current: true },
+    attributes: {
+      exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+    },
+  });
+
+  let profile_information_result = await user_result.getProfile_information({
+    attributes: {
+      exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+    },
+  });
+
+  const user_state_result = await profile_information_result.getUser_state({
+    attributes: {
+      exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
+    },
+  });
+
+  profile_information_result = {
+    id: profile_information_result.id,
+    photo_url: profile_information_result.photo_url,
+    description: profile_information_result.description,
+    num_later: profile_information_result.num_later,
+    num_missing: profile_information_result.num_missing,
+    user_state: user_state_result.dataValues,
+  };
+
+  return res.status(200).send({
+    ...user_result.dataValues,
+    phones: phone_result,
+    location: location_result[0],
+    profile_information: profile_information_result,
+  });
 });
 
 //Create an user.
-//Create test.
 //Check null undefined values.
+//Check error messages.
 router.post("/", async (req, res) => {
   const { phone: newPhoneData } = req.body;
   const { location: newLocationData } = req.body;
@@ -157,6 +161,7 @@ router.post("/", async (req, res) => {
   let newPhoneInstance;
   let newLocationInstance;
   let newProfileInformationInstance;
+
   try {
     newUserInstance = await Users.build(newUserData);
     newPhoneInstance = await Phones.build({
@@ -180,7 +185,7 @@ router.post("/", async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(409).send({
-      error: `Some error occurred while creating the user '${newUserData.username}': ${err.message}`,
+      error: `Some error occurred while creating the user '${newUserData.username}': ${err}`,
     });
   }
 

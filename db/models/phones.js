@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       models.Users.hasMany(this, {
-        as: "phones",
         foreignKey: "id_user",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
