@@ -88,6 +88,8 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         validate: {
           isEmail: true,
+          notNull: true,
+          notEmpty: true,
         },
         comment: "Email linked with the account. It must be unique.",
       },
@@ -131,7 +133,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Users.beforeUpdate(async (user, options) => {
-    user.password_hash = await bcrypt.hash(user.password_hash, saltRounds);
+    if (options.fields.includes("password_hash")) {
+      user.password_hash = await bcrypt.hash(user.password_hash, saltRounds);
+    }
   });
 
   return Users;
