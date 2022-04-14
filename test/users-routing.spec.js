@@ -89,8 +89,6 @@ describe("Tests with CORRECT data", () => {
         const decodedToken = jwt.verify(token, process.env.TOKEN_PRIVATE_KEY);
         expect(decodedToken).toHaveProperty("id");
         expect(decodedToken).toHaveProperty("id_rol");
-        expect(decodedToken).toHaveProperty("username", testUser.username);
-        expect(decodedToken).toHaveProperty("email", testUser.email);
       });
     });
   });
