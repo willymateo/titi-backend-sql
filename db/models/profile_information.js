@@ -67,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         comment: "The url to profile photo.",
       },
-      description: {
+      biography: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {

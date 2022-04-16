@@ -6,6 +6,7 @@ module.exports = {
       {
         id: {
           type: Sequelize.UUID,
+          defaultValue: Sequelize.fn("gen_random_uuid"),
           allowNull: false,
           primaryKey: true,
           unique: true,
@@ -39,7 +40,7 @@ module.exports = {
           allowNull: true,
           comment: "The url to profile photo.",
         },
-        description: {
+        biography: {
           type: Sequelize.STRING,
           allowNull: true,
           comment: "User description or biography.",

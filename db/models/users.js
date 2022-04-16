@@ -13,11 +13,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.User_roles, {
-        foreignKey: "id_rol",
+        foreignKey: "id_role",
       });
 
       models.User_roles.hasMany(this, {
-        foreignKey: "id_rol",
+        foreignKey: "id_role",
         onDelete: "RESTRICT",
         onUpdate: "CASCADE",
       });
@@ -37,11 +37,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         comment: "PK, unique identifier.",
       },
-      id_rol: {
+      id_role: {
         type: DataTypes.SMALLINT,
         allowNull: false,
         defaultValue: 1,
-        comment: "FK to current user rol.",
+        comment: "FK to current user role.",
       },
       username: {
         type: DataTypes.STRING(30),

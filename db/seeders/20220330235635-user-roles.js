@@ -15,11 +15,11 @@ module.exports = {
       "user_roles",
       [
         {
-          rol: "normal_user",
+          role: "normal_user",
           description: "Web user or client.",
         },
         {
-          rol: "administrator",
+          role: "administrator",
           description: "Staff member, Data Base and web administrator.",
         },
       ],

@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         comment: "PK, unique identifier.",
       },
-      rol: {
+      role: {
         type: DataTypes.STRING(50),
         allowNull: false,
         unique: true,
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
           isLowercase: true,
         },
         comment:
-          "Unique user rol identifier. If it contains 2 or more words, they can be separate between underscores.",
+          "Unique user role identifier. If it contains 2 or more words, they can be separate between underscores.",
       },
       description: {
         type: DataTypes.STRING,

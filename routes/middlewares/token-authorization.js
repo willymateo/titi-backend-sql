@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { User_roles } = require("../../db/models");
+const { Users } = require("../../db/models");
 
 const verifyTokenNormal = (req, res, next) => {
   const { authorization } = req.headers;
@@ -18,8 +18,8 @@ const verifyTokenNormal = (req, res, next) => {
     async (err, decodedToken) => {
       if (err) {
         console.log(err);
-        return res.status(401).send({
-          error: "Token missing or invalid",
+        return res.status(409).send({
+          error: `Some error occurred while verifying token: ${err}`,
         });
       }
 
@@ -47,23 +47,39 @@ const verifyTokenAdmin = (req, res, next) => {
     async (err, decodedToken) => {
       if (err) {
         console.log(err);
-        return res.status(401).send({
-          error: "Token missing or invalid",
+        return res.status(409).send({
+          error: `Some error occurred while verifying token: ${err}`,
         });
       }
 
-      const user_rol_result = await User_roles.findOne({
-        where: { id: decodedToken.id_rol, rol: "administrator" },
-      });
+      try {
+        const user = await Users.findOne({
+          where: {
+            id: decodedToken.id,
+            deletedAt: null,
+          },
+        });
 
-      if (user_rol_result === null) {
-        return res.status(403).send({
-          error: "You don't have enough privileges.",
+        const user_role = await user.getUser_role({
+          where: {
+            deletedAt: null,
+          },
+        });
+
+        if (user_role.role !== "administrator") {
+          return res.status(403).send({
+            error: "You don't have enough privileges.",
+          });
+        }
+
+        req.decodedToken = decodedToken;
+        next();
+      } catch (err) {
+        console.log(err);
+        return res.status(409).send({
+          error: `Some error occurred while validating the user role: ${err}`,
         });
       }
-
-      req.decodedToken = decodedToken;
-      next();
     }
   );
 };

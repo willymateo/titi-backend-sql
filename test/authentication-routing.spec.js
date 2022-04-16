@@ -59,7 +59,6 @@ describe("Tests with CORRECT credentials", () => {
     test("Verify the token integrity", async () => {
       const decodedToken = jwt.verify(token, process.env.TOKEN_PRIVATE_KEY);
       expect(decodedToken).toHaveProperty("id");
-      expect(decodedToken).toHaveProperty("id_rol");
     });
   });
 });
@@ -69,6 +68,18 @@ describe("Tests with INCORRECT data", () => {
     {},
     { username: testUser.username },
     { password: testUser.password_hash },
+    {
+      username: null,
+      password: null,
+    },
+    {
+      username: NaN,
+      password: NaN,
+    },
+    {
+      username: "",
+      password: "",
+    },
   ];
 
   credentials.forEach(credential => {
@@ -80,30 +91,6 @@ describe("Tests with INCORRECT data", () => {
         expect(res.body).toEqual({
           error:
             "Incomplete credentials. Should receive 'username' and 'password' params",
-        });
-      });
-    });
-  });
-
-  credentials = [
-    {
-      username: null,
-      password: null,
-    },
-    {
-      username: NaN,
-      password: NaN,
-    },
-  ];
-
-  credentials.forEach(credential => {
-    describe("POST /login with nulish params", () => {
-      test("Should respond with a 400 Bad Request", async () => {
-        const res = await request(app).post("/api/auth/login").send(credential);
-
-        expect(res.statusCode).toBe(400);
-        expect(res.body).toEqual({
-          error: "The params value can't be falsy values",
         });
       });
     });
@@ -127,7 +114,7 @@ describe("Tests with INCORRECT data", () => {
 
         expect(res.statusCode).toBe(401);
         expect(res.body).toEqual({
-          error: `Invalid user or password`,
+          error: `Invalid username or password`,
         });
       });
     });
