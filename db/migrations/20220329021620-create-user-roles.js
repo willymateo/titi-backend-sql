@@ -12,12 +12,12 @@ module.exports = {
           unique: true,
           comment: "PK, unique identifier.",
         },
-        rol: {
+        role: {
           type: Sequelize.STRING(50),
           allowNull: false,
           unique: true,
           comment:
-            "Unique user rol identifier. If it contains 2 or more words, they can be separate between underscores.",
+            "Unique user role identifier. If it contains 2 or more words, they can be separate between underscores.",
         },
         description: {
           type: Sequelize.STRING,
