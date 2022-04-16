@@ -6,12 +6,13 @@ module.exports = {
       {
         id: {
           type: Sequelize.UUID,
+          defaultValue: Sequelize.fn("gen_random_uuid"),
           allowNull: false,
           primaryKey: true,
           unique: true,
           comment: "PK, unique identifier.",
         },
-        id_rol: {
+        id_role: {
           type: Sequelize.SMALLINT,
           allowNull: false,
           defaultValue: 1,
@@ -21,7 +22,7 @@ module.exports = {
           },
           onDelete: "RESTRICT",
           onUpdate: "CASCADE",
-          comment: "FK to current user rol.",
+          comment: "FK to current user role.",
         },
         username: {
           type: Sequelize.STRING(30),

@@ -26,7 +26,7 @@ const testUsers = [
     },
     profile_information: {
       photo_url: "facebook.com/connormcgregor",
-      description: "UFC fighter",
+      biography: "UFC fighter",
     },
   },
   {
@@ -45,7 +45,7 @@ const testUsers = [
     },
     profile_information: {
       photo_url: "facebook.com/markzuckerberg",
-      description: "Facebook CEO",
+      biography: "Facebook CEO",
     },
   },
 ];
@@ -88,7 +88,6 @@ describe("Tests with CORRECT data", () => {
       test("Verify the token integrity", async () => {
         const decodedToken = jwt.verify(token, process.env.TOKEN_PRIVATE_KEY);
         expect(decodedToken).toHaveProperty("id");
-        expect(decodedToken).toHaveProperty("id_rol");
       });
     });
   });
@@ -130,8 +129,8 @@ describe("Tests with CORRECT data", () => {
           userRes.profile_information.photo_url
         );
         expect(userRes).toHaveProperty(
-          "profile_information.description",
-          userRes.profile_information.description
+          "profile_information.biography",
+          userRes.profile_information.biography
         );
         expect(userRes).toHaveProperty("profile_information.num_later");
         expect(userRes).toHaveProperty("profile_information.num_missing");
@@ -183,8 +182,8 @@ describe("Tests with CORRECT data", () => {
           testUser.profile_information.photo_url
         );
         expect(userRes).toHaveProperty(
-          "profile_information.description",
-          testUser.profile_information.description
+          "profile_information.biography",
+          testUser.profile_information.biography
         );
         expect(userRes).toHaveProperty("profile_information.num_later");
         expect(userRes).toHaveProperty("profile_information.num_missing");

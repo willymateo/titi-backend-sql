@@ -10,135 +10,158 @@ const router = express.Router();
 
 //Get all users.
 router.get("/", verifyTokenNormal, async (req, res) => {
-  let users_result = await Users.findAll({
-    where: { deletedAt: null },
-    attributes: {
-      exclude: [
-        "id_rol",
-        "password_hash",
-        "createdAt",
-        "updatedAt",
-        "deletedAt",
-      ],
-    },
-  });
-
-  //Not found users.
-  if (users_result === null) {
-    return res.status(404).send({
-      error: "Users not found",
+  try {
+    let users_result = await Users.findAll({
+      where: { deletedAt: null },
+      attributes: {
+        exclude: [
+          "id_role",
+          "password_hash",
+          "createdAt",
+          "updatedAt",
+          "deletedAt",
+        ],
+      },
     });
-  }
 
-  users_result = await Promise.all(
-    users_result.map(async user_result => {
-      const phone_result = await user_result.getPhones({
-        attributes: {
-          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-        },
+    //Not found users.
+    if (users_result === null) {
+      return res.status(404).send({
+        error: "Users not found",
       });
+    }
 
-      const location_result = await user_result.getLocations({
-        where: { is_current: true },
-        attributes: {
-          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-        },
-      });
-
-      const profile_information_result =
-        await user_result.getProfile_information({
+    users_result = await Promise.all(
+      users_result.map(async user_result => {
+        const phone_result = await user_result.getPhones({
+          where: { deletedAt: null },
           attributes: {
             exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
           },
         });
 
-      const user_state_result = await profile_information_result.getUser_state({
-        attributes: {
-          exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
-        },
-      });
+        const location_result = await user_result.getLocations({
+          where: { is_current: true, deletedAt: null },
+          attributes: {
+            exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+          },
+        });
 
-      return {
-        ...user_result.dataValues,
-        phones: phone_result,
-        location: location_result[0].dataValues,
-        profile_information: {
-          id: profile_information_result.id,
-          photo_url: profile_information_result.photo_url,
-          description: profile_information_result.description,
-          num_later: profile_information_result.num_later,
-          num_missing: profile_information_result.num_missing,
-          user_state: user_state_result.dataValues,
-        },
-      };
-    })
-  );
+        const profile_information_result =
+          await user_result.getProfile_information({
+            where: { deletedAt: null },
+            attributes: {
+              exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+            },
+          });
 
-  return res.status(200).send(users_result);
+        const user_state_result =
+          await profile_information_result.getUser_state({
+            where: { deletedAt: null },
+            attributes: {
+              exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
+            },
+          });
+
+        return {
+          ...user_result.dataValues,
+          phones: phone_result,
+          location: location_result[0].dataValues,
+          profile_information: {
+            id: profile_information_result.id,
+            photo_url: profile_information_result.photo_url,
+            biography: profile_information_result.biography,
+            num_later: profile_information_result.num_later,
+            num_missing: profile_information_result.num_missing,
+            user_state: user_state_result.dataValues,
+          },
+        };
+      })
+    );
+
+    return res.status(200).send(users_result);
+  } catch (err) {
+    console.log(err);
+    return res.status(409).send({
+      error: `Some error occurred while creating the users: ${err}`,
+    });
+  }
 });
 
 //Get user by username.
 router.get("/:username", verifyTokenNormal, async (req, res) => {
   const { username } = req.params;
 
-  const user_result = await Users.findOne({
-    where: { username, deletedAt: null },
-    attributes: {
-      exclude: [
-        "id_rol",
-        "password_hash",
-        "createdAt",
-        "updatedAt",
-        "deletedAt",
-      ],
-    },
-  });
+  try {
+    const user_result = await Users.findOne({
+      where: { username, deletedAt: null },
+      attributes: {
+        exclude: [
+          "id_role",
+          "password_hash",
+          "createdAt",
+          "updatedAt",
+          "deletedAt",
+        ],
+      },
+    });
 
-  //Not found user.
-  if (user_result === null) {
-    return res.status(404).send({
-      error: `User '${username}' not found`,
+    //Not found user.
+    if (user_result === null) {
+      return res.status(404).send({
+        error: `User '${username}' not found`,
+      });
+    }
+
+    const phone_result = await user_result.getPhones({
+      where: { deletedAt: null },
+      attributes: {
+        exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+
+    const location_result = await user_result.getLocations({
+      where: { is_current: true, deletedAt: null },
+      attributes: {
+        exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+
+    const profile_information_result = await user_result.getProfile_information(
+      {
+        where: { deletedAt: null },
+        attributes: {
+          exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
+        },
+      }
+    );
+
+    const user_state_result = await profile_information_result.getUser_state({
+      where: { deletedAt: null },
+      attributes: {
+        exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+
+    return res.status(200).send({
+      ...user_result.dataValues,
+      phones: phone_result,
+      location: location_result[0],
+      profile_information: {
+        id: profile_information_result.id,
+        photo_url: profile_information_result.photo_url,
+        biography: profile_information_result.biography,
+        num_later: profile_information_result.num_later,
+        num_missing: profile_information_result.num_missing,
+        user_state: user_state_result.dataValues,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(409).send({
+      error: `Some error occurred while getting the user '${username}': ${err}`,
     });
   }
-
-  const phone_result = await user_result.getPhones({
-    attributes: {
-      exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-    },
-  });
-
-  const location_result = await user_result.getLocations({
-    where: { is_current: true },
-    attributes: {
-      exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-    },
-  });
-
-  const profile_information_result = await user_result.getProfile_information({
-    attributes: {
-      exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-    },
-  });
-
-  const user_state_result = await profile_information_result.getUser_state({
-    attributes: {
-      exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
-    },
-  });
-
-  return res.status(200).send({
-    ...user_result.dataValues,
-    phones: phone_result,
-    location: location_result[0],
-    profile_information: {
-      id: profile_information_result.id,
-      photo_url: profile_information_result.photo_url,
-      description: profile_information_result.description,
-      num_later: profile_information_result.num_later,
-      num_missing: profile_information_result.num_missing,
-      user_state: user_state_result.dataValues,
-    },
-  });
 });
 
 //Create an user.
@@ -195,14 +218,13 @@ router.post("/", async (req, res) => {
   //Token creation.
   const payload = {
     id: newUserInstance.id,
-    id_rol: newUserInstance.id_rol,
   };
 
   jwt.sign(payload, process.env.TOKEN_PRIVATE_KEY, async (err, token) => {
     if (err) {
       console.log(err);
       return res.status(500).send({
-        error: `Some error occurred while signing in: ${err.message}`,
+        error: `Some error occurred while signing in: ${err}`,
       });
     }
 
@@ -234,10 +256,7 @@ router.put("/:id_user", verifyTokenNormal, async (req, res) => {
 
   try {
     const user_result = await Users.findOne({
-      where: { id: id_user },
-      attributes: {
-        exclude: ["id_rol", "password_hash", "createdAt", "deletedAt"],
-      },
+      where: { id: id_user, deletedAt: null },
     });
 
     //Not found user.
@@ -267,7 +286,7 @@ router.put("/:id_user", verifyTokenNormal, async (req, res) => {
       user_result.set({ email: req.body.email });
     }
 
-    console.log(user_result);
+    await user_result.validate();
     await user_result.save();
     return res.status(200).send({
       message: `User ID:${id_user} updated successfully`,
