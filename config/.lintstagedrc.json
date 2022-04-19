@@ -1,5 +1,5 @@
 {
   "**/*": [
-    "prettier --write . --ignore-unknown --config ./config/.prettierrc.json --ignore-path ./config/.prettierignore"
+    "prettier --write . --ignore-unknown --ignore-path ./config/.prettierignore"
   ]
 }
