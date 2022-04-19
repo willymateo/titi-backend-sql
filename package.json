@@ -3,12 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "description": "Backend API RestFul SQL to CatHot web",
+  "main": "app.js",
   "scripts": {
     "start": "NODE_ENV=production node ./bin/www",
     "start:dev": "NODE_ENV=development nodemon ./bin/www",
     "test": "PORT=4001 NODE_ENV=test jest --silent --config ./config/jest.config.js",
-    "prettier:check": "prettier --check . --config ./config/.prettierrc.json --ignore-path ./config/.prettierignore ",
-    "prettier:write": "prettier --write . --ignore-unknown  --config ./config/.prettierrc.json --ignore-path ./config/.prettierignore ",
+    "prettier:check": "prettier --check . --ignore-path ./config/.prettierignore",
+    "prettier:write": "prettier --write . --ignore-path ./config/.prettierignore --ignore-unknown",
     "prepare": "husky install"
   },
   "dependencies": {

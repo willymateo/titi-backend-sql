@@ -9,18 +9,18 @@ const usersRouterAdmin = require("./routes/admin/users-router-admin");
 
 const app = express();
 
-//Middlewares.
+// Middlewares.
 app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
-//Normal users routes.
+// Normal users routes.
 app.use("/api/auth", authenticationRouter);
 app.use("/api/users", usersRouter);
 
-//Admin users routes.
+// Admin users routes.
 app.use("/api/admin/users", usersRouterAdmin);
 
 module.exports = {
