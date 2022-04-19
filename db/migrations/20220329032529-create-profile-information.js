@@ -15,8 +15,9 @@ module.exports = {
         id_user: {
           type: Sequelize.UUID,
           allowNull: false,
+          unique: true,
           references: {
-            model: "users", //Table name.
+            model: "users", // Table name.
             key: "id",
           },
           onDelete: "CASCADE",
@@ -28,7 +29,7 @@ module.exports = {
           allowNull: false,
           defaultValue: 1,
           references: {
-            model: "user_states", //Table name.
+            model: "user_states", // Table name.
             key: "id",
           },
           onDelete: "RESTRICT",

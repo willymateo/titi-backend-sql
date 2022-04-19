@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       id_user: {
         type: DataTypes.UUID,
         allowNull: false,
+        unique: true,
         validate: {
           isUUID: 4,
         },

@@ -11,9 +11,11 @@
     "ecmaVersion": "latest"
   },
   "rules": {
-    //Semicolon at end of line.
+    //Require js doc to any component.
+    "require-jsdoc": "off",
+    // Semicolon at end of line.
     "semi": ["error", "always"],
-    //Double quotes.
+    // Double quotes.
     "quotes": [
       "warn",
       "double",
@@ -22,7 +24,7 @@
         "allowTemplateLiterals": true
       }
     ],
-    //Unused vars
+    // Unused vars
     "no-unused-vars": [
       "warn",
       {
