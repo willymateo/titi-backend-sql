@@ -8,7 +8,7 @@ const { verifyTokenNormal } = require("../middlewares/token-authorization");
 
 const router = express.Router();
 
-//Get all users.
+// Get all users.
 router.get("/", verifyTokenNormal, async (req, res) => {
   try {
     let users_result = await Users.findAll({
@@ -24,7 +24,7 @@ router.get("/", verifyTokenNormal, async (req, res) => {
       },
     });
 
-    //Not found users.
+    // Not found users.
     if (users_result === null) {
       return res.status(404).send({
         error: "Users not found",
@@ -88,7 +88,7 @@ router.get("/", verifyTokenNormal, async (req, res) => {
   }
 });
 
-//Get user by username.
+// Get user by username.
 router.get("/:username", verifyTokenNormal, async (req, res) => {
   const { username } = req.params;
 
@@ -106,7 +106,7 @@ router.get("/:username", verifyTokenNormal, async (req, res) => {
       },
     });
 
-    //Not found user.
+    // Not found user.
     if (user_result === null) {
       return res.status(404).send({
         error: `User '${username}' not found`,
@@ -164,7 +164,7 @@ router.get("/:username", verifyTokenNormal, async (req, res) => {
   }
 });
 
-//Create an user.
+// Create an user.
 router.post("/", async (req, res) => {
   const { phone: newPhoneData } = req.body;
   const { location: newLocationData } = req.body;
@@ -197,13 +197,13 @@ router.post("/", async (req, res) => {
       id_user: newUserInstance.id,
     });
 
-    //Validatos
+    // Validatos
     await newUserInstance.validate();
     await newPhoneInstance.validate();
     await newLocationInstance.validate();
     await newProfileInformationInstance.validate();
 
-    //Save the registers in the DB
+    // Save the registers in the DB
     await newUserInstance.save();
     await newPhoneInstance.save();
     await newLocationInstance.save();
@@ -215,7 +215,7 @@ router.post("/", async (req, res) => {
     });
   }
 
-  //Token creation.
+  // Token creation.
   const payload = {
     id: newUserInstance.id,
   };
@@ -228,7 +228,7 @@ router.post("/", async (req, res) => {
       });
     }
 
-    //Return the token.
+    // Return the token.
     return res.status(200).send({
       message: `Success sign up`,
       token,
@@ -236,18 +236,18 @@ router.post("/", async (req, res) => {
   });
 });
 
-//Update user account information.
+// Update user account information.
 router.put("/:id_user", verifyTokenNormal, async (req, res) => {
   const { id_user } = req.params;
 
-  //Verify if the user in the token is the same that the user that is trying to update.
+  // Verify if the user in the token is the same that the user that is trying to update.
   if (id_user !== req.decodedToken.id) {
     return res.status(401).send({
       error: `You don't have enough privileges to update the user ID: ${id_user}`,
     });
   }
 
-  //Empty body.
+  // Empty body.
   if (Object.keys(req.body).length === 0) {
     return res.status(400).send({
       error: `You must send at least one parameter to update the user`,
@@ -259,7 +259,7 @@ router.put("/:id_user", verifyTokenNormal, async (req, res) => {
       where: { id: id_user, deletedAt: null },
     });
 
-    //Not found user.
+    // Not found user.
     if (user_result === null) {
       return res.status(404).send({
         error: `User ID:${id_user} not found`,
