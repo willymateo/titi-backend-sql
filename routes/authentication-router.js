@@ -20,7 +20,7 @@ router.post("/login", async (req, res) => {
       where: { username, deletedAt: null },
     });
 
-    //Not signed up user.
+    // Not signed up user.
     if (user_result === null) {
       return res.status(401).send({
         error: `Invalid username or password`,
@@ -32,14 +32,14 @@ router.post("/login", async (req, res) => {
       user_result.password_hash
     );
 
-    //Incorrect password.
+    // Incorrect password.
     if (!match_password) {
       return res.status(401).send({
         error: `Invalid username or password`,
       });
     }
 
-    //Token creation.
+    // Token creation.
     const payload = {
       id: user_result.id,
     };

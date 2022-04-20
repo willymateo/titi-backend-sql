@@ -9,7 +9,7 @@ const verifyTokenNormal = (req, res, next) => {
       error: "Token missing or invalid",
     });
   }
-  //Skip the Bearer word.
+  // Skip the Bearer word.
   const token = authorization.substring(7);
 
   jwt.verify(
@@ -38,7 +38,7 @@ const verifyTokenAdmin = (req, res, next) => {
     });
   }
 
-  //Skip the Bearer word.
+  // Skip the Bearer word.
   const token = authorization.substring(7);
 
   jwt.verify(

@@ -11,7 +11,7 @@ module.exports = {
     dialectOptions: {
       bigNumberStrings: true,
     },
-    //Ecuador timezone
+    // Ecuador timezone
     timezone: "-05:00",
   },
   test: {
@@ -24,7 +24,7 @@ module.exports = {
     dialectOptions: {
       bigNumberStrings: true,
     },
-    //Ecuador timezone
+    // Ecuador timezone
     timezone: "-05:00",
   },
   production: {
@@ -37,11 +37,11 @@ module.exports = {
     dialectOptions: {
       bigNumberStrings: true,
       supportBigNumbers: true,
-      //ssl: {
-      //ca: fs.readFileSync(__dirname + '/mysql-ca-main.crt')
-      //}
+      // ssl: {
+      // ca: fs.readFileSync(__dirname + '/mysql-ca-main.crt')
+      // }
     },
-    //Ecuador timezone
+    // Ecuador timezone
     timezone: "-05:00",
   },
 };
