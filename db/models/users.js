@@ -119,14 +119,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  //Hooks.
-  //Usuario.beforeBulkCreate(async (usuario, {}) => {
-  //usuario.passwordHash = await bcrypt.hash(usuario.passwordHash, saltRounds);
-  //});
+  // Hooks.
+  // Usuario.beforeBulkCreate(async (usuario, {}) => {
+  // usuario.passwordHash = await bcrypt.hash(usuario.passwordHash, saltRounds);
+  // });
 
-  //Usuario.beforeBulkUpdate(async (usuario, {}) => {
-  //usuario.passwordHash = await bcrypt.hash(usuario.passwordHash, saltRounds);
-  //});
+  // Usuario.beforeBulkUpdate(async (usuario, {}) => {
+  // usuario.passwordHash = await bcrypt.hash(usuario.passwordHash, saltRounds);
+  // });
 
   Users.beforeCreate(async (user, options) => {
     user.password_hash = await bcrypt.hash(user.password_hash, saltRounds);

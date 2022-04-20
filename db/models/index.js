@@ -8,7 +8,7 @@ const sequelizerc = require(__dirname + "/../../config/.sequelizerc");
 const config = require(sequelizerc.config)[env];
 const db = {};
 
-//Show the environment.
+// Show the environment.
 console.log(`Environment: ${process.env.NODE_ENV}`);
 
 let sequelize;
@@ -43,8 +43,8 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
-//Hooks
-//Timestamps
+// Hooks
+// Timestamps
 sequelize.beforeUpdate(async (model, options) => {
   model.updatedAt = DataTypes.NOW;
 });

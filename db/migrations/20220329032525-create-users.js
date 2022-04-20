@@ -17,7 +17,7 @@ module.exports = {
           allowNull: false,
           defaultValue: 1,
           references: {
-            model: "user_roles", //Table name.
+            model: "user_roles", // Table name.
             key: "id",
           },
           onDelete: "RESTRICT",

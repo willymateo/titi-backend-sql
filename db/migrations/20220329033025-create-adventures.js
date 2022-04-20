@@ -17,7 +17,7 @@ module.exports = {
           allowNull: false,
           defaultValue: 1,
           references: {
-            model: "adventure_states", //Table name.
+            model: "adventure_states", // Table name.
             key: "id",
           },
           onDelete: "RESTRICT",

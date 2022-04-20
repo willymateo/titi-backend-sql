@@ -10,7 +10,7 @@ module.exports = {
           primaryKey: true,
           unique: "compositeIndex",
           references: {
-            model: "adventures", //Table name.
+            model: "adventures", // Table name.
             key: "id",
           },
           onDelete: "CASCADE",
@@ -23,7 +23,7 @@ module.exports = {
           primaryKey: true,
           unique: "compositeIndex",
           references: {
-            model: "users", //Table name.
+            model: "users", // Table name.
             key: "id",
           },
           onDelete: "CASCADE",
