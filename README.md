@@ -96,3 +96,9 @@ Run Data Base creation, migrations, and seeders commands if it's necessary.
 ```cmd
 npm run test
 ```
+
+## Documentation
+
+### Entity Relationship Diagram
+[LucidChart](https://lucid.app/lucidchart/8887566c-ab08-4e36-aad1-11405f69a67e/edit?viewport_loc=-1544%2C205%2C1548%2C663%2C0_0&invitationId=inv_986780f9-981b-4492-8249-3345a44e7c64)
+
