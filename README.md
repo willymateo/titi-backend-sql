@@ -89,6 +89,7 @@ npm run dev
 ```
 
 ## Run tests
+
 **Note**: Run Data Base creation, migrations, and seeders commands if it's necessary.
 
 ```cmd
