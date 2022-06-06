@@ -1,4 +1,5 @@
 import { ProfileInformation } from "../models/profileInformation";
+import { jwtSecret } from "../../config/app.config";
 import { Locations } from "../models/locations";
 import { Phones } from "../models/phones";
 import { Users } from "../models/users";
@@ -146,9 +147,10 @@ const createUser = async (req, res) => {
   const { phone: newPhoneData } = req.body;
   const { location: newLocationData } = req.body;
   const { profileInformation: newProfileInformationData } = req.body;
+  const passwordHash = await Users.encryptPassword(req.body.password);
   const newUserData = {
     username: req.body.username,
-    passwordHash: req.body.password,
+    passwordHash,
     firstNames: req.body.firstNames,
     lastNames: req.body.lastNames,
     email: req.body.email,
@@ -160,16 +162,16 @@ const createUser = async (req, res) => {
   let newProfileInformationInstance;
 
   try {
-    newUserInstance = await Users.build(newUserData);
-    newPhoneInstance = await Phones.build({
+    newUserInstance = Users.build(newUserData);
+    newPhoneInstance = Phones.build({
       ...newPhoneData,
       idUser: newUserInstance.id,
     });
-    newLocationInstance = await Locations.build({
+    newLocationInstance = Locations.build({
       ...newLocationData,
       idUser: newUserInstance.id,
     });
-    newProfileInformationInstance = await ProfileInformation.build({
+    newProfileInformationInstance = ProfileInformation.build({
       ...newProfileInformationData,
       idUser: newUserInstance.id,
     });
@@ -197,7 +199,7 @@ const createUser = async (req, res) => {
     id: newUserInstance.id,
   };
 
-  jwt.sign(payload, process.env.TOKEN_PRIVATE_KEY, async (err, token) => {
+  jwt.sign(payload, jwtSecret, async (err, token) => {
     if (err) {
       console.log(err);
       return res.status(500).send({
@@ -247,7 +249,8 @@ const updateUser = async (req, res) => {
     }
 
     if (req.body.password) {
-      userResult.set({ passwordHash: req.body.password });
+      const passwordHash = await Users.encryptPassword(req.body.password);
+      userResult.set({ passwordHash });
     }
 
     if (req.body.firstNames) {

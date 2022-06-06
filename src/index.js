@@ -17,7 +17,7 @@ import "./models/islands";
 import "./models/phones";
 import "./models/users";
 
-const initDatabase = async () => {
+(async () => {
   try {
     await testConnection();
     await syncModels();
@@ -27,8 +27,7 @@ const initDatabase = async () => {
   } catch (error) {
     console.log(error);
   }
-};
-initDatabase();
+})();
 
 const port = process.env.PORT || "3000";
 const server = app.listen(port, () => {
