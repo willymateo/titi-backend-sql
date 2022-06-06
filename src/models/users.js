@@ -115,15 +115,6 @@ UserRoles.hasMany(Users, {
   onUpdate: "CASCADE",
 });
 
-// Hooks.
-// Usuario.beforeBulkCreate(async (usuario, {}) => {
-// usuario.passwordHash = await bcrypt.hash(usuario.passwordHash, saltRounds);
-// });
-
-// Usuario.beforeBulkUpdate(async (usuario, {}) => {
-// usuario.passwordHash = await bcrypt.hash(usuario.passwordHash, saltRounds);
-// });
-
 Users.beforeCreate(async (user, options) => {
   user.passwordHash = await bcrypt.hash(user.passwordHash, saltRounds);
 });

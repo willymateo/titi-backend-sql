@@ -9,6 +9,7 @@ import cors from "cors";
 
 const app = express();
 app.set("pkg", pkg);
+app.set("case sensitive routing", true);
 
 // Middlewares.
 app.use(cors());
