@@ -1,3 +1,4 @@
+import { jwtSecret } from "../config/app.config";
 import { Users } from "../src/models/users";
 import { sequelize } from "../src/database";
 import { server } from "../src/index";
@@ -57,7 +58,7 @@ describe("Tests with CORRECT credentials", () => {
     });
 
     test("Verify the token integrity", async () => {
-      const decodedToken = jwt.verify(token, process.env.TOKEN_PRIVATE_KEY);
+      const decodedToken = jwt.verify(token, jwtSecret);
       expect(decodedToken).toHaveProperty("id");
     });
   });
