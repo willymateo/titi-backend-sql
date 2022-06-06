@@ -5,7 +5,7 @@ Backend API RestFul SQL to CatHot web.
 ## Specifications
 
 - Backend Framework: NodeJs
-- Web Application Framework: Express
+- Server Framework: Express
 - DB engine: PostgreSQL
 - ORM: Sequelize
 
@@ -78,20 +78,18 @@ npx sequelize-cli db:seed:all
 ### Production
 
 ```cmd
+npm run build
 npm run start
 ```
 
 ### Development
 
 ```cmd
-npm run devstart
+npm run dev
 ```
 
 ## Run tests
-
-### Note
-
-Run Data Base creation, migrations, and seeders commands if it's necessary.
+**Note**: Run Data Base creation, migrations, and seeders commands if it's necessary.
 
 ```cmd
 npm run test
