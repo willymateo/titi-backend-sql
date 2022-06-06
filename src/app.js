@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import pkg from "../package.json";
 import express from "express";
 import logger from "morgan";
+import helmet from "helmet";
 import cors from "cors";
 
 const app = express();
@@ -11,6 +12,7 @@ app.set("pkg", pkg);
 
 // Middlewares.
 app.use(cors());
+app.use(helmet());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(cookieParser());
