@@ -1,6 +1,6 @@
-require("dotenv").config();
+import "dotenv/config";
 
-module.exports = {
+const dbConfig = {
   development: {
     username: process.env.DEV_DB_USERNAME,
     password: process.env.DEV_DB_PASSWORD,
@@ -14,6 +14,7 @@ module.exports = {
     // Ecuador timezone
     timezone: "-05:00",
   },
+
   test: {
     username: process.env.TEST_DB_USERNAME,
     password: process.env.TEST_DB_PASSWORD,
@@ -45,3 +46,5 @@ module.exports = {
     timezone: "-05:00",
   },
 };
+
+export default dbConfig;
