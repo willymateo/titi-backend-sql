@@ -1,4 +1,4 @@
-import { verifyTokenNormal } from "../middlewares/authJwt";
+import { verifyToken } from "../middlewares/authJwt";
 import express from "express";
 import {
   createUser,
@@ -10,15 +10,15 @@ import {
 const router = express.Router();
 
 // Get all users.
-router.get("/", verifyTokenNormal, getAllUsers);
+router.get("/", verifyToken, getAllUsers);
 
 // Get user by username.
-router.get("/:username", verifyTokenNormal, getUserByUsername);
+router.get("/:username", verifyToken, getUserByUsername);
 
 // Create an user.
 router.post("/", createUser);
 
 // Update user account information.
-router.put("/:id_user", verifyTokenNormal, updateUser);
+router.put("/:id_user", verifyToken, updateUser);
 
 export default router;
