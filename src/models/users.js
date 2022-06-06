@@ -1,10 +1,10 @@
 "use strict";
+import { saltRounds } from "../../config/app.config";
 import { UserRoles } from "./userRoles";
 import { sequelize } from "../database";
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
-const saltRounds = 10;
 
 const Users = sequelize.define(
   "Users",
@@ -115,14 +115,12 @@ UserRoles.hasMany(Users, {
   onUpdate: "CASCADE",
 });
 
-Users.beforeCreate(async (user, options) => {
-  user.passwordHash = await bcrypt.hash(user.passwordHash, saltRounds);
-});
+Users.encryptPassword = async password => {
+  return await bcrypt.hash(password, saltRounds);
+};
 
-Users.beforeUpdate(async (user, options) => {
-  if (options.fields.includes("passwordHash")) {
-    user.passwordHash = await bcrypt.hash(user.passwordHash, saltRounds);
-  }
-});
+Users.prototype.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.passwordHash);
+};
 
 export { Users };

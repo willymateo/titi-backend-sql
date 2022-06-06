@@ -1,6 +1,6 @@
+import { jwtSecret } from "../../config/app.config";
 import { Users } from "../models/users";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -23,7 +23,8 @@ const login = async (req, res) => {
       });
     }
 
-    const matchPassword = await bcrypt.compare(password, userResult.passwordHash);
+    const matchPassword = Users.comparePassword(password);
+    console.log("matchPassword", matchPassword);
 
     // Incorrect password.
     if (!matchPassword) {
@@ -37,7 +38,7 @@ const login = async (req, res) => {
       id: userResult.id,
     };
 
-    jwt.sign(payload, process.env.TOKEN_PRIVATE_KEY, (err, token) => {
+    jwt.sign(payload, jwtSecret, (err, token) => {
       if (err) {
         console.log(err);
         return res.status(409).send({

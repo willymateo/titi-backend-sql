@@ -52,7 +52,7 @@ STAFF_EMAIL=
 STAFF_PASSWORD=
 
 #Json Web Token
-TOKEN_PRIVATE_KEY=
+JWT_SECRET=
 ```
 
 ### Create the Data Base
