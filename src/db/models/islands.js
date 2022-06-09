@@ -1,11 +1,10 @@
 "use strict";
-import { sequelize } from "../database";
+import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
-import { Users } from "./users";
 
-const Phones = sequelize.define(
-  "Phones",
+const Islands = sequelize.define(
+  "Islands",
   {
     id: {
       type: DataTypes.UUID,
@@ -18,69 +17,63 @@ const Phones = sequelize.define(
       },
       comment: "PK, unique identifier.",
     },
-    idUser: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      validate: {
-        isUUID: 4,
-      },
-      field: "id_user",
-      comment: "FK to owner user of the phone number.",
-    },
-    countryCode: {
-      type: DataTypes.SMALLINT,
-      allowNull: false,
-      defaultValue: 593,
-      validate: {
-        notNull: true,
-        min: 0,
-      },
-      field: "country_code",
-      comment: "Country code of the phone number.",
-    },
-    phoneNumber: {
-      type: DataTypes.STRING(15),
+    name: {
+      type: DataTypes.STRING(100),
       allowNull: false,
       validate: {
         notNull: true,
         notEmpty: true,
       },
-      field: "phone_number",
-      comment: "Phone number without the county code.",
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    photoUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        isUrl: true,
+      },
+      field: "photo_url",
+      comment: "The url to profile photo.",
+    },
+    isPublic: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+      field: "is_public",
+      comment: "Is true when the island visibility is open to public.",
     },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
       comment: "The creation datetime.",
+      field: "created_at",
     },
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
       comment: "The datetime of last modification.",
+      field: "updated_at",
     },
     deletedAt: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: null,
       comment: "The datetime of deletion. Is null when is an active entry.",
+      field: "deleted_at",
     },
   },
   {
-    tableName: "phones",
-    comment: "Users phone numbers.",
+    tableName: "islands",
+    comment: "An island is a group of users.",
   }
 );
 
-Phones.belongsTo(Users, {
-  foreignKey: "idUser",
-});
-
-Users.hasMany(Phones, {
-  foreignKey: "idUser",
-  onDelete: "CASCADE",
-  onUpdate: "CASCADE",
-});
-
-export { Phones };
+export { Islands };

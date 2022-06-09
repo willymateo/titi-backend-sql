@@ -1,54 +1,52 @@
-import { jwtSecret } from "../config/app.config";
-import { Users } from "../src/models/users";
-import { sequelize } from "../src/database";
-import { server } from "../src/index";
+import { jwtSecret } from "../src/config/app.config";
+import { Users } from "../src/db/models/users";
 import { app } from "../src/app";
 import request from "supertest";
 import jwt from "jsonwebtoken";
 
 // ==========================================================
+// Test hooks
+// ==========================================================
+beforeAll(async () => {
+  const passwordHash = await Users.encryptPassword(testUser.password);
+  await Users.create({ ...testUser, passwordHash });
+});
+
+afterAll(async () => {
+  try {
+    await Users.destroy({
+      where: { username: testUser.username },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// ==========================================================
 // Test data
 // ==========================================================
+const api = request(app);
 const testUser = {
   username: "test_user",
-  passwordHash: "test1234",
+  password: "test1234",
   firstNames: "User1",
   lastNames: "Test",
   email: "testuser@cathot.com",
 };
-// ==========================================================
-
-// ==========================================================
-// Test hooks
-// ==========================================================
-beforeAll(async () => {
-  await Users.create(testUser);
-});
-
-afterAll(async () => {
-  await Users.destroy({
-    where: { username: testUser.username },
-  });
-
-  sequelize.close();
-  server.close();
-});
-// ==========================================================
 
 // ==========================================================
 // Test scenarios
 // ==========================================================
 describe("Tests with CORRECT credentials", () => {
+  let token;
   describe("POST /login", () => {
     const credentials = {
       username: testUser.username,
-      password: testUser.passwordHash,
+      password: testUser.password,
     };
 
-    let token;
-
     test("Should respond with a 200 OK", async () => {
-      const res = await request(app).post("/api/auth/login").send(credentials);
+      const res = await api.post("/api/auth/login").send(credentials);
 
       expect(res.statusCode).toBe(200);
       expect(res.body).toHaveProperty("message", "Success authentication");
@@ -68,7 +66,7 @@ describe("Tests with INCORRECT data", () => {
   let credentials = [
     {},
     { username: testUser.username },
-    { password: testUser.passwordHash },
+    { password: testUser.password },
     {
       username: null,
       password: null,
@@ -86,7 +84,7 @@ describe("Tests with INCORRECT data", () => {
   credentials.forEach(credential => {
     describe("POST /login with incomplete params", () => {
       test("Should respond with a 400 Bad Request", async () => {
-        const res = await request(app).post("/api/auth/login").send(credential);
+        const res = await api.post("/api/auth/login").send(credential);
 
         expect(res.statusCode).toBe(400);
         expect(res.body).toEqual({
@@ -99,7 +97,7 @@ describe("Tests with INCORRECT data", () => {
   credentials = [
     {
       username: "test_userX",
-      password: testUser.passwordHash,
+      password: testUser.password,
     },
     {
       username: testUser.username,
@@ -107,10 +105,10 @@ describe("Tests with INCORRECT data", () => {
     },
   ];
 
-  credentials.forEach(credential => {
-    describe("POST /login with incorrect credentials", () => {
+  describe("POST /login with incorrect credentials", () => {
+    credentials.forEach(credential => {
       test("Should respond with a 401 Unauthorized", async () => {
-        const res = await request(app).post("/api/auth/login").send(credential);
+        const res = await api.post("/api/auth/login").send(credential);
 
         expect(res.statusCode).toBe(401);
         expect(res.body).toEqual({
@@ -120,4 +118,3 @@ describe("Tests with INCORRECT data", () => {
     });
   });
 });
-// ==========================================================

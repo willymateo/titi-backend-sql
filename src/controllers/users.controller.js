@@ -1,8 +1,8 @@
-import { ProfileInformation } from "../models/profileInformation";
-import { jwtSecret } from "../../config/app.config";
-import { Locations } from "../models/locations";
-import { Phones } from "../models/phones";
-import { Users } from "../models/users";
+import { ProfileInformation } from "../db/models/profileInformation";
+import { Locations } from "../db/models/locations";
+import { jwtSecret } from "../config/app.config";
+import { Phones } from "../db/models/phones";
+import { Users } from "../db/models/users";
 import jwt from "jsonwebtoken";
 
 const getAllUsers = async (req, res) => {
