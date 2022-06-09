@@ -8,9 +8,7 @@ import jwt from "jsonwebtoken";
 const getAllUsers = async (req, res) => {
   try {
     let usersResult = await Users.findAll({
-      attributes: {
-        exclude: ["id_role", "password_hash", "createdAt", "updatedAt", "deletedAt"],
-      },
+      attributes: ["id", "username", "firstNames", "lastNames", "email"],
     });
 
     // Not found users.
@@ -23,41 +21,33 @@ const getAllUsers = async (req, res) => {
     usersResult = await Promise.all(
       usersResult.map(async userResult => {
         const phoneResult = await userResult.getPhones({
-          attributes: {
-            exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-          },
+          attributes: ["id", "countryCode", "phoneNumber"],
         });
 
         const locationResult = await userResult.getLocations({
           where: { isCurrent: true },
-          attributes: {
-            exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-          },
+          attributes: ["id", "latitude", "longitude", "isCurrent"],
         });
 
         const profileInformationResult = await userResult.getProfileInformation({
-          attributes: {
-            exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-          },
+          attributes: ["id", "idCurrentState", "photoUrl", "biography", "numLater", "numMissing"],
         });
 
         const userStateResult = await profileInformationResult.getUserState({
-          attributes: {
-            exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
-          },
+          attributes: ["id", "state"],
         });
 
         return {
           ...userResult.dataValues,
           phones: phoneResult,
-          location: locationResult[0].dataValues,
+          location: locationResult[0],
           profileInformation: {
             id: profileInformationResult.id,
             photoUrl: profileInformationResult.photoUrl,
             biography: profileInformationResult.biography,
             numLater: profileInformationResult.numLater,
             numMissing: profileInformationResult.numMissing,
-            userState: userStateResult.dataValues,
+            userState: userStateResult,
           },
         };
       })
@@ -67,7 +57,7 @@ const getAllUsers = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(409).send({
-      error: `Some error occurred while creating the users: ${err}`,
+      error: `Some error occurred: ${err}`,
     });
   }
 };
@@ -78,9 +68,7 @@ const getUserByUsername = async (req, res) => {
   try {
     const userResult = await Users.findOne({
       where: { username },
-      attributes: {
-        exclude: ["id_role", "password_hash", "createdAt", "updatedAt", "deletedAt"],
-      },
+      attributes: ["id", "username", "firstNames", "lastNames", "email"],
     });
 
     // Not found user.
@@ -91,28 +79,20 @@ const getUserByUsername = async (req, res) => {
     }
 
     const phoneResult = await userResult.getPhones({
-      attributes: {
-        exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-      },
+      attributes: ["id", "countryCode", "phoneNumber"],
     });
 
     const locationResult = await userResult.getLocations({
       where: { isCurrent: true },
-      attributes: {
-        exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-      },
+      attributes: ["id", "latitude", "longitude", "isCurrent"],
     });
 
     const profileInformationResult = await userResult.getProfileInformation({
-      attributes: {
-        exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
-      },
+      attributes: ["id", "idCurrentState", "photoUrl", "biography", "numLater", "numMissing"],
     });
 
     const userStateResult = await profileInformationResult.getUserState({
-      attributes: {
-        exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
-      },
+      attributes: ["id", "state"],
     });
 
     return res.status(200).send({
@@ -125,7 +105,7 @@ const getUserByUsername = async (req, res) => {
         biography: profileInformationResult.biography,
         numLater: profileInformationResult.numLater,
         numMissing: profileInformationResult.numMissing,
-        userState: userStateResult.dataValues,
+        userState: userStateResult,
       },
     });
   } catch (err) {
