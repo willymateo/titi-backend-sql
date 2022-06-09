@@ -15,7 +15,6 @@ const IslandMembers = sequelize.define(
       validate: {
         isUUID: 4,
       },
-      field: "id_island",
       comment: "PK, composite unique identifier. FK to an island.",
     },
     idUser: {
@@ -26,39 +25,19 @@ const IslandMembers = sequelize.define(
       validate: {
         isUUID: 4,
       },
-      field: "id_user",
       comment: "PK, composite unique identifier. FK to an user member of the island.",
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
-      field: "is_admin",
       comment: "Is true when the user is an island administrator.",
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The creation datetime.",
-      field: "created_at",
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The datetime of last modification.",
-      field: "updated_at",
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
-      comment: "The datetime of deletion. Is null when is an active entry.",
-      field: "deleted_at",
     },
   },
   {
+    paranoid: true,
+    timestamps: true,
+    underscored: true,
     tableName: "island_members",
     comment: "Users members of each island.",
   }

@@ -24,7 +24,6 @@ const Users = sequelize.define(
       type: DataTypes.SMALLINT,
       allowNull: false,
       defaultValue: 1,
-      field: "id_role",
       comment: "FK to current user role.",
     },
     username: {
@@ -48,7 +47,6 @@ const Users = sequelize.define(
         notNull: true,
         notEmpty: true,
       },
-      field: "password_hash",
       comment: "Encrypted password.",
     },
     firstNames: {
@@ -58,7 +56,6 @@ const Users = sequelize.define(
         notNull: true,
         notEmpty: true,
       },
-      field: "first_names",
     },
     lastNames: {
       type: DataTypes.STRING(100),
@@ -67,7 +64,6 @@ const Users = sequelize.define(
         notNull: true,
         notEmpty: true,
       },
-      field: "last_names",
     },
     email: {
       type: DataTypes.STRING(100),
@@ -80,26 +76,11 @@ const Users = sequelize.define(
       },
       comment: "Email linked with the account. It must be unique.",
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The creation datetime.",
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The datetime of last modification.",
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
-      comment: "The datetime of deletion. Is null when is an active entry.",
-    },
   },
   {
+    paranoid: true,
+    timestamps: true,
+    underscored: true,
     tableName: "users",
     comment: "Users accounts information.",
   }

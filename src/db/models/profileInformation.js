@@ -26,14 +26,12 @@ const ProfileInformation = sequelize.define(
       validate: {
         isUUID: 4,
       },
-      field: "id_user",
       comment: "FK to owner user of profile information.",
     },
     idCurrentState: {
       type: DataTypes.SMALLINT,
       allowNull: false,
       defaultValue: 1,
-      field: "id_current_state",
       comment: "FK to current status.",
     },
     photoUrl: {
@@ -42,7 +40,6 @@ const ProfileInformation = sequelize.define(
       validate: {
         isUrl: true,
       },
-      field: "photo_url",
       comment: "The url to profile photo.",
     },
     biography: {
@@ -60,7 +57,6 @@ const ProfileInformation = sequelize.define(
       validate: {
         min: 0,
       },
-      field: "num_later",
       comment: "Number of times the user has been engaged in an adventure and he arrived late.",
     },
     numMissing: {
@@ -70,29 +66,13 @@ const ProfileInformation = sequelize.define(
       validate: {
         min: 0,
       },
-      field: "num_missing",
       comment: "Number of times the user has been engaged in an adventure and he did not attend.",
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The creation datetime.",
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The datetime of last modification.",
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
-      comment: "The datetime of deletion. Is null when is an active entry.",
     },
   },
   {
+    paranoid: true,
+    timestamps: true,
+    underscored: true,
     tableName: "profile_information",
     comment: "Information about interactions and status of each user.",
   }

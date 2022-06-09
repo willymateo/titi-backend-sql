@@ -19,6 +19,6 @@ router.get("/:username", verifyToken, getUserByUsername);
 router.post("/", createUser);
 
 // Update user account information.
-router.put("/:id_user", verifyToken, updateUser);
+router.put("/:idUser", verifyToken, updateUser);
 
 export default router;

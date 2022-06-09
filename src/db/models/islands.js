@@ -38,39 +38,19 @@ const Islands = sequelize.define(
       validate: {
         isUrl: true,
       },
-      field: "photo_url",
       comment: "The url to profile photo.",
     },
     isPublic: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
-      field: "is_public",
       comment: "Is true when the island visibility is open to public.",
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The creation datetime.",
-      field: "created_at",
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The datetime of last modification.",
-      field: "updated_at",
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
-      comment: "The datetime of deletion. Is null when is an active entry.",
-      field: "deleted_at",
     },
   },
   {
+    paranoid: true,
+    timestamps: true,
+    underscored: true,
     tableName: "islands",
     comment: "An island is a group of users.",
   }
