@@ -24,7 +24,6 @@ const Phones = sequelize.define(
       validate: {
         isUUID: 4,
       },
-      field: "id_user",
       comment: "FK to owner user of the phone number.",
     },
     countryCode: {
@@ -35,7 +34,6 @@ const Phones = sequelize.define(
         notNull: true,
         min: 0,
       },
-      field: "country_code",
       comment: "Country code of the phone number.",
     },
     phoneNumber: {
@@ -45,32 +43,13 @@ const Phones = sequelize.define(
         notNull: true,
         notEmpty: true,
       },
-      field: "phone_number",
       comment: "Phone number without the county code.",
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The creation datetime.",
-      field: "created_at",
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The datetime of last modification.",
-      field: "updated_at",
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
-      comment: "The datetime of deletion. Is null when is an active entry.",
-      field: "deleted_at",
     },
   },
   {
+    paranoid: true,
+    timestamps: true,
+    underscored: true,
     tableName: "phones",
     comment: "Users phone numbers.",
   }

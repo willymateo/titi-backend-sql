@@ -1,16 +1,10 @@
 "use strict";
-import { Sequelize, DataTypes } from "sequelize";
+import { Sequelize } from "sequelize";
 import dbConfig from "../config/db.config";
 
 const env = process.env.NODE_ENV || "development";
 const config = dbConfig[env];
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
-
-// Hooks
-// Timestamps
-sequelize.afterUpdate(async (model, options) => {
-  model.updatedAt = DataTypes.NOW;
-});
 
 const testConnection = async () => {
   try {

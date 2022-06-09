@@ -34,26 +34,11 @@ const UserRoles = sequelize.define(
       },
       comment: "Description of the use case.",
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The creation datetime.",
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The datetime of last modification.",
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
-      comment: "The datetime of deletion. Is null when is an active entry.",
-    },
   },
   {
+    paranoid: true,
+    timestamps: true,
+    underscored: true,
     tableName: "user_roles",
     comment: "All roles that can have an user.",
   }

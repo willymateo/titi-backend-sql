@@ -13,7 +13,7 @@ const login = async (req, res) => {
 
   try {
     const userResult = await Users.findOne({
-      where: { username, deletedAt: null },
+      where: { username },
     });
 
     // Not signed up user.

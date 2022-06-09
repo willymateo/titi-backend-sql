@@ -25,7 +25,6 @@ const verifyToken = (req, res, next) => {
       const user = await Users.findOne({
         where: {
           id: decodedToken.id,
-          deletedAt: null,
         },
       });
 
@@ -52,15 +51,10 @@ const verifyRolAdmin = async (req, res, next) => {
   const user = await Users.findOne({
     where: {
       id,
-      deletedAt: null,
     },
   });
 
-  const userRole = await user.getUser_role({
-    where: {
-      deletedAt: null,
-    },
-  });
+  const userRole = await user.getUser_role();
 
   if (userRole.role !== "administrator") {
     return res.status(403).send({

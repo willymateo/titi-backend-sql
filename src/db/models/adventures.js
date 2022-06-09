@@ -22,7 +22,6 @@ const Adventures = sequelize.define(
       type: DataTypes.SMALLINT,
       allowNull: false,
       defaultValue: 1,
-      field: "id_status",
       comment: "FK to current status.",
     },
     title: {
@@ -45,13 +44,11 @@ const Adventures = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
-      field: "start_datetime",
       comment: "The datetime when the adventure was published.",
     },
     endDateTime: {
       type: DataTypes.DATE,
       allowNull: false,
-      field: "end_datetime",
       comment: "The datetime when the adventure will expire. Up to 24h since the start_datetime.",
     },
     numInvitations: {
@@ -61,33 +58,14 @@ const Adventures = sequelize.define(
       validate: {
         min: 1,
       },
-      field: "num_invitations",
       comment:
         "Number of allow users that can engaged with the adventure. This number not include the publisher user.",
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The creation datetime.",
-      field: "created_at",
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The datetime of last modification.",
-      field: "updated_at",
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
-      comment: "The datetime of deletion. Is null when is an active entry.",
-      field: "deleted_at",
-    },
   },
   {
+    paranoid: true,
+    timestamps: true,
+    underscored: true,
     tableName: "adventures",
     comment: "Adventures published by users.",
   }

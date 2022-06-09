@@ -8,7 +8,6 @@ import jwt from "jsonwebtoken";
 const getAllUsers = async (req, res) => {
   try {
     let usersResult = await Users.findAll({
-      where: { deletedAt: null },
       attributes: {
         exclude: ["id_role", "password_hash", "createdAt", "updatedAt", "deletedAt"],
       },
@@ -24,28 +23,25 @@ const getAllUsers = async (req, res) => {
     usersResult = await Promise.all(
       usersResult.map(async userResult => {
         const phoneResult = await userResult.getPhones({
-          where: { deletedAt: null },
           attributes: {
             exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
           },
         });
 
         const locationResult = await userResult.getLocations({
-          where: { isCurrent: true, deletedAt: null },
+          where: { isCurrent: true },
           attributes: {
             exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
           },
         });
 
         const profileInformationResult = await userResult.getProfileInformation({
-          where: { deletedAt: null },
           attributes: {
             exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
           },
         });
 
         const userStateResult = await profileInformationResult.getUserState({
-          where: { deletedAt: null },
           attributes: {
             exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
           },
@@ -81,7 +77,7 @@ const getUserByUsername = async (req, res) => {
 
   try {
     const userResult = await Users.findOne({
-      where: { username, deletedAt: null },
+      where: { username },
       attributes: {
         exclude: ["id_role", "password_hash", "createdAt", "updatedAt", "deletedAt"],
       },
@@ -95,28 +91,25 @@ const getUserByUsername = async (req, res) => {
     }
 
     const phoneResult = await userResult.getPhones({
-      where: { deletedAt: null },
       attributes: {
         exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
       },
     });
 
     const locationResult = await userResult.getLocations({
-      where: { isCurrent: true, deletedAt: null },
+      where: { isCurrent: true },
       attributes: {
         exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
       },
     });
 
     const profileInformationResult = await userResult.getProfileInformation({
-      where: { deletedAt: null },
       attributes: {
         exclude: ["id_user", "createdAt", "updatedAt", "deletedAt"],
       },
     });
 
     const userStateResult = await profileInformationResult.getUserState({
-      where: { deletedAt: null },
       attributes: {
         exclude: ["description", "createdAt", "updatedAt", "deletedAt"],
       },
@@ -234,7 +227,7 @@ const updateUser = async (req, res) => {
 
   try {
     const userResult = await Users.findOne({
-      where: { id: idUser, deletedAt: null },
+      where: { id: idUser },
     });
 
     // Not found user.
