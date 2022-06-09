@@ -1,11 +1,11 @@
 "use strict";
-import { sequelize } from "../database";
+import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 import { Users } from "./users";
 
-const Locations = sequelize.define(
-  "Locations",
+const Phones = sequelize.define(
+  "Phones",
   {
     id: {
       type: DataTypes.UUID,
@@ -25,64 +25,65 @@ const Locations = sequelize.define(
         isUUID: 4,
       },
       field: "id_user",
-      comment: "FK to user that is in the location.",
+      comment: "FK to owner user of the phone number.",
     },
-    latitude: {
-      type: DataTypes.STRING(100),
+    countryCode: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      defaultValue: 593,
+      validate: {
+        notNull: true,
+        min: 0,
+      },
+      field: "country_code",
+      comment: "Country code of the phone number.",
+    },
+    phoneNumber: {
+      type: DataTypes.STRING(15),
       allowNull: false,
       validate: {
         notNull: true,
         notEmpty: true,
       },
-    },
-    longitude: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-      validate: {
-        notNull: true,
-        notEmpty: true,
-      },
-    },
-    isCurrent: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: true,
-      field: "is_current",
-      comment: "Is true when it is the current user location to play.",
+      field: "phone_number",
+      comment: "Phone number without the county code.",
     },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
       comment: "The creation datetime.",
+      field: "created_at",
     },
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
       comment: "The datetime of last modification.",
+      field: "updated_at",
     },
     deletedAt: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: null,
       comment: "The datetime of deletion. Is null when is an active entry.",
+      field: "deleted_at",
     },
   },
   {
-    tableName: "locations",
-    comment: "Locations of each users.",
+    tableName: "phones",
+    comment: "Users phone numbers.",
   }
 );
 
-Locations.belongsTo(Users, {
+Phones.belongsTo(Users, {
   foreignKey: "idUser",
 });
 
-Users.hasMany(Locations, {
+Users.hasMany(Phones, {
   foreignKey: "idUser",
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });
 
-export { Locations };
+export { Phones };

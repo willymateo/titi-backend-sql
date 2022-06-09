@@ -1,5 +1,5 @@
-import { jwtSecret } from "../../config/app.config";
-import { Users } from "../models/users";
+import { jwtSecret } from "../config/app.config";
+import { Users } from "../db/models/users";
 import jwt from "jsonwebtoken";
 
 const verifyToken = (req, res, next) => {

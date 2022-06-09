@@ -53,10 +53,10 @@ const config = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  // globalSetup: undefined,
+  globalSetup: "./src/config/jest.globalSetup.js",
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  // globalTeardown: undefined,
+  globalTeardown: "./src/config/jest.globalTeardown.js",
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
@@ -113,7 +113,7 @@ const config = {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  rootDir: "..",
+  rootDir: "../..",
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [
@@ -175,7 +175,7 @@ const config = {
     "^.+\\.(js|jsx|ts|tsx)$": [
       "babel-jest",
       {
-        configFile: "./config/babel.config.js",
+        configFile: "./src/config/babel.config.js",
       },
     ],
   },

@@ -1,84 +1,91 @@
 "use strict";
-import { Adventures } from "./adventures";
-import { sequelize } from "../database";
+import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
+import { v4 as uuidv4 } from "uuid";
 import { Users } from "./users";
 
-const EngagedUsersAdventures = sequelize.define(
-  "EngagedUsersAdventures",
+const Locations = sequelize.define(
+  "Locations",
   {
-    idAdventure: {
+    id: {
       type: DataTypes.UUID,
       primaryKey: true,
+      unique: true,
       allowNull: false,
-      unique: "compositeIndex",
+      defaultValue: () => uuidv4(),
       validate: {
         isUUID: 4,
       },
-      field: "id_adventure",
-      comment: "PK, composite unique identifier. FK to an adventure.",
+      comment: "PK, unique identifier.",
     },
     idUser: {
       type: DataTypes.UUID,
-      primaryKey: true,
       allowNull: false,
-      unique: "compositeIndex",
       validate: {
         isUUID: 4,
       },
       field: "id_user",
-      comment: "PK, composite unique identifier. FK to an engaged user with the adventure.",
+      comment: "FK to user that is in the location.",
     },
-    isPublisher: {
+    latitude: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      validate: {
+        notNull: true,
+        notEmpty: true,
+      },
+    },
+    longitude: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      validate: {
+        notNull: true,
+        notEmpty: true,
+      },
+    },
+    isCurrent: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false,
-      field: "is_publisher",
-      comment: "Is true when the user is the owner/publisher of the adventure.",
+      defaultValue: true,
+      field: "is_current",
+      comment: "Is true when it is the current user location to play.",
     },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
       comment: "The creation datetime.",
+      field: "created_at",
     },
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
       comment: "The datetime of last modification.",
+      field: "updated_at",
     },
     deletedAt: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: null,
       comment: "The datetime of deletion. Is null when is an active entry.",
+      field: "deleted_at",
     },
   },
   {
-    tableName: "engaged_users_adventures",
-    comment: "Engaged users with adventures.",
+    tableName: "locations",
+    comment: "Locations of each users.",
   }
 );
 
-EngagedUsersAdventures.belongsTo(Adventures, {
-  foreignKey: "idAdventure",
-});
-
-Adventures.hasMany(EngagedUsersAdventures, {
-  foreignKey: "idAdventure",
-  onDelete: "CASCADE",
-  onUpdate: "CASCADE",
-});
-
-EngagedUsersAdventures.belongsTo(Users, {
+Locations.belongsTo(Users, {
   foreignKey: "idUser",
 });
 
-Users.hasMany(EngagedUsersAdventures, {
+Users.hasMany(Locations, {
   foreignKey: "idUser",
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });
 
-export { EngagedUsersAdventures };
+export { Locations };

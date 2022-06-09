@@ -1,6 +1,16 @@
-import { AdventureStates } from "../models/adventureStates";
-import { UserStates } from "../models/userStates";
-import { UserRoles } from "../models/userRoles";
+import { AdventureStates } from "../db/models/adventureStates";
+import { UserStates } from "../db/models/userStates";
+import { UserRoles } from "../db/models/userRoles";
+
+// Load other models
+import "../db/models/engagedUsersAdventures";
+import "../db/models/profileInformation";
+import "../db/models/islandMembers";
+import "../db/models/adventures";
+import "../db/models/locations";
+import "../db/models/islands";
+import "../db/models/phones";
+import "../db/models/users";
 
 const createUserRoles = async () => {
   await UserRoles.findOrCreate({

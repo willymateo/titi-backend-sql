@@ -8,7 +8,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 
 // Hooks
 // Timestamps
-sequelize.beforeUpdate(async (model, options) => {
+sequelize.afterUpdate(async (model, options) => {
   model.updatedAt = DataTypes.NOW;
 });
 
@@ -23,14 +23,12 @@ const testConnection = async () => {
 };
 
 const syncModels = async () => {
-  if (env !== "production") {
-    try {
-      await sequelize.sync({ force: true });
-      console.log(`Environment: ${env}`);
-      console.log("All models were synchronized successfully.");
-    } catch (error) {
-      console.error("Unable to sync database:", error);
-    }
+  try {
+    await sequelize.sync({ force: true });
+    console.log(`Environment: ${env}`);
+    console.log("All models were synchronized successfully.");
+  } catch (error) {
+    console.error("Unable to sync database:", error);
   }
 };
 
