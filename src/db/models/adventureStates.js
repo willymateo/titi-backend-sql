@@ -34,29 +34,11 @@ const AdventureStates = sequelize.define(
       },
       comment: "Description of the use case.",
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The creation datetime.",
-      field: "created_at",
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      comment: "The datetime of last modification.",
-      field: "updated_at",
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
-      comment: "The datetime of deletion. Is null when is an active entry.",
-      field: "deleted_at",
-    },
   },
   {
+    paranoid: true,
+    timestamps: true,
+    underscored: true,
     tableName: "adventure_states",
     comment: "All states of an adventure.",
   }

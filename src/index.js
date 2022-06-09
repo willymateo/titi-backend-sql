@@ -16,9 +16,12 @@ const server = app.listen(port, async () => {
   } catch (error) {
     console.log(error);
   }
-  await createUserRoles();
-  await createUserStates();
-  await createAdventureStates();
+
+  if (process.env.NODE_ENV !== "test") {
+    await createUserRoles();
+    await createUserStates();
+    await createAdventureStates();
+  }
   console.log(`Environment: ${process.env.NODE_ENV}`);
   console.log(`Server is running on port ${port}`);
 });
