@@ -12,12 +12,12 @@
     "cathot"
   ],
   "scripts": {
-    "build": "babel src -d build --config-file config/babel.config.js",
+    "build": "babel src -d build --config-file ./src/config/babel.config.js",
     "start": "NODE_ENV=production node build/index.js",
-    "dev": "NODE_ENV=development nodemon src/index.js --exec babel-node --config-file ./config/babel.config.js",
-    "test": "NODE_ENV=test PORT=4001 jest --silent --config config/jest.config.js --detectOpenHandles",
-    "prettier:check": "prettier --check . --ignore-path config/.prettierignore",
-    "prettier:write": "prettier --write . --ignore-path config/.prettierignore --ignore-unknown",
+    "dev": "nodemon src/index.js --exec babel-node --config-file ./src/config/babel.config.js",
+    "test": "NODE_ENV=test PORT=4001 jest --config ./src/config/jest.config.js",
+    "prettier:check": "prettier --check . --ignore-path ./src/config/.prettierignore",
+    "prettier:write": "prettier --write . --ignore-path ./srcconfig/.prettierignore --ignore-unknown",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -42,7 +42,6 @@
     "@babel/node": "^7.17.10",
     "@babel/preset-env": "^7.18.2",
     "@babel/register": "^7.17.7",
-    "babel-jest": "^28.1.0",
     "eslint": "^8.13.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.5.0",

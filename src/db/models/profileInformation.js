@@ -1,6 +1,6 @@
 "use strict";
 import { UserStates } from "./userStates";
-import { sequelize } from "../database";
+import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 import { Users } from "./users";

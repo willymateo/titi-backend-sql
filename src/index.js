@@ -1,40 +1,25 @@
 import { createUserRoles, createUserStates, createAdventureStates } from "./libs/initialSetup";
-import { testConnection, syncModels } from "./database";
+import { testConnection, syncModels } from "./db/connection";
 import expressListRoutes from "express-list-routes";
 import { app } from "./app";
 import "dotenv/config";
 
-// Load models
-import "./models/engagedUsersAdventures";
-import "./models/profileInformation";
-import "./models/adventureStates";
-import "./models/islandMembers";
-import "./models/adventures";
-import "./models/userStates";
-import "./models/locations";
-import "./models/userRoles";
-import "./models/islands";
-import "./models/phones";
-import "./models/users";
-
-(async () => {
+const port = process.env.PORT || "3000";
+const server = app.listen(port, async () => {
+  await testConnection();
   try {
-    await testConnection();
-    await syncModels();
-    await createUserRoles();
-    await createUserStates();
-    await createAdventureStates();
+    if (process.env.NODE_ENV === "development") {
+      await syncModels();
+      console.log("\nAvailable routes:");
+      expressListRoutes(app);
+    }
   } catch (error) {
     console.log(error);
   }
-})();
-
-const port = process.env.PORT || "3000";
-const server = app.listen(port, () => {
-  if (process.env.NODE_ENV === "development") {
-    console.log("\nAvailable routes:");
-    expressListRoutes(app);
-  }
+  await createUserRoles();
+  await createUserStates();
+  await createAdventureStates();
+  console.log(`Environment: ${process.env.NODE_ENV}`);
   console.log(`Server is running on port ${port}`);
 });
 

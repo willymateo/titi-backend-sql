@@ -1,5 +1,5 @@
 "use strict";
-import { sequelize } from "../database";
+import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
 
 const AdventureStates = sequelize.define(
@@ -39,18 +39,21 @@ const AdventureStates = sequelize.define(
       allowNull: false,
       defaultValue: DataTypes.NOW,
       comment: "The creation datetime.",
+      field: "created_at",
     },
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
       comment: "The datetime of last modification.",
+      field: "updated_at",
     },
     deletedAt: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: null,
       comment: "The datetime of deletion. Is null when is an active entry.",
+      field: "deleted_at",
     },
   },
   {

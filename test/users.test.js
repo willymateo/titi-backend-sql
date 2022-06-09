@@ -1,14 +1,31 @@
-import { jwtSecret } from "../config/app.config";
-import { Users } from "../src/models/users";
-import { sequelize } from "../src/database";
-import { server } from "../src/index";
+import { jwtSecret } from "../src/config/app.config";
+import { Users } from "../src/db/models/users";
 import { app } from "../src/app";
 import request from "supertest";
 import { Op } from "sequelize";
 import jwt from "jsonwebtoken";
+
+// ==========================================================
+// Test hooks
+// ==========================================================
+afterAll(async () => {
+  // try {
+  //   await Users.destroy({
+  //     where: {
+  //       username: {
+  //         [Op.or]: [testUsers[0].username, testUsers[1].username],
+  //       },
+  //     },
+  //   });
+  // } catch (err) {
+  //   console.log(err);
+  // }
+});
+
 // ==========================================================
 // Test data
 // ==========================================================
+const api = request(app);
 const testUsers = [
   {
     username: "connor.mcgregor9",
@@ -49,24 +66,6 @@ const testUsers = [
     },
   },
 ];
-// ==========================================================
-
-// ==========================================================
-// Test hooks
-// ==========================================================
-afterAll(async () => {
-  await Users.destroy({
-    where: {
-      username: {
-        [Op.or]: [testUsers[0].username, testUsers[1].username],
-      },
-    },
-  });
-
-  sequelize.close();
-  server.close();
-});
-// ==========================================================
 
 // ==========================================================
 // Test scenarios
@@ -76,7 +75,7 @@ describe("Tests with CORRECT data", () => {
   describe("POST /users => Create an user", () => {
     testUsers.forEach(testUser => {
       test("Should respond with a 200 OK and the access token", async () => {
-        const res = await request(app).post("/api/users").send(testUser);
+        const res = await api.post("/api/users").send(testUser);
 
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty("message", "Success sign up");
@@ -85,7 +84,7 @@ describe("Tests with CORRECT data", () => {
         token = res.body.token;
       });
 
-      test("Verify the token integrity", async () => {
+      test("Verify the token integrity", () => {
         const decodedToken = jwt.verify(token, jwtSecret);
         expect(decodedToken).toHaveProperty("id");
       });
@@ -94,9 +93,7 @@ describe("Tests with CORRECT data", () => {
 
   describe("GET /users => Get all users info", () => {
     test("Should respond with a 200 OK and a list with all signed up users", async () => {
-      const res = await request(app)
-        .get("/api/users")
-        .set("Authorization", "Bearer " + token);
+      const res = await api.get("/api/users").set("Authorization", "Bearer " + token);
 
       expect(res.statusCode).toBe(200);
       expect(res.body).toBeInstanceOf(Array);
@@ -137,7 +134,7 @@ describe("Tests with CORRECT data", () => {
   describe("GET /users/:username => Get the specific user info", () => {
     testUsers.forEach(testUser => {
       test("Should respond with a 200 OK and the user info", async () => {
-        const res = await request(app)
+        const res = await api
           .get(`/api/users/${testUser.username}`)
           .set("Authorization", "Bearer " + token);
 
@@ -149,11 +146,13 @@ describe("Tests with CORRECT data", () => {
         expect(userRes).toHaveProperty("lastNames", testUser.lastNames);
         expect(userRes).toHaveProperty("email", testUser.email);
         expect(userRes.phones).toBeInstanceOf(Array);
+
         userRes.phones.forEach(phone => {
           expect(phone).toHaveProperty("id");
           expect(phone).toHaveProperty("countryCode", testUser.phone.countryCode);
           expect(phone).toHaveProperty("phoneNumber", testUser.phone.phoneNumber);
         });
+
         expect(userRes).toHaveProperty("location.id");
         expect(userRes).toHaveProperty("location.latitude", testUser.location.latitude);
         expect(userRes).toHaveProperty("location.longitude", testUser.location.longitude);
@@ -175,4 +174,3 @@ describe("Tests with CORRECT data", () => {
     });
   });
 });
-// ==========================================================

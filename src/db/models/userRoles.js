@@ -1,9 +1,9 @@
 "use strict";
-import { sequelize } from "../database";
+import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
 
-const UserStates = sequelize.define(
-  "UserStates",
+const UserRoles = sequelize.define(
+  "UserRoles",
   {
     id: {
       type: DataTypes.SMALLINT,
@@ -13,7 +13,7 @@ const UserStates = sequelize.define(
       unique: true,
       comment: "PK, unique identifier.",
     },
-    state: {
+    role: {
       type: DataTypes.STRING(50),
       allowNull: false,
       unique: true,
@@ -23,7 +23,7 @@ const UserStates = sequelize.define(
         isLowercase: true,
       },
       comment:
-        "Unique user state identifier. If it contains 2 or more words, they can be separate between underscores.",
+        "Unique user role identifier. If it contains 2 or more words, they can be separate between underscores.",
     },
     description: {
       type: DataTypes.STRING,
@@ -54,9 +54,9 @@ const UserStates = sequelize.define(
     },
   },
   {
-    tableName: "user_states",
-    comment: "All states of an user.",
+    tableName: "user_roles",
+    comment: "All roles that can have an user.",
   }
 );
 
-export { UserStates };
+export { UserRoles };

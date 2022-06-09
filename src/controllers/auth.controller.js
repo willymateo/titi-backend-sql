@@ -1,5 +1,5 @@
-import { jwtSecret } from "../../config/app.config";
-import { Users } from "../models/users";
+import { jwtSecret } from "../config/app.config";
+import { Users } from "../db/models/users";
 import jwt from "jsonwebtoken";
 
 const login = async (req, res) => {
@@ -23,9 +23,7 @@ const login = async (req, res) => {
       });
     }
 
-    const matchPassword = Users.comparePassword(password);
-    console.log("matchPassword", matchPassword);
-
+    const matchPassword = await userResult.comparePassword(password);
     // Incorrect password.
     if (!matchPassword) {
       return res.status(401).send({

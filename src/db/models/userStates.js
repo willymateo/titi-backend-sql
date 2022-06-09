@@ -1,52 +1,38 @@
 "use strict";
-import { sequelize } from "../database";
+import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
-import { v4 as uuidv4 } from "uuid";
 
-const Islands = sequelize.define(
-  "Islands",
+const UserStates = sequelize.define(
+  "UserStates",
   {
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.SMALLINT,
+      autoIncrement: true,
       primaryKey: true,
-      unique: true,
       allowNull: false,
-      defaultValue: () => uuidv4(),
-      validate: {
-        isUUID: 4,
-      },
+      unique: true,
       comment: "PK, unique identifier.",
     },
-    name: {
-      type: DataTypes.STRING(100),
+    state: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      unique: true,
+      validate: {
+        notNull: true,
+        notEmpty: true,
+        isLowercase: true,
+      },
+      comment:
+        "Unique user state identifier. If it contains 2 or more words, they can be separate between underscores.",
+    },
+    description: {
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: true,
         notEmpty: true,
       },
-    },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    photoUrl: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        isUrl: true,
-      },
-      field: "photo_url",
-      comment: "The url to profile photo.",
-    },
-    isPublic: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-      field: "is_public",
-      comment: "Is true when the island visibility is open to public.",
+      comment: "Description of the use case.",
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -68,9 +54,9 @@ const Islands = sequelize.define(
     },
   },
   {
-    tableName: "islands",
-    comment: "An island is a group of users.",
+    tableName: "user_states",
+    comment: "All states of an user.",
   }
 );
 
-export { Islands };
+export { UserStates };

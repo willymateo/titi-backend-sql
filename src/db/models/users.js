@@ -1,7 +1,7 @@
 "use strict";
 import { saltRounds } from "../../config/app.config";
+import { sequelize } from "../connection";
 import { UserRoles } from "./userRoles";
-import { sequelize } from "../database";
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";

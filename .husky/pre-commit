@@ -1,5 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx lint-staged --config ./config/.lintstagedrc.json
+npx lint-staged --config ./src/config/.lintstagedrc.json
 # npm test
