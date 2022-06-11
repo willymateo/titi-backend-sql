@@ -150,16 +150,20 @@ const createUser = async (req, res) => {
     });
 
     // Validatos
-    await newUserInstance.validate();
-    await newPhoneInstance.validate();
-    await newLocationInstance.validate();
-    await newProfileInformationInstance.validate();
+    await Promise.all([
+      newUserInstance.validate(),
+      newPhoneInstance.validate(),
+      newLocationInstance.validate(),
+      newProfileInformationInstance.validate(),
+    ]);
 
     // Save the registers in the DB
     await newUserInstance.save();
-    await newPhoneInstance.save();
-    await newLocationInstance.save();
-    await newProfileInformationInstance.save();
+    await Promise.all([
+      newPhoneInstance.save(),
+      newLocationInstance.save(),
+      newProfileInformationInstance.save(),
+    ]);
   } catch (err) {
     console.log(err);
     return res.status(409).send({

@@ -54,7 +54,7 @@ const verifyRolAdmin = async (req, res, next) => {
     },
   });
 
-  const userRole = await user.getUser_role();
+  const userRole = await user.getUserRole();
 
   if (userRole.role !== "administrator") {
     return res.status(403).send({
