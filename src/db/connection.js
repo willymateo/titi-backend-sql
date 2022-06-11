@@ -6,24 +6,4 @@ const env = process.env.NODE_ENV || "development";
 const config = dbConfig[env];
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
-const testConnection = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log(`Environment: ${env}`);
-    console.log("Connection has been established successfully");
-  } catch (error) {
-    console.error("Unable to connect to the database:", error);
-  }
-};
-
-const syncModels = async () => {
-  try {
-    await sequelize.sync({ force: true });
-    console.log(`Environment: ${env}`);
-    console.log("All models were synchronized successfully.");
-  } catch (error) {
-    console.error("Unable to sync database:", error);
-  }
-};
-
-export { testConnection, syncModels, sequelize };
+export { sequelize };

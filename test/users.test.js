@@ -9,17 +9,17 @@ import jwt from "jsonwebtoken";
 // Test hooks
 // ==========================================================
 afterAll(async () => {
-  // try {
-  //   await Users.destroy({
-  //     where: {
-  //       username: {
-  //         [Op.or]: [testUsers[0].username, testUsers[1].username],
-  //       },
-  //     },
-  //   });
-  // } catch (err) {
-  //   console.log(err);
-  // }
+  try {
+    await Users.destroy({
+      where: {
+        username: {
+          [Op.or]: [testUsers[0].username, testUsers[1].username],
+        },
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // ==========================================================
