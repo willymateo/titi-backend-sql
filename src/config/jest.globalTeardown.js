@@ -1,4 +1,3 @@
-module.exports = async function (globalConfig, projectConfig) {
+export default async (globalConfig, projectConfig) => {
   await globalThis.sequelize.close();
-  await globalThis.server.close();
 };

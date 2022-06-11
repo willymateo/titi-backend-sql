@@ -17,7 +17,7 @@ const login = async (req, res) => {
     });
 
     // Not signed up user.
-    if (userResult === null) {
+    if (!userResult) {
       return res.status(401).send({
         error: `Invalid username or password`,
       });

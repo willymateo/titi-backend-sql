@@ -1,12 +1,8 @@
 import { createUserRoles, createUserStates, createAdventureStates } from "../libs/initialSetup";
-import { syncModels, sequelize } from "../db/connection";
-import { server } from "../index";
+import { sequelize } from "../db/connection";
 
-module.exports = async function (globalConfig, projectConfig) {
-  await syncModels();
-  await createUserRoles();
-  await createUserStates();
-  await createAdventureStates();
+export default async (globalConfig, projectConfig) => {
+  await sequelize.sync({ force: true });
+  await Promise.all([createUserRoles(), createUserStates(), createAdventureStates()]);
   globalThis.sequelize = sequelize;
-  globalThis.server = server;
 };
