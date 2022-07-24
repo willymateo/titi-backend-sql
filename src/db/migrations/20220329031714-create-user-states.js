@@ -25,18 +25,21 @@ module.exports = {
           comment: "Description of the use case.",
         },
         createdAt: {
+          field: "created_at",
           type: Sequelize.DATE,
           allowNull: false,
           defaultValue: Sequelize.fn("NOW"),
           comment: "The creation datetime.",
         },
         updatedAt: {
+          field: "updated_at",
           type: Sequelize.DATE,
           allowNull: false,
           defaultValue: Sequelize.fn("NOW"),
           comment: "The datetime of last modification.",
         },
         deletedAt: {
+          field: "deleted_at",
           type: Sequelize.DATE,
           allowNull: true,
           defaultValue: null,
