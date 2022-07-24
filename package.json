@@ -19,6 +19,7 @@
     "test": "NODE_ENV=test PORT=4001 jest",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write . --ignore-unknown",
+    "migrate": "sequelize db:migrate",
     "prepare": "husky install"
   },
   "dependencies": {
