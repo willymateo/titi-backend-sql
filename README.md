@@ -78,8 +78,7 @@ npx sequelize-cli db:seed:all
 ### Production
 
 ```cmd
-npm run build
-npm run start
+npm run build && npm start
 ```
 
 ### Development

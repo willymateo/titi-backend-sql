@@ -185,7 +185,7 @@ const createUser = async (req, res) => {
     }
 
     // Return the token.
-    return res.status(200).send({
+    return res.status(201).send({
       message: `Success sign up`,
       token,
     });
