@@ -77,7 +77,7 @@ describe("Tests with CORRECT data", () => {
       test("Should respond with a 200 OK and the access token", async () => {
         const res = await api.post("/api/users").send(testUser);
 
-        expect(res.statusCode).toBe(200);
+        expect(res.statusCode).toBe(201);
         expect(res.body).toHaveProperty("message", "Success sign up");
         expect(res.body).toHaveProperty("token");
 
