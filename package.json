@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "build": "babel src -d build --config-file ./src/config/babel.config.js",
-    "start": "NODE_ENV=production node build/index.js",
+    "start": "npm run build && NODE_ENV=production node build/index.js",
     "dev": "nodemon src/index.js --exec babel-node --config-file ./src/config/babel.config.js",
     "test": "NODE_ENV=test PORT=4001 jest --config ./src/config/jest.config.js",
     "prettier:check": "prettier --check . --ignore-path ./src/config/.prettierignore",
