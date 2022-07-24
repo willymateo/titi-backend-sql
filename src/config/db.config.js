@@ -10,11 +10,10 @@ const dbConfig = {
     dialect: "postgres",
     dialectOptions: {
       bigNumberStrings: true,
+      supportBigNumbers: true,
     },
-    // Ecuador timezone
     timezone: "-05:00",
   },
-
   test: {
     username: process.env.TEST_DB_USERNAME,
     password: process.env.TEST_DB_PASSWORD,
@@ -24,8 +23,8 @@ const dbConfig = {
     dialect: "postgres",
     dialectOptions: {
       bigNumberStrings: true,
+      supportBigNumbers: true,
     },
-    // Ecuador timezone
     timezone: "-05:00",
   },
   production: {
@@ -42,7 +41,6 @@ const dbConfig = {
       // ca: fs.readFileSync(__dirname + '/mysql-ca-main.crt')
       // }
     },
-    // Ecuador timezone
     timezone: "-05:00",
   },
 };
