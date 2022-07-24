@@ -70,14 +70,15 @@ const config = {
   // ],
 
   // An array of file extensions your modules use
-  // moduleFileExtensions: [
-  //   "js",
-  //   "jsx",
-  //   "ts",
-  //   "tsx",
-  //   "json",
-  //   "node"
-  // ],
+  moduleFileExtensions: [
+    "js",
+    "jsx",
+    "mjs",
+    // "ts",
+    // "tsx",
+    // "json",
+    // "node"
+  ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   // moduleNameMapper: {},
@@ -172,7 +173,7 @@ const config = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest"],
+    "^.+\\.(js|jsx|mjs|ts|tsx)$": ["babel-jest"],
   },
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [

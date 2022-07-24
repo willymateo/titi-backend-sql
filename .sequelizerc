@@ -1,10 +1,8 @@
 require("@babel/register");
-require("dotenv").config();
 const path = require("path");
 
 module.exports = {
-  env: process.env.NODE_ENV,
-  config: path.resolve("src/config", "db.config.js"),
+  config: path.resolve("src/config", "db.config.mjs"),
   "models-path": path.resolve("src/db", "models"),
   "seeders-path": path.resolve("src/db", "seeders"),
   "migrations-path": path.resolve("src/db", "migrations"),
