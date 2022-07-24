@@ -104,4 +104,22 @@ Users.prototype.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.passwordHash);
 };
 
+// To correct
+// Users.afterDestroy(async (user, options) => {
+// const profileInformation = await user.getProfileInformation();
+// if (profileInformation) {
+// await profileInformation.destroy();
+// }
+
+// const locations = await user.getLocations();
+// if (locations) {
+// await locations.destroy();
+// }
+
+// const phones = await user.getPhones();
+// if (phones) {
+// await phones.destroy();
+// }
+// });
+
 export { Users };

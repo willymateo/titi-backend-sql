@@ -113,7 +113,7 @@ const config = {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  rootDir: "../..",
+  // rootDir: ".",
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [
@@ -172,12 +172,7 @@ const config = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    "^.+\\.(js|jsx|ts|tsx)$": [
-      "babel-jest",
-      {
-        configFile: "./src/config/babel.config.js",
-      },
-    ],
+    "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest"],
   },
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
