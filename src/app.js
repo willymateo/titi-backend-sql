@@ -22,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 // Routes.
 app.get("/", (req, res) => {
   res.send({
+    environment: process.env.NODE_ENV,
     name: app.get("pkg").name,
     author: app.get("pkg").author,
     version: app.get("pkg").version,
