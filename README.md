@@ -8,6 +8,7 @@ Backend API RestFul SQL to CatHot web.
 - Server Framework: Express
 - DB engine: PostgreSQL
 - ORM: Sequelize
+- Migrations management library: sequelize-cli
 
 ## SetUp
 
@@ -26,74 +27,56 @@ Create the file ".env" in the project root with the following content and put in
 NODE_ENV=development
 PORT=3001
 
+#Json Web Token
+JWT_SECRET=99cbe8d9c82100be56533b22e19ccadbac480bfd983e60f556440698e3665757
+JWT_SALT_ROUNDS=10
+
 #Development
-DEV_DB_USERNAME=
-DEV_DB_PASSWORD=
-DEV_DATABASE=cathot_dev
-DEV_DB_HOST="127.0.0.1"
-DEV_DB_PORT=5432
+DEV_DB_USERNAME=postgres
+DEV_DB_PASSWORD=dtZQ73f1X5vI76AOu8N3
+DEV_DATABASE=railway
+DEV_DB_HOST=containers-us-west-78.railway.app
+DEV_DB_PORT=7418
 
 #Test
 TEST_DB_USERNAME=
 TEST_DB_PASSWORD=
-TEST_DATABASE=cathot_test
-TEST_DB_HOST="127.0.0.1"
-TEST_DB_PORT=5432
-
-#Production
-PROD_DB_USERNAME=
-PROD_DB_PASSWORD=
-PROD_DATABASE=cathot
-PROD_DB_HOST="127.0.0.1"
-PROD_DB_PORT=5432
+TEST_DATABASE=
+TEST_DB_HOST=
+TEST_DB_PORT=
 
 #Email
 STAFF_EMAIL=cathot.support@gmail.com
 STAFF_PASSWORD=CatHot69
-
-#Json Web Token
-JWT_SECRET=99cbe8d9c82100be56533b22e19ccadbac480bfd983e60f556440698e3665757
-```
-
-### Create the Data Base
-
-```cmd
-npx sequelize-cli db:create
-```
-
-### Apply migrations
-
-```cmd
-npx sequelize-cli db:migrate
-```
-
-### Apply seeders
-
-```cmd
-npx sequelize-cli db:seed:all
 ```
 
 ## Run server
 
 ### Production
-
+Note: Don't run this in local environment
 ```cmd
-npm run build && npm start
+npm start
 ```
 
 ### Development
 
 ```cmd
-npm run dev
+npm run start:dev
 ```
 
 ## Run tests
 
-**Note**: Run Data Base creation, migrations, and seeders commands if it's necessary.
-
 ```cmd
-npm run test
+npm test
 ```
+
+## Deployment environments
+### Production
+https://cathot.up.railway.app/
+
+### Development
+https://cathot-development.up.railway.app/
+
 
 ## Documentation
 
