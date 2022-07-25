@@ -53,7 +53,9 @@ STAFF_PASSWORD=
 ## Run server
 
 ### Production
+
 Note: Don't run this in local environment
+
 ```cmd
 npm start
 ```
@@ -71,12 +73,14 @@ npm test
 ```
 
 ## Deployment environments
+
 ### Production
+
 https://cathot.up.railway.app/
 
 ### Development
-https://cathot-development.up.railway.app/
 
+https://cathot-development.up.railway.app/
 
 ## Documentation
 
