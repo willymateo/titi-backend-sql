@@ -30,11 +30,24 @@ const getAllUsers = async (req, res) => {
         });
 
         const profileInformationResult = await userResult.getProfileInformation({
-          attributes: ["id", "idCurrentState", "photoUrl", "biography", "numLater", "numMissing"],
+          attributes: [
+            "id",
+            "idCurrentState",
+            "idGenre",
+            "photoUrl",
+            "bornDate",
+            "biography",
+            "numLater",
+            "numMissing",
+          ],
         });
 
         const userStateResult = await profileInformationResult.getUserState({
           attributes: ["id", "state"],
+        });
+
+        const userGenre = await profileInformationResult.getGenre({
+          attributes: ["genre"],
         });
 
         return {
@@ -43,11 +56,13 @@ const getAllUsers = async (req, res) => {
           location: locationResult[0],
           profileInformation: {
             id: profileInformationResult.id,
+            currentState: userStateResult,
+            genre: userGenre.genre,
             photoUrl: profileInformationResult.photoUrl,
+            bornDate: profileInformationResult.bornDate,
             biography: profileInformationResult.biography,
             numLater: profileInformationResult.numLater,
             numMissing: profileInformationResult.numMissing,
-            userState: userStateResult,
           },
         };
       })
@@ -88,11 +103,24 @@ const getUserByUsername = async (req, res) => {
     });
 
     const profileInformationResult = await userResult.getProfileInformation({
-      attributes: ["id", "idCurrentState", "photoUrl", "biography", "numLater", "numMissing"],
+      attributes: [
+        "id",
+        "idCurrentState",
+        "idGenre",
+        "photoUrl",
+        "bornDate",
+        "biography",
+        "numLater",
+        "numMissing",
+      ],
     });
 
     const userStateResult = await profileInformationResult.getUserState({
       attributes: ["id", "state"],
+    });
+
+    const userGenre = await profileInformationResult.getGenre({
+      attributes: ["id", "genre"],
     });
 
     return res.status(200).send({
@@ -101,11 +129,13 @@ const getUserByUsername = async (req, res) => {
       location: locationResult[0],
       profileInformation: {
         id: profileInformationResult.id,
+        currentState: userStateResult,
+        genre: userGenre.genre,
         photoUrl: profileInformationResult.photoUrl,
+        bornDate: profileInformationResult.bornDate,
         biography: profileInformationResult.biography,
         numLater: profileInformationResult.numLater,
         numMissing: profileInformationResult.numMissing,
-        userState: userStateResult,
       },
     });
   } catch (err) {
@@ -195,20 +225,6 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const { idUser } = req.params;
 
-  // Verify if the user in the token is the same that the user that is trying to update.
-  if (idUser !== req.decodedToken.id) {
-    return res.status(401).send({
-      error: `You don't have enough privileges to update the user ID: ${idUser}`,
-    });
-  }
-
-  // Empty body.
-  if (Object.keys(req.body).length === 0) {
-    return res.status(400).send({
-      error: `You must send at least one parameter to update the user`,
-    });
-  }
-
   try {
     const userResult = await Users.findOne({
       where: { id: idUser },
@@ -218,6 +234,20 @@ const updateUser = async (req, res) => {
     if (userResult === null) {
       return res.status(404).send({
         error: `User ID:${idUser} not found`,
+      });
+    }
+
+    // Verify if the user in the token is the same that the user that is trying to update.
+    if (idUser !== req.decodedToken.id) {
+      return res.status(401).send({
+        error: `You don't have enough privileges to update the user ID: ${idUser}`,
+      });
+    }
+
+    // Empty body.
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).send({
+        error: `You must send at least one parameter to update the user`,
       });
     }
 
