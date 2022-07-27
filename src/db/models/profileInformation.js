@@ -3,6 +3,7 @@ import { UserStates } from "./userStates";
 import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
+import { Genres } from "./genres";
 import { Users } from "./users";
 
 const ProfileInformation = sequelize.define(
@@ -34,6 +35,12 @@ const ProfileInformation = sequelize.define(
       defaultValue: 1,
       comment: "FK to current status.",
     },
+    idGenre: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      defaultValue: 1,
+      comment: "FK to genre.",
+    },
     photoUrl: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -41,6 +48,11 @@ const ProfileInformation = sequelize.define(
         isUrl: true,
       },
       comment: "The url to profile photo.",
+    },
+    bornDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      comment: "Born date to identify if the user is of legal age",
     },
     biography: {
       type: DataTypes.STRING,
@@ -94,6 +106,16 @@ ProfileInformation.belongsTo(UserStates, {
 
 UserStates.hasMany(ProfileInformation, {
   foreignKey: "idCurrentState",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+ProfileInformation.belongsTo(Genres, {
+  foreignKey: "idGenre",
+});
+
+Genres.hasMany(ProfileInformation, {
+  foreignKey: "idGenre",
   onDelete: "RESTRICT",
   onUpdate: "CASCADE",
 });

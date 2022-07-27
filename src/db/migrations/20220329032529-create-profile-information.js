@@ -36,10 +36,27 @@ module.exports = {
           onUpdate: "CASCADE",
           comment: "FK to current status.",
         },
+        id_genre: {
+          type: Sequelize.SMALLINT,
+          allowNull: false,
+          defaultValue: 1,
+          references: {
+            model: "genres", // Table name.
+            key: "id",
+          },
+          onDelete: "RESTRICT",
+          onUpdate: "CASCADE",
+          comment: "FK to genre.",
+        },
         photo_url: {
           type: Sequelize.STRING,
           allowNull: true,
           comment: "The url to profile photo.",
+        },
+        bornDate: {
+          type: Sequelize.DATEONLY,
+          allowNull: false,
+          comment: "Born date to identify if the user is of legal age",
         },
         biography: {
           type: Sequelize.STRING,

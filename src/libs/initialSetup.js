@@ -1,6 +1,7 @@
 import { AdventureStates } from "../db/models/adventureStates";
 import { UserStates } from "../db/models/userStates";
 import { UserRoles } from "../db/models/userRoles";
+import { Genres } from "../db/models/genres";
 
 // Load other models
 import "../db/models/engagedUsersAdventures";
@@ -70,6 +71,36 @@ const createUserStates = async () =>
     }),
   ]);
 
+const createGenres = async () =>
+  Promise.all([
+    Genres.findOrCreate({
+      where: {
+        genre: "not_specified",
+      },
+      defaults: {
+        genre: "not_specified",
+      },
+    }),
+
+    Genres.findOrCreate({
+      where: {
+        genre: "male",
+      },
+      defaults: {
+        genre: "male",
+      },
+    }),
+
+    Genres.findOrCreate({
+      where: {
+        genre: "female",
+      },
+      defaults: {
+        genre: "female",
+      },
+    }),
+  ]);
+
 const createAdventureStates = async () =>
   Promise.all([
     AdventureStates.findOrCreate({
@@ -117,4 +148,4 @@ const createAdventureStates = async () =>
     }),
   ]);
 
-export { createUserRoles, createUserStates, createAdventureStates };
+export { createUserRoles, createUserStates, createGenres, createAdventureStates };
