@@ -21,6 +21,7 @@ const getAllUsers = async (req, res) => {
     usersResult = await Promise.all(
       usersResult.map(async userResult => {
         const phoneResult = await userResult.getPhones({
+          where: { isCurrent: true },
           attributes: ["id", "countryCode", "phoneNumber"],
         });
 
@@ -94,6 +95,7 @@ const getUserByUsername = async (req, res) => {
     }
 
     const phoneResult = await userResult.getPhones({
+      where: { isCurrent: true },
       attributes: ["id", "countryCode", "phoneNumber"],
     });
 

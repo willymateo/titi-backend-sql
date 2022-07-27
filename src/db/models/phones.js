@@ -45,6 +45,12 @@ const Phones = sequelize.define(
       },
       comment: "Phone number without the county code.",
     },
+    isCurrent: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+      comment: "Is true when it is the current user phone number.",
+    },
   },
   {
     paranoid: true,
