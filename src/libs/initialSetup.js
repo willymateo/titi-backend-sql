@@ -148,4 +148,7 @@ const createAdventureStates = async () =>
     }),
   ]);
 
-export { createUserRoles, createUserStates, createGenres, createAdventureStates };
+const initialSetup = async () =>
+  Promise.all([createGenres(), createUserRoles(), createUserStates(), createAdventureStates()]);
+
+export { initialSetup };

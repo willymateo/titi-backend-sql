@@ -44,6 +44,7 @@ const testUsers = [
     profileInformation: {
       photoUrl: "facebook.com/connormcgregor",
       biography: "UFC fighter",
+      bornDate: new Date(),
     },
   },
   {
@@ -63,6 +64,7 @@ const testUsers = [
     profileInformation: {
       photoUrl: "facebook.com/markzuckerberg",
       biography: "Facebook CEO",
+      bornDate: new Date(),
     },
   },
 ];
@@ -104,12 +106,9 @@ describe("Tests with CORRECT data", () => {
         expect(userRes).toHaveProperty("firstNames", userRes.firstNames);
         expect(userRes).toHaveProperty("lastNames", userRes.lastNames);
         expect(userRes).toHaveProperty("email", userRes.email);
-        expect(userRes.phones).toBeInstanceOf(Array);
-        userRes.phones.forEach(phone => {
-          expect(phone).toHaveProperty("id");
-          expect(phone).toHaveProperty("countryCode", phone.countryCode);
-          expect(phone).toHaveProperty("phoneNumber", phone.phoneNumber);
-        });
+        expect(userRes.phone).toHaveProperty("id");
+        expect(userRes.phone).toHaveProperty("countryCode");
+        expect(userRes.phone).toHaveProperty("phoneNumber");
         expect(userRes).toHaveProperty("location.id");
         expect(userRes).toHaveProperty("location.latitude", userRes.location.latitude);
         expect(userRes).toHaveProperty("location.longitude", userRes.location.longitude);

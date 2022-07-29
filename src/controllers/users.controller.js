@@ -53,7 +53,7 @@ const getAllUsers = async (req, res) => {
 
         return {
           ...userResult.dataValues,
-          phones: phoneResult,
+          phone: phoneResult[0],
           location: locationResult[0],
           profileInformation: {
             id: profileInformationResult.id,
@@ -127,7 +127,7 @@ const getUserByUsername = async (req, res) => {
 
     return res.status(200).send({
       ...userResult.dataValues,
-      phones: phoneResult,
+      phone: phoneResult[0],
       location: locationResult[0],
       profileInformation: {
         id: profileInformationResult.id,
