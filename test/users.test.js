@@ -16,6 +16,7 @@ afterAll(async () => {
           [Op.or]: [testUsers[0].username, testUsers[1].username],
         },
       },
+      force: true,
     });
   } catch (err) {
     console.log(err);
@@ -69,6 +70,39 @@ const testUsers = [
   },
 ];
 
+const uuidv4Regex = /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
+const userMatch = {
+  id: expect.stringMatching(uuidv4Regex),
+  username: expect.any(String),
+  firstNames: expect.any(String),
+  lastNames: expect.any(String),
+  email: expect.any(String),
+  phone: {
+    id: expect.stringMatching(uuidv4Regex),
+    countryCode: expect.any(Number),
+    phoneNumber: expect.any(String),
+  },
+  location: {
+    id: expect.stringMatching(uuidv4Regex),
+    latitude: expect.any(String),
+    longitude: expect.any(String),
+    isCurrent: expect.any(Boolean),
+  },
+  profileInformation: {
+    id: expect.stringMatching(uuidv4Regex),
+    currentState: {
+      id: 1,
+      state: expect.any(String),
+    },
+    genre: expect.any(String),
+    photoUrl: expect.any(String),
+    bornDate: expect.any(String),
+    biography: expect.any(String),
+    numLater: expect.any(Number),
+    numMissing: expect.any(Number),
+  },
+};
+
 // ==========================================================
 // Test scenarios
 // ==========================================================
@@ -101,31 +135,7 @@ describe("Tests with CORRECT data", () => {
       expect(res.body).toBeInstanceOf(Array);
 
       res.body.forEach(userRes => {
-        expect(userRes).toHaveProperty("id");
-        expect(userRes).toHaveProperty("username", userRes.username);
-        expect(userRes).toHaveProperty("firstNames", userRes.firstNames);
-        expect(userRes).toHaveProperty("lastNames", userRes.lastNames);
-        expect(userRes).toHaveProperty("email", userRes.email);
-        expect(userRes.phone).toHaveProperty("id");
-        expect(userRes.phone).toHaveProperty("countryCode");
-        expect(userRes.phone).toHaveProperty("phoneNumber");
-        expect(userRes).toHaveProperty("location.id");
-        expect(userRes).toHaveProperty("location.latitude", userRes.location.latitude);
-        expect(userRes).toHaveProperty("location.longitude", userRes.location.longitude);
-        expect(userRes).toHaveProperty("location.isCurrent", true);
-        expect(userRes).toHaveProperty("profileInformation.id");
-        expect(userRes).toHaveProperty(
-          "profileInformation.photoUrl",
-          userRes.profileInformation.photoUrl
-        );
-        expect(userRes).toHaveProperty(
-          "profileInformation.biography",
-          userRes.profileInformation.biography
-        );
-        expect(userRes).toHaveProperty("profileInformation.numLater");
-        expect(userRes).toHaveProperty("profileInformation.numMissing");
-        expect(userRes).toHaveProperty("profileInformation.userState.id");
-        expect(userRes).toHaveProperty("profileInformation.userState.state");
+        expect(userRes).toMatchObject(userMatch);
       });
     });
   });
@@ -144,14 +154,9 @@ describe("Tests with CORRECT data", () => {
         expect(userRes).toHaveProperty("firstNames", testUser.firstNames);
         expect(userRes).toHaveProperty("lastNames", testUser.lastNames);
         expect(userRes).toHaveProperty("email", testUser.email);
-        expect(userRes.phones).toBeInstanceOf(Array);
-
-        userRes.phones.forEach(phone => {
-          expect(phone).toHaveProperty("id");
-          expect(phone).toHaveProperty("countryCode", testUser.phone.countryCode);
-          expect(phone).toHaveProperty("phoneNumber", testUser.phone.phoneNumber);
-        });
-
+        expect(userRes.phone).toHaveProperty("id");
+        expect(userRes.phone).toHaveProperty("countryCode");
+        expect(userRes.phone).toHaveProperty("phoneNumber");
         expect(userRes).toHaveProperty("location.id");
         expect(userRes).toHaveProperty("location.latitude", testUser.location.latitude);
         expect(userRes).toHaveProperty("location.longitude", testUser.location.longitude);
@@ -167,8 +172,8 @@ describe("Tests with CORRECT data", () => {
         );
         expect(userRes).toHaveProperty("profileInformation.numLater");
         expect(userRes).toHaveProperty("profileInformation.numMissing");
-        expect(userRes).toHaveProperty("profileInformation.userState.id");
-        expect(userRes).toHaveProperty("profileInformation.userState.state");
+        expect(userRes).toHaveProperty("profileInformation.currentState.id");
+        expect(userRes).toHaveProperty("profileInformation.currentState.state");
       });
     });
   });

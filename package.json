@@ -15,7 +15,7 @@
     "build": "babel src -d build",
     "start": "sequelize db:migrate && npm run build && node build/index.js",
     "start:dev": "NODE_ENV=development sequelize db:migrate && nodemon src/index.js --exec babel-node",
-    "test": "NODE_ENV=test sequelize db:migrate && PORT=4001 jest",
+    "test": "NODE_ENV=test sequelize db:migrate && PORT=4001 jest --silent",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write . --ignore-unknown",
     "migrate": "sequelize db:migrate",
