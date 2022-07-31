@@ -1,4 +1,5 @@
 "use strict";
+import { intervalToDuration, isValid, parseISO } from "date-fns";
 import { UserStates } from "./userStates";
 import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
@@ -119,5 +120,18 @@ Genres.hasMany(ProfileInformation, {
   onDelete: "RESTRICT",
   onUpdate: "CASCADE",
 });
+
+ProfileInformation.isOfLegalAge = bornDateString => {
+  const bornDate = parseISO(bornDateString);
+  if (!isValid(bornDate)) {
+    return false;
+  }
+
+  const { years } = intervalToDuration({
+    start: bornDate,
+    end: new Date(),
+  });
+  return years >= 18;
+};
 
 export { ProfileInformation };

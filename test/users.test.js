@@ -45,7 +45,7 @@ const testUsers = [
     profileInformation: {
       photoUrl: "facebook.com/connormcgregor",
       biography: "UFC fighter",
-      bornDate: new Date(),
+      bornDate: "2000-09-02",
     },
   },
   {
@@ -65,7 +65,7 @@ const testUsers = [
     profileInformation: {
       photoUrl: "facebook.com/markzuckerberg",
       biography: "Facebook CEO",
-      bornDate: new Date(),
+      bornDate: "2004-07-31",
     },
   },
 ];

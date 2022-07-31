@@ -167,6 +167,12 @@ const createUser = async (req, res) => {
   let newProfileInformationInstance;
 
   try {
+    if (!ProfileInformation.isOfLegalAge(newProfileInformationData.bornDate)) {
+      return res.status(400).send({
+        error: "The new user are not of legal age",
+      });
+    }
+
     newUserInstance = Users.build(newUserData);
     newPhoneInstance = Phones.build({
       ...newPhoneData,
@@ -181,7 +187,7 @@ const createUser = async (req, res) => {
       idUser: newUserInstance.id,
     });
 
-    // Validatos
+    // Validate data
     await Promise.all([
       newUserInstance.validate(),
       newPhoneInstance.validate(),
