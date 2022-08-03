@@ -38,11 +38,11 @@ module.exports = {
         },
         first_names: {
           type: Sequelize.STRING(100),
-          allowNull: false,
+          allowNull: true,
         },
         last_names: {
           type: Sequelize.STRING(100),
-          allowNull: false,
+          allowNull: true,
         },
         email: {
           type: Sequelize.STRING(100),

@@ -51,7 +51,7 @@ module.exports = {
         photo_url: {
           type: Sequelize.STRING,
           allowNull: true,
-          comment: "The url to profile photo.",
+          comment: "The url to profile photo",
         },
         born_date: {
           type: Sequelize.DATEONLY,

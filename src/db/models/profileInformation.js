@@ -58,9 +58,6 @@ const ProfileInformation = sequelize.define(
     biography: {
       type: DataTypes.STRING,
       allowNull: true,
-      validate: {
-        notEmpty: true,
-      },
       comment: "User description or biography.",
     },
     numLater: {
