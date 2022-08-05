@@ -31,7 +31,7 @@ const Users = sequelize.define(
       allowNull: false,
       unique: true,
       validate: {
-        is: /^[a-z0-9_\.]*[a-z]+[a-z0-9_\.]*$/i,
+        is: /^[a-z0-9_\.]*[a-z]+[a-z0-9_\.]*$/,
         isLowercase: true,
         len: [5, 30],
         notNull: true,
