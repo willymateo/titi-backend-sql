@@ -34,12 +34,6 @@ module.exports = {
           allowNull: false,
           comment: "Phone number without the county code.",
         },
-        is_current: {
-          type: Sequelize.BOOLEAN,
-          allowNull: false,
-          defaultValue: true,
-          comment: "Is true when it is the current user phone number.",
-        },
         createdAt: {
           field: "created_at",
           type: Sequelize.DATE,

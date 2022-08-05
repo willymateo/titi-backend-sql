@@ -42,12 +42,6 @@ const Locations = sequelize.define(
         notEmpty: true,
       },
     },
-    isCurrent: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: true,
-      comment: "Is true when it is the current user location to play.",
-    },
   },
   {
     paranoid: true,

@@ -31,12 +31,6 @@ module.exports = {
           type: Sequelize.STRING(100),
           allowNull: false,
         },
-        is_current: {
-          type: Sequelize.BOOLEAN,
-          allowNull: false,
-          defaultValue: true,
-          comment: "Is true when it is the current user location to play.",
-        },
         createdAt: {
           field: "created_at",
           type: Sequelize.DATE,
