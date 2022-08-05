@@ -12,7 +12,7 @@ const getAllUsers = async (req, res) => {
     });
 
     // Not found users.
-    if (usersResult === null) {
+    if (!usersResult) {
       return res.status(404).send({
         error: "Users not found",
       });
@@ -86,7 +86,7 @@ const getUserByUsername = async (req, res) => {
     });
 
     // Not found user.
-    if (userResult === null) {
+    if (!userResult) {
       return res.status(404).send({
         error: `User '${username}' not found`,
       });
