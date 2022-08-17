@@ -1,3 +1,5 @@
+[![Node.js CI](https://github.com/willymateo/cathot-backend-sql/actions/workflows/node.js.yml/badge.svg)](https://github.com/willymateo/cathot-backend-sql/actions/workflows/node.js.yml)
+
 # CatHot API
 
 Backend API RestFul SQL to CatHot web.
