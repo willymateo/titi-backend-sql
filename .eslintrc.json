@@ -10,6 +10,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "new-cap": ["error", { "capIsNew": false }],
     "require-jsdoc": "off",
     "valid-jsdoc": "off",
     "semi": ["error", "always"],
