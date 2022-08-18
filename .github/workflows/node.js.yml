@@ -27,11 +27,11 @@ jobs:
         run: npm run build
       - name: Unit tests
         run: |
-          JWT_SECRET=${{secrets.JWT_SECRET}}
-          JWT_SALT_ROUNDS=${{secrets.JWT_SALT_ROUNDS}}
-          TEST_DB_USERNAME=${{secrets.TEST_DB_USERNAME}}
-          TEST_DB_PASSWORD=${{secrets.TEST_DB_PASSWORD}}
-          TEST_DATABASE=${{secrets.TEST_DATABASE}}
-          TEST_DB_HOST=${{secrets.TEST_DB_HOST}}
-          TEST_DB_PORT=${{secrets.TEST_DB_PORT}}
+          JWT_SECRET=${{secrets.JWT_SECRET}} \
+          JWT_SALT_ROUNDS=${{secrets.JWT_SALT_ROUNDS}} \
+          TEST_DB_USERNAME=${{secrets.TEST_DB_USERNAME}} \
+          TEST_DB_PASSWORD=${{secrets.TEST_DB_PASSWORD}} \
+          TEST_DATABASE=${{secrets.TEST_DATABASE}} \
+          TEST_DB_HOST=${{secrets.TEST_DB_HOST}} \
+          TEST_DB_PORT=${{secrets.TEST_DB_PORT}} \
           npm test
