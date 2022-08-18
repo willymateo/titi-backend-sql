@@ -39,7 +39,6 @@ const ProfileInformation = sequelize.define(
     idGenre: {
       type: DataTypes.SMALLINT,
       allowNull: false,
-      defaultValue: 1,
       comment: "FK to genre.",
     },
     photoUrl: {

@@ -39,7 +39,6 @@ module.exports = {
         id_genre: {
           type: Sequelize.SMALLINT,
           allowNull: false,
-          defaultValue: 1,
           references: {
             model: "genres", // Table name.
             key: "id",

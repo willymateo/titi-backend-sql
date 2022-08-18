@@ -75,15 +75,6 @@ const createGenres = async () =>
   Promise.all([
     Genres.findOrCreate({
       where: {
-        genre: "not_specified",
-      },
-      defaults: {
-        genre: "not_specified",
-      },
-    }),
-
-    Genres.findOrCreate({
-      where: {
         genre: "male",
       },
       defaults: {
@@ -97,6 +88,33 @@ const createGenres = async () =>
       },
       defaults: {
         genre: "female",
+      },
+    }),
+
+    Genres.findOrCreate({
+      where: {
+        genre: "gay",
+      },
+      defaults: {
+        genre: "gay",
+      },
+    }),
+
+    Genres.findOrCreate({
+      where: {
+        genre: "lesbian",
+      },
+      defaults: {
+        genre: "lesbian",
+      },
+    }),
+
+    Genres.findOrCreate({
+      where: {
+        genre: "no_binary",
+      },
+      defaults: {
+        genre: "no_binary",
       },
     }),
   ]);
