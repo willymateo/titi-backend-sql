@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      "genres",
+      "genders",
       {
         id: {
           type: Sequelize.SMALLINT,
@@ -13,12 +13,12 @@ module.exports = {
           unique: true,
           comment: "PK, unique identifier.",
         },
-        genre: {
+        gender: {
           type: Sequelize.STRING(50),
           allowNull: false,
           unique: true,
           comment:
-            "Unique genre identifier. If it contains 2 or more words, they can be separate between underscores.",
+            "Unique gender identifier. If it contains 2 or more words, they can be separate between underscores.",
         },
         createdAt: {
           field: "created_at",
@@ -44,12 +44,12 @@ module.exports = {
       },
       {
         comment:
-          "Unique genre identifier. If it contains 2 or more words, they can be separate between underscores.",
+          "Unique gender identifier. If it contains 2 or more words, they can be separate between underscores.",
       }
     );
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("genres");
+    await queryInterface.dropTable("genders");
   },
 };

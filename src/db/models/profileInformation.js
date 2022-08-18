@@ -4,7 +4,7 @@ import { UserStates } from "./userStates";
 import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
-import { Genres } from "./genres";
+import { Genders } from "./genders";
 import { Users } from "./users";
 
 const ProfileInformation = sequelize.define(
@@ -36,10 +36,10 @@ const ProfileInformation = sequelize.define(
       defaultValue: 1,
       comment: "FK to current status.",
     },
-    idGenre: {
+    idGender: {
       type: DataTypes.SMALLINT,
       allowNull: false,
-      comment: "FK to genre.",
+      comment: "FK to gender.",
     },
     photoUrl: {
       type: DataTypes.STRING,
@@ -107,12 +107,12 @@ UserStates.hasMany(ProfileInformation, {
   onUpdate: "CASCADE",
 });
 
-ProfileInformation.belongsTo(Genres, {
-  foreignKey: "idGenre",
+ProfileInformation.belongsTo(Genders, {
+  foreignKey: "idGender",
 });
 
-Genres.hasMany(ProfileInformation, {
-  foreignKey: "idGenre",
+Genders.hasMany(ProfileInformation, {
+  foreignKey: "idGender",
   onDelete: "RESTRICT",
   onUpdate: "CASCADE",
 });

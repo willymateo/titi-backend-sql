@@ -32,7 +32,7 @@ const getAllUsers = async (req, res) => {
           attributes: [
             "id",
             "idCurrentState",
-            "idGenre",
+            "idGender",
             "photoUrl",
             "bornDate",
             "biography",
@@ -45,8 +45,8 @@ const getAllUsers = async (req, res) => {
           attributes: ["id", "state"],
         });
 
-        const userGenre = await profileInformationResult.getGenre({
-          attributes: ["genre"],
+        const userGender = await profileInformationResult.getGender({
+          attributes: ["gender"],
         });
 
         return {
@@ -56,7 +56,7 @@ const getAllUsers = async (req, res) => {
           profileInformation: {
             id: profileInformationResult.id,
             currentState: userStateResult,
-            genre: userGenre.genre,
+            gender: userGender.gender,
             photoUrl: profileInformationResult.photoUrl,
             bornDate: profileInformationResult.bornDate,
             biography: profileInformationResult.biography,
@@ -104,7 +104,7 @@ const getUserByUsername = async (req, res) => {
       attributes: [
         "id",
         "idCurrentState",
-        "idGenre",
+        "idGender",
         "photoUrl",
         "bornDate",
         "biography",
@@ -117,8 +117,8 @@ const getUserByUsername = async (req, res) => {
       attributes: ["id", "state"],
     });
 
-    const userGenre = await profileInformationResult.getGenre({
-      attributes: ["id", "genre"],
+    const userGender = await profileInformationResult.getGender({
+      attributes: ["id", "gender"],
     });
 
     return res.status(200).send({
@@ -128,7 +128,7 @@ const getUserByUsername = async (req, res) => {
       profileInformation: {
         id: profileInformationResult.id,
         currentState: userStateResult,
-        genre: userGenre.genre,
+        gender: userGender.gender,
         photoUrl: profileInformationResult.photoUrl,
         bornDate: profileInformationResult.bornDate,
         biography: profileInformationResult.biography,

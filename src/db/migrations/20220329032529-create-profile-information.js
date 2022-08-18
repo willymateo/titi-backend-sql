@@ -36,16 +36,16 @@ module.exports = {
           onUpdate: "CASCADE",
           comment: "FK to current status.",
         },
-        id_genre: {
+        id_gender: {
           type: Sequelize.SMALLINT,
           allowNull: false,
           references: {
-            model: "genres", // Table name.
+            model: "genders", // Table name.
             key: "id",
           },
           onDelete: "RESTRICT",
           onUpdate: "CASCADE",
-          comment: "FK to genre.",
+          comment: "FK to gender.",
         },
         photo_url: {
           type: Sequelize.STRING,

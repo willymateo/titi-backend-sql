@@ -1,7 +1,7 @@
 import { AdventureStates } from "../db/models/adventureStates";
 import { UserStates } from "../db/models/userStates";
 import { UserRoles } from "../db/models/userRoles";
-import { Genres } from "../db/models/genres";
+import { Genders } from "../db/models/genders";
 
 // Load other models
 import "../db/models/engagedUsersAdventures";
@@ -71,50 +71,50 @@ const createUserStates = async () =>
     }),
   ]);
 
-const createGenres = async () =>
+const createGenders = async () =>
   Promise.all([
-    Genres.findOrCreate({
+    Genders.findOrCreate({
       where: {
-        genre: "male",
+        gender: "male",
       },
       defaults: {
-        genre: "male",
+        gender: "male",
       },
     }),
 
-    Genres.findOrCreate({
+    Genders.findOrCreate({
       where: {
-        genre: "female",
+        gender: "female",
       },
       defaults: {
-        genre: "female",
+        gender: "female",
       },
     }),
 
-    Genres.findOrCreate({
+    Genders.findOrCreate({
       where: {
-        genre: "gay",
+        gender: "gay",
       },
       defaults: {
-        genre: "gay",
+        gender: "gay",
       },
     }),
 
-    Genres.findOrCreate({
+    Genders.findOrCreate({
       where: {
-        genre: "lesbian",
+        gender: "lesbian",
       },
       defaults: {
-        genre: "lesbian",
+        gender: "lesbian",
       },
     }),
 
-    Genres.findOrCreate({
+    Genders.findOrCreate({
       where: {
-        genre: "no_binary",
+        gender: "no_binary",
       },
       defaults: {
-        genre: "no_binary",
+        gender: "no_binary",
       },
     }),
   ]);
@@ -167,6 +167,6 @@ const createAdventureStates = async () =>
   ]);
 
 const initialSetup = async () =>
-  Promise.all([createGenres(), createUserRoles(), createUserStates(), createAdventureStates()]);
+  Promise.all([createGenders(), createUserRoles(), createUserStates(), createAdventureStates()]);
 
 export { initialSetup };

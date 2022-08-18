@@ -19,6 +19,7 @@
     "prettier:write": "prettier --write . --ignore-unknown",
     "prettier:check": "prettier --check .",
     "migrate": "sequelize db:migrate",
+    "migrate:undo:all": "sequelize db:migrate:undo:all",
     "prepare": "husky install",
     "eslinter": "eslint ."
   },

@@ -2,8 +2,8 @@
 import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
 
-const Genres = sequelize.define(
-  "Genres",
+const Genders = sequelize.define(
+  "Genders",
   {
     id: {
       type: DataTypes.SMALLINT,
@@ -13,7 +13,7 @@ const Genres = sequelize.define(
       unique: true,
       comment: "PK, unique identifier.",
     },
-    genre: {
+    gender: {
       type: DataTypes.STRING(50),
       allowNull: false,
       unique: true,
@@ -23,16 +23,16 @@ const Genres = sequelize.define(
         isLowercase: true,
       },
       comment:
-        "Unique genre identifier. If it contains 2 or more words, they can be separate between underscores.",
+        "Unique gender identifier. If it contains 2 or more words, they can be separate between underscores.",
     },
   },
   {
     paranoid: true,
     timestamps: true,
     underscored: true,
-    tableName: "genres",
-    comment: "All genres of an user.",
+    tableName: "genders",
+    comment: "All genders of an user.",
   }
 );
 
-export { Genres };
+export { Genders };

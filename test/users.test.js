@@ -46,6 +46,7 @@ const testUsers = [
       photoUrl: "facebook.com/connormcgregor",
       biography: "UFC fighter",
       bornDate: "2000-09-02",
+      idGender: 2,
     },
   },
   {
@@ -66,6 +67,7 @@ const testUsers = [
       photoUrl: "facebook.com/markzuckerberg",
       biography: "Facebook CEO",
       bornDate: "2004-07-31",
+      idGender: 1,
     },
   },
 ];
@@ -86,7 +88,6 @@ const userMatch = {
     id: expect.stringMatching(uuidv4Regex),
     latitude: expect.any(String),
     longitude: expect.any(String),
-    isCurrent: expect.any(Boolean),
   },
   profileInformation: {
     id: expect.stringMatching(uuidv4Regex),
@@ -94,7 +95,7 @@ const userMatch = {
       id: 1,
       state: expect.any(String),
     },
-    genre: expect.any(String),
+    gender: expect.any(String),
     photoUrl: expect.any(String),
     bornDate: expect.any(String),
     biography: expect.any(String),
@@ -160,7 +161,6 @@ describe("Tests with CORRECT data", () => {
         expect(userRes).toHaveProperty("location.id");
         expect(userRes).toHaveProperty("location.latitude", testUser.location.latitude);
         expect(userRes).toHaveProperty("location.longitude", testUser.location.longitude);
-        expect(userRes).toHaveProperty("location.isCurrent", true);
         expect(userRes).toHaveProperty("profileInformation.id");
         expect(userRes).toHaveProperty(
           "profileInformation.photoUrl",
