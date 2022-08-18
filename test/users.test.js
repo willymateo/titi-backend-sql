@@ -95,7 +95,10 @@ const userMatch = {
       id: 1,
       state: expect.any(String),
     },
-    gender: expect.any(String),
+    gender: {
+      id: expect.any(Number),
+      gender: expect.any(String),
+    },
     photoUrl: expect.any(String),
     bornDate: expect.any(String),
     biography: expect.any(String),

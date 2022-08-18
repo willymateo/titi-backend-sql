@@ -46,7 +46,7 @@ const getAllUsers = async (req, res) => {
         });
 
         const userGender = await profileInformationResult.getGender({
-          attributes: ["gender"],
+          attributes: ["id", "gender"],
         });
 
         return {
@@ -56,7 +56,7 @@ const getAllUsers = async (req, res) => {
           profileInformation: {
             id: profileInformationResult.id,
             currentState: userStateResult,
-            gender: userGender.gender,
+            gender: userGender,
             photoUrl: profileInformationResult.photoUrl,
             bornDate: profileInformationResult.bornDate,
             biography: profileInformationResult.biography,
@@ -128,7 +128,7 @@ const getUserByUsername = async (req, res) => {
       profileInformation: {
         id: profileInformationResult.id,
         currentState: userStateResult,
-        gender: userGender.gender,
+        gender: userGender,
         photoUrl: profileInformationResult.photoUrl,
         bornDate: profileInformationResult.bornDate,
         biography: profileInformationResult.biography,
