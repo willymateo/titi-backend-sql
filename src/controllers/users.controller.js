@@ -145,40 +145,35 @@ const getUserByUsername = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const { phone: newPhoneData } = req.body;
-  const { location: newLocationData } = req.body;
-  const { profileInformation: newProfileInformationData } = req.body;
-  const passwordHash = await Users.encryptPassword(req.body.password);
-  const newUserData = {
-    username: req.body.username,
-    passwordHash,
-    firstNames: req.body.firstNames,
-    lastNames: req.body.lastNames,
-    email: req.body.email,
-  };
-
-  let newUserInstance;
-  let newPhoneInstance;
-  let newLocationInstance;
-  let newProfileInformationInstance;
-
   try {
+    const { phone: newPhoneData } = req.body;
+    const { location: newLocationData } = req.body;
+    const { profileInformation: newProfileInformationData } = req.body;
+    const passwordHash = await Users.encryptPassword(req.body.password);
+    const newUserData = {
+      username: req.body.username,
+      passwordHash,
+      firstNames: req.body.firstNames,
+      lastNames: req.body.lastNames,
+      email: req.body.email,
+    };
+
     if (!ProfileInformation.isOfLegalAge(newProfileInformationData.bornDate)) {
       return res.status(400).send({
         error: "The new user are not of legal age",
       });
     }
 
-    newUserInstance = Users.build(newUserData);
-    newPhoneInstance = Phones.build({
+    const newUserInstance = Users.build(newUserData);
+    const newPhoneInstance = Phones.build({
       ...newPhoneData,
       idUser: newUserInstance.id,
     });
-    newLocationInstance = Locations.build({
+    const newLocationInstance = Locations.build({
       ...newLocationData,
       idUser: newUserInstance.id,
     });
-    newProfileInformationInstance = ProfileInformation.build({
+    const newProfileInformationInstance = ProfileInformation.build({
       ...newProfileInformationData,
       idUser: newUserInstance.id,
     });
@@ -201,7 +196,7 @@ const createUser = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(409).send({
-      error: `Some error occurred while creating the user '${newUserData.username}': ${err}`,
+      error: `Some error occurred while creating the new user: ${err}`,
     });
   }
 
