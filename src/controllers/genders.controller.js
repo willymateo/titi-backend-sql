@@ -5,12 +5,6 @@ const getAllGenders = async (req, res) => {
     const allGenders = await Genders.findAll({
       attributes: ["id", "gender"],
     });
-
-    if (!allGenders) {
-      return res.status(404).send({
-        error: "Genders not found",
-      });
-    }
     return res.status(200).send(allGenders);
   } catch (err) {
     console.log(err);
@@ -21,9 +15,8 @@ const getAllGenders = async (req, res) => {
 };
 
 const getGenderById = async (req, res) => {
-  const { idGender } = req.params;
-
   try {
+    const { idGender } = req.params;
     const gender = await Genders.findOne({
       where: { id: idGender },
       attributes: ["id", "gender"],

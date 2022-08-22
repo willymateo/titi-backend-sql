@@ -1,3 +1,4 @@
+import adventuresRouter from "./routes/adventures.routes";
 import gendersRouter from "./routes/genders.routes";
 import usersRouter from "./routes/users.routes";
 import authRouter from "./routes/auth.routes";
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
     description: app.get("pkg").description,
   });
 });
+app.use("/api/adventures", adventuresRouter);
 app.use("/api/genders", gendersRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);

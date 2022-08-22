@@ -3,6 +3,7 @@ import { AdventureStates } from "./adventureStates";
 import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
+import { Users } from "./users";
 
 const Adventures = sequelize.define(
   "Adventures",
@@ -24,6 +25,11 @@ const Adventures = sequelize.define(
       defaultValue: 1,
       comment: "FK to current status.",
     },
+    idPublisher: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      comment: "FK to publisher user.",
+    },
     title: {
       type: DataTypes.STRING(100),
       allowNull: false,
@@ -41,12 +47,14 @@ const Adventures = sequelize.define(
       },
     },
     startDateTime: {
+      field: "start_datetime",
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
       comment: "The datetime when the adventure was published.",
     },
     endDateTime: {
+      field: "end_datetime",
       type: DataTypes.DATE,
       allowNull: false,
       comment: "The datetime when the adventure will expire. Up to 24h since the start_datetime.",
@@ -77,6 +85,16 @@ Adventures.belongsTo(AdventureStates, {
 
 AdventureStates.hasMany(Adventures, {
   foreignKey: "idStatus",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Adventures.belongsTo(Users, {
+  foreignKey: "idPublisher",
+});
+
+Users.hasMany(Adventures, {
+  foreignKey: "idPublisher",
   onDelete: "RESTRICT",
   onUpdate: "CASCADE",
 });

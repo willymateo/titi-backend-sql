@@ -24,6 +24,17 @@ module.exports = {
           onUpdate: "CASCADE",
           comment: "FK to current status.",
         },
+        id_publisher: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: {
+            model: "users", // Table name.
+            key: "id",
+          },
+          onDelete: "RESTRICT",
+          onUpdate: "CASCADE",
+          comment: "FK to publisher user.",
+        },
         title: {
           type: Sequelize.STRING(100),
           allowNull: false,

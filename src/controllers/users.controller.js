@@ -11,13 +11,6 @@ const getAllUsers = async (req, res) => {
       attributes: ["id", "username", "firstNames", "lastNames", "email"],
     });
 
-    // Not found users.
-    if (!usersResult) {
-      return res.status(404).send({
-        error: "Users not found",
-      });
-    }
-
     usersResult = await Promise.all(
       usersResult.map(async userResult => {
         const phoneResult = await userResult.getPhones({
@@ -193,32 +186,32 @@ const createUser = async (req, res) => {
       newLocationInstance.save(),
       newProfileInformationInstance.save(),
     ]);
+
+    // Token creation.
+    const payload = {
+      id: newUserInstance.id,
+    };
+
+    jwt.sign(payload, jwtSecret, async (err, token) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send({
+          error: `Some error occurred while signing in: ${err}`,
+        });
+      }
+
+      // Return the token.
+      return res.status(201).send({
+        message: `Success sign up`,
+        token,
+      });
+    });
   } catch (err) {
     console.log(err);
     return res.status(409).send({
       error: `Some error occurred while creating the new user: ${err}`,
     });
   }
-
-  // Token creation.
-  const payload = {
-    id: newUserInstance.id,
-  };
-
-  jwt.sign(payload, jwtSecret, async (err, token) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).send({
-        error: `Some error occurred while signing in: ${err}`,
-      });
-    }
-
-    // Return the token.
-    return res.status(201).send({
-      message: `Success sign up`,
-      token,
-    });
-  });
 };
 
 const updateUser = async (req, res) => {

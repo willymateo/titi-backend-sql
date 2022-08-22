@@ -30,12 +30,6 @@ module.exports = {
           onUpdate: "CASCADE",
           comment: "PK, composite unique identifier. FK to an engaged user with the adventure.",
         },
-        is_publisher: {
-          type: Sequelize.BOOLEAN,
-          allowNull: false,
-          defaultValue: false,
-          comment: "Is true when the user is the owner/publisher of the adventure.",
-        },
         createdAt: {
           field: "created_at",
           type: Sequelize.DATE,
