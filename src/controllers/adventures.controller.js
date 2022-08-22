@@ -3,7 +3,44 @@ import { parseISO } from "date-fns";
 
 const getAllAdventures = async (req, res) => {
   try {
-    const allAdventures = await Adventures.findAll();
+    let allAdventures = await Adventures.findAll({
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+
+    allAdventures = await Promise.all(
+      allAdventures.map(async adventure => {
+        const publisher = await adventure.getUser({
+          attributes: {
+            exclude: ["passwordHash", "createdAt", "updatedAt", "deletedAt"],
+          },
+        });
+
+        const adventureState = await adventure.getAdventureState({
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        });
+
+        return {
+          id: adventure.id,
+          title: adventure.title,
+          description: adventure.description,
+          startDateTime: adventure.startDateTime,
+          endDateTime: adventure.endDateTime,
+          numInvitations: adventure.numInvitations,
+          status: adventureState,
+          publisher: {
+            id: publisher.id,
+            username: publisher.username,
+            firstNames: publisher.firstNames,
+            lastNames: publisher.lastNames,
+            email: publisher.email,
+          },
+        };
+      })
+    );
     return res.status(200).send(allAdventures);
   } catch (err) {
     console.log(err);
@@ -18,6 +55,9 @@ const getAdventureById = async (req, res) => {
     const { idAdventure } = req.params;
     const adventure = await Adventures.findOne({
       where: { id: idAdventure },
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "deletedAt"],
+      },
     });
 
     if (!adventure) {
@@ -25,7 +65,37 @@ const getAdventureById = async (req, res) => {
         error: `Adventure with id=${idAdventure} not found`,
       });
     }
-    return res.status(200).send(adventure);
+
+    const publisher = await adventure.getUser({
+      attributes: {
+        exclude: ["passwordHash", "createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+
+    const adventureState = await adventure.getAdventureState({
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+
+    const adventureData = {
+      id: adventure.id,
+      title: adventure.title,
+      description: adventure.description,
+      startDateTime: adventure.startDateTime,
+      endDateTime: adventure.endDateTime,
+      numInvitations: adventure.numInvitations,
+      status: adventureState,
+      publisher: {
+        id: publisher.id,
+        username: publisher.username,
+        firstNames: publisher.firstNames,
+        lastNames: publisher.lastNames,
+        email: publisher.email,
+      },
+    };
+
+    return res.status(200).send(adventureData);
   } catch (err) {
     console.log(err);
     return res.status(409).send({
