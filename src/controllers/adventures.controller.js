@@ -6,10 +6,12 @@ const getAllAdventures = async (req, res) => {
     let allAdventures = await Adventures.findAll();
     allAdventures = await Promise.all(
       allAdventures.map(async ({ dataValues: { id } }) => {
-        const adventure = await getAventureJSONById(id);
+        const adventure = await getAventureByIdJSON(id);
+
         if (adventure.error) {
           throw adventure.error;
         }
+
         return adventure;
       })
     );
@@ -24,7 +26,7 @@ const getAllAdventures = async (req, res) => {
 
 const getAdventureById = async (req, res) => {
   const { idAdventure } = req.params;
-  const adventure = await getAventureJSONById(idAdventure);
+  const adventure = await getAventureByIdJSON(idAdventure);
 
   if (adventure.error) {
     return res.status(409).send({
@@ -64,7 +66,7 @@ const createAdventure = async (req, res) => {
   }
 };
 
-const getAventureJSONById = async id => {
+const getAventureByIdJSON = async id => {
   try {
     const adventure = await Adventures.findOne({
       where: { id },
@@ -72,6 +74,11 @@ const getAventureJSONById = async id => {
         exclude: ["createdAt", "updatedAt", "deletedAt"],
       },
     });
+
+    // Not found
+    if (!adventure) {
+      return { error: `adventure with id=${id} not found` };
+    }
 
     const publisher = await adventure.getUser({
       attributes: {

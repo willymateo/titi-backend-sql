@@ -7,56 +7,16 @@ import jwt from "jsonwebtoken";
 
 const getAllUsers = async (req, res) => {
   try {
-    let usersResult = await Users.findAll({
-      attributes: ["id", "username", "firstNames", "lastNames", "email"],
-    });
-
+    let usersResult = await Users.findAll();
     usersResult = await Promise.all(
-      usersResult.map(async userResult => {
-        const phoneResult = await userResult.getPhones({
-          attributes: ["id", "countryCode", "phoneNumber"],
-        });
+      usersResult.map(async ({ dataValues: { username } }) => {
+        const user = await getUserByUsernameJSON(username);
 
-        const locationResult = await userResult.getLocations({
-          attributes: ["id", "latitude", "longitude"],
-        });
+        if (user.error) {
+          throw user.error;
+        }
 
-        const profileInformationResult = await userResult.getProfileInformation({
-          attributes: [
-            "id",
-            "idCurrentState",
-            "idGender",
-            "photoUrl",
-            "bornDate",
-            "biography",
-            "numLater",
-            "numMissing",
-          ],
-        });
-
-        const userStateResult = await profileInformationResult.getUserState({
-          attributes: ["id", "state"],
-        });
-
-        const userGender = await profileInformationResult.getGender({
-          attributes: ["id", "gender"],
-        });
-
-        return {
-          ...userResult.dataValues,
-          phone: phoneResult[0],
-          location: locationResult[0],
-          profileInformation: {
-            id: profileInformationResult.id,
-            currentState: userStateResult,
-            gender: userGender,
-            photoUrl: profileInformationResult.photoUrl,
-            bornDate: profileInformationResult.bornDate,
-            biography: profileInformationResult.biography,
-            numLater: profileInformationResult.numLater,
-            numMissing: profileInformationResult.numMissing,
-          },
-        };
+        return user;
       })
     );
 
@@ -71,70 +31,15 @@ const getAllUsers = async (req, res) => {
 
 const getUserByUsername = async (req, res) => {
   const { username } = req.params;
+  const user = await getUserByUsernameJSON(username);
 
-  try {
-    const userResult = await Users.findOne({
-      where: { username },
-      attributes: ["id", "username", "firstNames", "lastNames", "email"],
-    });
-
-    // Not found user.
-    if (!userResult) {
-      return res.status(404).send({
-        error: `User '${username}' not found`,
-      });
-    }
-
-    const phoneResult = await userResult.getPhones({
-      attributes: ["id", "countryCode", "phoneNumber"],
-    });
-
-    const locationResult = await userResult.getLocations({
-      attributes: ["id", "latitude", "longitude"],
-    });
-
-    const profileInformationResult = await userResult.getProfileInformation({
-      attributes: [
-        "id",
-        "idCurrentState",
-        "idGender",
-        "photoUrl",
-        "bornDate",
-        "biography",
-        "numLater",
-        "numMissing",
-      ],
-    });
-
-    const userStateResult = await profileInformationResult.getUserState({
-      attributes: ["id", "state"],
-    });
-
-    const userGender = await profileInformationResult.getGender({
-      attributes: ["id", "gender"],
-    });
-
-    return res.status(200).send({
-      ...userResult.dataValues,
-      phone: phoneResult[0],
-      location: locationResult[0],
-      profileInformation: {
-        id: profileInformationResult.id,
-        currentState: userStateResult,
-        gender: userGender,
-        photoUrl: profileInformationResult.photoUrl,
-        bornDate: profileInformationResult.bornDate,
-        biography: profileInformationResult.biography,
-        numLater: profileInformationResult.numLater,
-        numMissing: profileInformationResult.numMissing,
-      },
-    });
-  } catch (err) {
-    console.log(err);
+  if (user.error) {
     return res.status(409).send({
-      error: `Some error occurred while getting the user '${username}': ${err}`,
+      error: `Some error occurred: ${user.error}`,
     });
   }
+
+  return res.status(200).send(user);
 };
 
 const createUser = async (req, res) => {
@@ -274,6 +179,61 @@ const updateUser = async (req, res) => {
     return res.status(409).send({
       error: `Some error occurred while updating the user ID:${idUser}: ${err}`,
     });
+  }
+};
+
+const getUserByUsernameJSON = async username => {
+  try {
+    const user = await Users.findOne({
+      where: { username },
+      attributes: { exclude: ["passwordHash", "createdAt", "updatedAt", "deletedAt"] },
+    });
+
+    // Not found
+    if (!user) {
+      return { error: `User ${username} not found` };
+    }
+
+    const phone = await user.getPhones({
+      attributes: ["id", "countryCode", "phoneNumber"],
+    });
+
+    const location = await user.getLocations({
+      attributes: ["id", "latitude", "longitude"],
+    });
+
+    const profileInformation = await user.getProfileInformation({
+      attributes: {
+        exclude: ["idUser", "createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+
+    const userState = await profileInformation.getUserState({
+      attributes: ["id", "state"],
+    });
+
+    const gender = await profileInformation.getGender({
+      attributes: ["id", "gender"],
+    });
+
+    return {
+      ...user.dataValues,
+      phone: phone[0],
+      location: location[0],
+      profileInformation: {
+        id: profileInformation.id,
+        photoUrl: profileInformation.photoUrl,
+        bornDate: profileInformation.bornDate,
+        biography: profileInformation.biography,
+        numLater: profileInformation.numLater,
+        numMissing: profileInformation.numMissing,
+        currentState: userState,
+        gender,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return { error };
   }
 };
 
