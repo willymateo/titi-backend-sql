@@ -186,7 +186,7 @@ const getUserByUsernameJSON = async username => {
   try {
     const user = await Users.findOne({
       where: { username },
-      attributes: { exclude: ["passwordHash", "createdAt", "updatedAt", "deletedAt"] },
+      attributes: { exclude: ["idRole", "passwordHash", "createdAt", "updatedAt", "deletedAt"] },
     });
 
     // Not found
