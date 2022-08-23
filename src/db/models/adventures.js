@@ -22,7 +22,6 @@ const Adventures = sequelize.define(
     idStatus: {
       type: DataTypes.SMALLINT,
       allowNull: false,
-      defaultValue: 1,
       comment: "FK to current status.",
     },
     idPublisher: {
@@ -97,6 +96,25 @@ Users.hasMany(Adventures, {
   foreignKey: "idPublisher",
   onDelete: "RESTRICT",
   onUpdate: "CASCADE",
+});
+
+// Hooks
+Adventures.beforeValidate(async (adventure, options) => {
+  if (!adventure.idStatus) {
+    const openState = await AdventureStates.findOne({
+      where: { state: "open" },
+    });
+    adventure.idStatus = openState.id;
+  }
+});
+
+Adventures.beforeCreate(async (adventure, options) => {
+  if (!adventure.idStatus) {
+    const openState = await AdventureStates.findOne({
+      where: { state: "open" },
+    });
+    adventure.idStatus = openState.id;
+  }
 });
 
 export { Adventures };

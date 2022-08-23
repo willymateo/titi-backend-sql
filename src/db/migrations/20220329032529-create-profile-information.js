@@ -27,7 +27,6 @@ module.exports = {
         id_current_state: {
           type: Sequelize.SMALLINT,
           allowNull: false,
-          defaultValue: 1,
           references: {
             model: "user_states", // Table name.
             key: "id",

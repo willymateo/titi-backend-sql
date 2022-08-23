@@ -23,7 +23,6 @@ const Users = sequelize.define(
     idRole: {
       type: DataTypes.SMALLINT,
       allowNull: false,
-      defaultValue: 1,
       comment: "FK to current user role.",
     },
     username: {
@@ -95,6 +94,25 @@ Users.encryptPassword = async password => {
 Users.prototype.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.passwordHash);
 };
+
+// Hooks
+Users.beforeValidate(async (user, options) => {
+  if (!user.idRole) {
+    const normalRole = await UserRoles.findOne({
+      where: { role: "normal_user" },
+    });
+    user.idRole = normalRole.id;
+  }
+});
+
+Users.beforeCreate(async (user, options) => {
+  if (!user.idRole) {
+    const normalRole = await UserRoles.findOne({
+      where: { role: "normal_user" },
+    });
+    user.idRole = normalRole.id;
+  }
+});
 
 // To correct
 // Users.afterDestroy(async (user, options) => {

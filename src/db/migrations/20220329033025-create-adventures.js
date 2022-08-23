@@ -15,7 +15,6 @@ module.exports = {
         id_status: {
           type: Sequelize.SMALLINT,
           allowNull: false,
-          defaultValue: 1,
           references: {
             model: "adventure_states", // Table name.
             key: "id",

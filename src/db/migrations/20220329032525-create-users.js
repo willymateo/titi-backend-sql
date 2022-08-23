@@ -15,7 +15,6 @@ module.exports = {
         id_role: {
           type: Sequelize.SMALLINT,
           allowNull: false,
-          defaultValue: 1,
           references: {
             model: "user_roles", // Table name.
             key: "id",

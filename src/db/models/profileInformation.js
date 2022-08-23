@@ -33,7 +33,6 @@ const ProfileInformation = sequelize.define(
     idCurrentState: {
       type: DataTypes.SMALLINT,
       allowNull: false,
-      defaultValue: 1,
       comment: "FK to current status.",
     },
     idGender: {
@@ -129,5 +128,24 @@ ProfileInformation.isOfLegalAge = bornDateString => {
   });
   return years >= 18;
 };
+
+// Hooks
+ProfileInformation.beforeValidate(async (profileInformation, options) => {
+  if (!profileInformation.idCurrentState) {
+    const availableState = await UserStates.findOne({
+      where: { state: "available" },
+    });
+    profileInformation.idCurrentState = availableState.id;
+  }
+});
+
+ProfileInformation.beforeCreate(async (profileInformation, options) => {
+  if (!profileInformation.idCurrentState) {
+    const availableState = await UserStates.findOne({
+      where: { state: "available" },
+    });
+    profileInformation.idCurrentState = availableState.id;
+  }
+});
 
 export { ProfileInformation };
