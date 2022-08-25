@@ -86,6 +86,24 @@ const getAventureByIdJSON = async id => {
       },
     });
 
+    const profileInformation = await publisher.getProfileInformation({
+      attributes: {
+        exclude: ["idUser", "createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+
+    const publisherState = await profileInformation.getUserState({
+      attributes: {
+        exclude: ["idUser", "createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+
+    const publisherGender = await profileInformation.getGender({
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+
     const adventureState = await adventure.getAdventureState({
       attributes: {
         exclude: ["createdAt", "updatedAt", "deletedAt"],
@@ -106,6 +124,16 @@ const getAventureByIdJSON = async id => {
         firstNames: publisher.firstNames,
         lastNames: publisher.lastNames,
         email: publisher.email,
+        profileInformation: {
+          id: profileInformation.id,
+          photoUrl: profileInformation.photoUrl,
+          bornDate: profileInformation.bornDate,
+          biography: profileInformation.biography,
+          numLater: profileInformation.numLater,
+          numMissing: profileInformation.numMissing,
+          currentState: publisherState,
+          gender: publisherGender,
+        },
       },
     };
   } catch (error) {
