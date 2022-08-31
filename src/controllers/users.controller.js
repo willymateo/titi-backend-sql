@@ -42,6 +42,49 @@ const getUserByUsername = async (req, res) => {
   return res.status(200).send(user);
 };
 
+const getAdventuresByUsername = async (req, res) => {
+  const { username } = req.params;
+
+  const user = await Users.findOne({
+    where: { username },
+    attributes: ["id"],
+  });
+
+  if (user === null) {
+    return res.status(409).send({
+      error: `User ${username} not found`,
+    });
+  }
+
+  let adventures = await user.getAdventures({
+    attributes: {
+      exclude: ["createdAt", "updatedAt", "deletedAt"],
+    },
+  });
+
+  adventures = await Promise.all(
+    adventures.map(async adventure => {
+      const adventureState = await adventure.getAdventureState({
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "deletedAt"],
+        },
+      });
+      return {
+        id: adventure.id,
+        idPublisher: adventure.idPublisher,
+        title: adventure.title,
+        description: adventure.description,
+        startDateTime: adventure.startDateTime,
+        endDateTime: adventure.endDateTime,
+        numInvitations: adventure.numInvitations,
+        state: adventureState.dataValues,
+      };
+    })
+  );
+
+  return res.status(200).send(adventures);
+};
+
 const createUser = async (req, res) => {
   try {
     const { phone: newPhoneData } = req.body;
@@ -237,4 +280,4 @@ const getUserByUsernameJSON = async username => {
   }
 };
 
-export { createUser, updateUser, getAllUsers, getUserByUsername };
+export { createUser, updateUser, getAllUsers, getUserByUsername, getAdventuresByUsername };
