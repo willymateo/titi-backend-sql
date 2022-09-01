@@ -9,10 +9,10 @@ import {
 const router = express.Router();
 
 // Get all adventures.
-router.get("/", getAllAdventures);
+router.get("/", verifyToken, getAllAdventures);
 
 // Get adventure by id.
-router.get("/:idAdventure", getAdventureById);
+router.get("/:idAdventure", verifyToken, getAdventureById);
 
 // Create an adventure.
 router.post("/", verifyToken, createAdventure);

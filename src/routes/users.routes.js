@@ -18,7 +18,7 @@ router.get("/", verifyToken, getAllUsers);
 router.get("/:username", verifyToken, getUserByUsername);
 
 // Get user by token.
-router.get("/login/profile", verifyToken, getUserByToken);
+router.get("/logged/profile", verifyToken, getUserByToken);
 
 // Get all adventures of an user by username.
 router.get("/:username/adventures", verifyToken, getAdventuresByUsername);
