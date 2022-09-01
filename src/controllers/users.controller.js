@@ -9,14 +9,14 @@ const getAllUsers = async (req, res) => {
   try {
     let usersResult = await Users.findAll();
     usersResult = await Promise.all(
-      usersResult.map(async ({ dataValues: { username } }) => {
-        const user = await getUserByUsernameJSON(username);
+      usersResult.map(async user => {
+        const userJSON = await getUserJSON(user);
 
-        if (user.error) {
-          throw user.error;
+        if (userJSON.error) {
+          throw userJSON.error;
         }
 
-        return user;
+        return userJSON;
       })
     );
 
@@ -31,15 +31,51 @@ const getAllUsers = async (req, res) => {
 
 const getUserByUsername = async (req, res) => {
   const { username } = req.params;
-  const user = await getUserByUsernameJSON(username);
 
-  if (user.error) {
+  const user = await Users.findOne({
+    where: { username },
+    attributes: { exclude: ["idRole", "passwordHash", "createdAt", "updatedAt", "deletedAt"] },
+  });
+
+  if (!user) {
     return res.status(409).send({
-      error: `Some error occurred: ${user.error}`,
+      error: "User not found",
     });
   }
 
-  return res.status(200).send(user);
+  const userJSON = await getUserJSON(user);
+
+  if (userJSON.error) {
+    return res.status(409).send({
+      error: `Some error occurred: ${userJSON.error}`,
+    });
+  }
+
+  return res.status(200).send(userJSON);
+};
+
+const getUserByToken = async (req, res) => {
+  const { id } = req.decodedToken;
+  const user = await Users.findOne({
+    where: { id },
+    attributes: { exclude: ["idRole", "passwordHash", "createdAt", "updatedAt", "deletedAt"] },
+  });
+
+  if (!user) {
+    return res.status(409).send({
+      error: "User not found",
+    });
+  }
+
+  const userJSON = await getUserJSON(user);
+
+  if (userJSON.error) {
+    return res.status(409).send({
+      error: `Some error occurred: ${userJSON.error}`,
+    });
+  }
+
+  return res.status(200).send(userJSON);
 };
 
 const getAdventuresByUsername = async (req, res) => {
@@ -225,16 +261,10 @@ const updateUser = async (req, res) => {
   }
 };
 
-const getUserByUsernameJSON = async username => {
+const getUserJSON = async user => {
   try {
-    const user = await Users.findOne({
-      where: { username },
-      attributes: { exclude: ["idRole", "passwordHash", "createdAt", "updatedAt", "deletedAt"] },
-    });
-
-    // Not found
     if (!user) {
-      return { error: `User ${username} not found` };
+      return { error: `User not found` };
     }
 
     const phone = await user.getPhones({
@@ -280,4 +310,11 @@ const getUserByUsernameJSON = async username => {
   }
 };
 
-export { createUser, updateUser, getAllUsers, getUserByUsername, getAdventuresByUsername };
+export {
+  createUser,
+  updateUser,
+  getAllUsers,
+  getUserByToken,
+  getUserByUsername,
+  getAdventuresByUsername,
+};

@@ -5,14 +5,14 @@ const getAllAdventures = async (req, res) => {
   try {
     let allAdventures = await Adventures.findAll();
     allAdventures = await Promise.all(
-      allAdventures.map(async ({ dataValues: { id } }) => {
-        const adventure = await getAventureByIdJSON(id);
+      allAdventures.map(async adventure => {
+        const adventureJSON = await getAventureJSON(adventure);
 
-        if (adventure.error) {
-          throw adventure.error;
+        if (adventureJSON.error) {
+          throw adventureJSON.error;
         }
 
-        return adventure;
+        return adventureJSON;
       })
     );
     return res.status(200).send(allAdventures);
@@ -26,15 +26,27 @@ const getAllAdventures = async (req, res) => {
 
 const getAdventureById = async (req, res) => {
   const { idAdventure } = req.params;
-  const adventure = await getAventureByIdJSON(idAdventure);
 
-  if (adventure.error) {
+  const adventure = await Adventures.findOne({
+    where: { id: idAdventure },
+    attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
+  });
+
+  if (!adventure) {
     return res.status(409).send({
-      error: `Some error occurred: ${adventure.error}`,
+      error: "Adventure not found",
     });
   }
 
-  return res.status(200).send(adventure);
+  const adventureJSON = await getAventureJSON(adventure);
+
+  if (adventureJSON.error) {
+    return res.status(409).send({
+      error: `Some error occurred: ${adventureJSON.error}`,
+    });
+  }
+
+  return res.status(200).send(adventureJSON);
 };
 
 const createAdventure = async (req, res) => {
@@ -66,18 +78,10 @@ const createAdventure = async (req, res) => {
   }
 };
 
-const getAventureByIdJSON = async id => {
+const getAventureJSON = async adventure => {
   try {
-    const adventure = await Adventures.findOne({
-      where: { id },
-      attributes: {
-        exclude: ["createdAt", "updatedAt", "deletedAt"],
-      },
-    });
-
-    // Not found
     if (!adventure) {
-      return { error: `adventure with id=${id} not found` };
+      return { error: "adventure not found" };
     }
 
     const publisher = await adventure.getUser({
