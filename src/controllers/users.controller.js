@@ -162,6 +162,8 @@ const uploadProfilePhoto = async (req, res) => {
     });
   }
 
+  console.log(req.files);
+
   return res.status(200).send({
     message: "Photo uploaded successfully",
   });
