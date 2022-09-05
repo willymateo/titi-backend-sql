@@ -284,7 +284,11 @@ const getUserJSON = async user => {
     });
 
     return {
-      ...user.dataValues,
+      id: user.id,
+      username: user.username,
+      firstNames: user.firstNames,
+      lastNames: user.lastNames,
+      email: user.email,
       phone: phone[0],
       location: location[0],
       profileInformation: {
