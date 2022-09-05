@@ -10,7 +10,7 @@ const getAllUsers = async (req, res) => {
     let usersResult = await Users.findAll();
     usersResult = await Promise.all(
       usersResult.map(async user => {
-        const userJSON = await getUserJSON(user);
+        const userJSON = await userToJson(user);
 
         if (userJSON.error) {
           throw userJSON.error;
@@ -43,7 +43,7 @@ const getUserByUsername = async (req, res) => {
     });
   }
 
-  const userJSON = await getUserJSON(user);
+  const userJSON = await userToJson(user);
 
   if (userJSON.error) {
     return res.status(409).send({
@@ -68,7 +68,7 @@ const getUserByToken = async (req, res) => {
     });
   }
 
-  const userJSON = await getUserJSON(user);
+  const userJSON = await userToJson(user);
 
   if (userJSON.error) {
     return res.status(409).send({
@@ -87,9 +87,9 @@ const getAdventuresByUsername = async (req, res) => {
     attributes: ["id"],
   });
 
-  if (user === null) {
+  if (!user) {
     return res.status(409).send({
-      error: `User ${username} not found`,
+      error: "User not found",
     });
   }
 
@@ -101,25 +101,70 @@ const getAdventuresByUsername = async (req, res) => {
 
   adventures = await Promise.all(
     adventures.map(async adventure => {
-      const adventureState = await adventure.getAdventureState({
-        attributes: {
-          exclude: ["createdAt", "updatedAt", "deletedAt"],
-        },
-      });
-      return {
-        id: adventure.id,
-        idPublisher: adventure.idPublisher,
-        title: adventure.title,
-        description: adventure.description,
-        startDateTime: adventure.startDateTime,
-        endDateTime: adventure.endDateTime,
-        numInvitations: adventure.numInvitations,
-        state: adventureState.dataValues,
-      };
+      const adventureJSON = await adventureToJson(adventure);
+
+      if (adventureJSON.error) {
+        throw adventureJSON.error;
+      }
+
+      return adventureJSON;
     })
   );
 
   return res.status(200).send(adventures);
+};
+
+const getAdventuresByToken = async (req, res) => {
+  const { id } = req.decodedToken;
+
+  const user = await Users.findOne({
+    where: { id },
+  });
+
+  if (!user) {
+    return res.status(409).send({
+      error: "User not found",
+    });
+  }
+
+  let adventures = await user.getAdventures({
+    attributes: {
+      exclude: ["createdAt", "updatedAt", "deletedAt"],
+    },
+  });
+
+  adventures = await Promise.all(
+    adventures.map(async adventure => {
+      const adventureJSON = await adventureToJson(adventure);
+
+      if (adventureJSON.error) {
+        throw adventureJSON.error;
+      }
+
+      return adventureJSON;
+    })
+  );
+
+  return res.status(200).send(adventures);
+};
+
+const uploadProfilePhoto = async (req, res) => {
+  const { id } = req.decodedToken;
+
+  const profileInformation = await ProfileInformation.findOne({
+    where: { idUser: id },
+    attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
+  });
+
+  if (!profileInformation) {
+    return res.status(409).send({
+      error: "User not found",
+    });
+  }
+
+  return res.status(200).send({
+    message: "Photo uploaded successfully",
+  });
 };
 
 const createUser = async (req, res) => {
@@ -255,7 +300,35 @@ const updateUser = async (req, res) => {
   }
 };
 
-const getUserJSON = async user => {
+const adventureToJson = async adventure => {
+  try {
+    if (!adventure) {
+      return { error: "adventure not found" };
+    }
+
+    const adventureState = await adventure.getAdventureState({
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+
+    return {
+      id: adventure.id,
+      title: adventure.title,
+      description: adventure.description,
+      idPublisher: adventure.idPublisher,
+      startDateTime: adventure.startDateTime,
+      endDateTime: adventure.endDateTime,
+      numInvitations: adventure.numInvitations,
+      status: adventureState,
+    };
+  } catch (error) {
+    console.log(error);
+    return { error };
+  }
+};
+
+const userToJson = async user => {
   try {
     if (!user) {
       return { error: `User not found` };
@@ -314,5 +387,7 @@ export {
   getAllUsers,
   getUserByToken,
   getUserByUsername,
+  uploadProfilePhoto,
+  getAdventuresByToken,
   getAdventuresByUsername,
 };

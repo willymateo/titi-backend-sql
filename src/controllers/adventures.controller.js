@@ -6,7 +6,7 @@ const getAllAdventures = async (req, res) => {
     let allAdventures = await Adventures.findAll();
     allAdventures = await Promise.all(
       allAdventures.map(async adventure => {
-        const adventureJSON = await getAventureJSON(adventure);
+        const adventureJSON = await adventureToJson(adventure);
 
         if (adventureJSON.error) {
           throw adventureJSON.error;
@@ -38,7 +38,7 @@ const getAdventureById = async (req, res) => {
     });
   }
 
-  const adventureJSON = await getAventureJSON(adventure);
+  const adventureJSON = await adventureToJson(adventure);
 
   if (adventureJSON.error) {
     return res.status(409).send({
@@ -78,7 +78,7 @@ const createAdventure = async (req, res) => {
   }
 };
 
-const getAventureJSON = async adventure => {
+const adventureToJson = async adventure => {
   try {
     if (!adventure) {
       return { error: "adventure not found" };
