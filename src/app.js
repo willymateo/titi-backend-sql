@@ -3,7 +3,6 @@ import gendersRouter from "./routes/genders.routes";
 import { morganFormat } from "./config/app.config";
 import usersRouter from "./routes/users.routes";
 import authRouter from "./routes/auth.routes";
-import cookieParser from "cookie-parser";
 import favicon from "serve-favicon";
 import pkg from "../package.json";
 import express from "express";
@@ -21,7 +20,6 @@ app.set("case sensitive routing", true);
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
-app.use(cookieParser());
 app.use(logger(morganFormat));
 app.use(express.urlencoded({ extended: false }));
 
