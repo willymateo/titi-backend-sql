@@ -56,6 +56,7 @@ const getUserByUsername = async (req, res) => {
 
 const getUserByToken = async (req, res) => {
   const { id } = req.decodedToken;
+
   const user = await Users.findOne({
     where: { id },
     attributes: { exclude: ["idRole", "passwordHash", "createdAt", "updatedAt", "deletedAt"] },
@@ -199,64 +200,57 @@ const createUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { idUser } = req.params;
-
   try {
-    const userResult = await Users.findOne({
-      where: { id: idUser },
+    const { id } = req.decodedToken;
+
+    const user = await Users.findOne({
+      where: { id },
     });
 
     // Not found user.
-    if (userResult === null) {
+    if (!user) {
       return res.status(404).send({
-        error: `User ID:${idUser} not found`,
-      });
-    }
-
-    // Verify if the user in the token is the same that the user that is trying to update.
-    if (idUser !== req.decodedToken.id) {
-      return res.status(401).send({
-        error: `You don't have enough privileges to update the user ID: ${idUser}`,
+        error: "User not found",
       });
     }
 
     // Empty body.
     if (Object.keys(req.body).length === 0) {
       return res.status(400).send({
-        error: `You must send at least one parameter to update the user`,
+        error: "You must send at least one parameter to update the user",
       });
     }
 
     if (req.body.username) {
-      userResult.set({ username: req.body.username });
+      user.set({ username: req.body.username });
     }
 
     if (req.body.password) {
       const passwordHash = await Users.encryptPassword(req.body.password);
-      userResult.set({ passwordHash });
+      user.set({ passwordHash });
     }
 
     if (req.body.firstNames) {
-      userResult.set({ firstNames: req.body.firstNames });
+      user.set({ firstNames: req.body.firstNames });
     }
 
     if (req.body.lastNames) {
-      userResult.set({ lastNames: req.body.lastNames });
+      user.set({ lastNames: req.body.lastNames });
     }
 
     if (req.body.email) {
-      userResult.set({ email: req.body.email });
+      user.set({ email: req.body.email });
     }
 
-    await userResult.validate();
-    await userResult.save();
+    await user.validate();
+    await user.save();
     return res.status(200).send({
-      message: `User ID:${idUser} updated successfully`,
+      message: "User updated successfully",
     });
   } catch (err) {
     console.log(err);
     return res.status(409).send({
-      error: `Some error occurred while updating the user ID:${idUser}: ${err}`,
+      error: `Some error occurred while updating the user: ${err}`,
     });
   }
 };

@@ -10,14 +10,15 @@ const verifyToken = (req, res, next) => {
       error: "Token missing or invalid",
     });
   }
+
   // Skip the Bearer word.
   const token = authorization.substring(7);
 
   jwt.verify(token, jwtSecret, async (err, decodedToken) => {
     if (err) {
-      console.log(err);
+      console.log("Some error occurred while verifying token", err);
       return res.status(409).send({
-        error: `Some error occurred while verifying token: ${err}`,
+        error: "Token missing or invalid",
       });
     }
 
@@ -38,30 +39,12 @@ const verifyToken = (req, res, next) => {
       req.decodedToken = decodedToken;
       next();
     } catch (err) {
-      console.log(err);
+      console.log("Some error occurred while validating the user role", err);
       return res.status(409).send({
-        error: `Some error occurred while validating the user role: ${err}`,
+        error: "Token missing or invalid",
       });
     }
   });
 };
 
-const verifyRolAdmin = async (req, res, next) => {
-  const { id } = req.decodedToken;
-  const user = await Users.findOne({
-    where: {
-      id,
-    },
-  });
-
-  const userRole = await user.getUserRole();
-
-  if (userRole.role !== "administrator") {
-    return res.status(403).send({
-      error: "You don't have enough privileges.",
-    });
-  }
-  next();
-};
-
-export { verifyToken, verifyRolAdmin };
+export { verifyToken };
