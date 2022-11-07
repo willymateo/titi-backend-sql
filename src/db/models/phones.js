@@ -1,4 +1,5 @@
 "use strict";
+import { DEFAULT_PHONE_COUNTRY_CODE } from "../../config/app.config";
 import { sequelize } from "../connection";
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
@@ -29,7 +30,7 @@ const Phones = sequelize.define(
     countryCode: {
       type: DataTypes.SMALLINT,
       allowNull: false,
-      defaultValue: 593,
+      defaultValue: DEFAULT_PHONE_COUNTRY_CODE,
       validate: {
         notNull: true,
         min: 0,

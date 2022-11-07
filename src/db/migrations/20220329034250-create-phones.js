@@ -1,4 +1,7 @@
 "use strict";
+
+const { DEFAULT_PHONE_COUNTRY_CODE } = require("../../config/app.config");
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
@@ -26,7 +29,7 @@ module.exports = {
         country_code: {
           type: Sequelize.SMALLINT,
           allowNull: false,
-          defaultValue: 593,
+          defaultValue: DEFAULT_PHONE_COUNTRY_CODE,
           comment: "Country code of the phone number.",
         },
         phone_number: {

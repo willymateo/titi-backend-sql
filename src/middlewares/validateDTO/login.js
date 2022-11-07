@@ -1,16 +1,20 @@
+import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_REGEX } from "../../config/app.config";
 import Ajv from "ajv";
 
 const schema = {
+  required: ["username", "password"],
+  additionalProperties: false,
   type: "object",
   properties: {
     username: {
       type: "string",
+      minLength: USERNAME_MIN_LENGTH,
+      maxLength: USERNAME_MAX_LENGTH,
+      pattern: USERNAME_REGEX,
     },
     password: {
       type: "string",
     },
-    required: ["username", "password"],
-    additionalProperties: false,
   },
 };
 

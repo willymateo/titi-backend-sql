@@ -1,10 +1,17 @@
 "use strict";
-import { saltRounds } from "../../config/app.config";
 import { sequelize } from "../connection";
 import { UserRoles } from "./userRoles";
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
+import {
+  saltRounds,
+  USERNAME_REGEX,
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+  LAST_NAMES_MAX_LENGTH,
+  FIRST_NAMES_MAX_LENGTH,
+} from "../../config/app.config";
 
 const Users = sequelize.define(
   "Users",
@@ -26,18 +33,17 @@ const Users = sequelize.define(
       comment: "FK to current user role.",
     },
     username: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(USERNAME_MAX_LENGTH),
       allowNull: false,
       unique: true,
       validate: {
-        is: /^[a-z0-9_\.]*[a-z]+[a-z0-9_\.]*$/,
+        len: [USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH],
+        is: USERNAME_REGEX,
         isLowercase: true,
-        len: [5, 30],
-        notNull: true,
         notEmpty: true,
+        notNull: true,
       },
-      comment:
-        "Unique. Must contain between 5-30 characters. The allow characters are letters in lowercase, numbers and underscores. It must contain at least 1 letter in lowercase.",
+      comment: `Unique. Must contain between ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters. The allow characters are letters in lowercase, numbers and underscores. It must contain at least 1 letter in lowercase.`,
     },
     passwordHash: {
       type: DataTypes.STRING(60),
@@ -49,11 +55,11 @@ const Users = sequelize.define(
       comment: "Encrypted password.",
     },
     firstNames: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(FIRST_NAMES_MAX_LENGTH),
       allowNull: true,
     },
     lastNames: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(LAST_NAMES_MAX_LENGTH),
       allowNull: true,
     },
     email: {

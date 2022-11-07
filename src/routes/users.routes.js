@@ -1,3 +1,4 @@
+import { validateCreateUserDTO, validateUpdateUserDTO } from "../middlewares/validateDTO/users";
 import { verifyToken } from "../middlewares/authJwt";
 import express from "express";
 import {
@@ -18,7 +19,7 @@ const router = express.Router();
 router.get("/logged", verifyToken, getUserByToken);
 
 // Update user account information.
-router.put("/logged", verifyToken, updateUser);
+router.put("/logged", validateUpdateUserDTO, verifyToken, updateUser);
 
 // Upload user profile photo.
 router.post("/logged/profile/photo", verifyToken, uploadProfilePhoto);
@@ -37,6 +38,6 @@ router.get("/:username", verifyToken, getUserByUsername);
 router.get("/:username/adventures", verifyToken, getAdventuresByUsername);
 
 // Create an user.
-router.post("/", createUser);
+router.post("/", validateCreateUserDTO, createUser);
 
 export default router;

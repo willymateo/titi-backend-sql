@@ -1,4 +1,4 @@
-import { validateLoginDTO } from "../middlewares/dto/validateLoginDTO";
+import { validateLoginDTO } from "../middlewares/validateDTO/login";
 import { login } from "../controllers/auth.controller";
 import { Router } from "express";
 
