@@ -15,7 +15,7 @@
     "build": "babel src -d build",
     "start": "sequelize db:migrate && npm run build && node build/index.js",
     "start:dev": "NODE_ENV=development sequelize db:migrate && nodemon src/index.js --exec babel-node",
-    "test": "NODE_ENV=test sequelize db:migrate && jest --silent",
+    "test": "NODE_ENV=test sequelize db:migrate && PORT=4001 jest --silent",
     "prettier:write": "prettier --write . --ignore-unknown",
     "prettier:check": "prettier --check .",
     "migrate": "sequelize db:migrate",
@@ -24,6 +24,7 @@
     "eslint": "eslint ."
   },
   "dependencies": {
+    "ajv": "^8.11.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "date-fns": "^2.29.3",
