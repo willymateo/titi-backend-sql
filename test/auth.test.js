@@ -32,7 +32,7 @@ const testUser = {
   password: "test1234",
   firstNames: "User1",
   lastNames: "Test",
-  email: "testuser@cathot.com",
+  email: "testuser@titi.com",
 };
 
 // ==========================================================

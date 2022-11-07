@@ -1,15 +1,15 @@
 {
-  "name": "cathot-backend-sql",
+  "name": "titi-backend-sql",
   "version": "0.0.1",
   "private": true,
-  "description": "Backend API RestFul SQL to CatHot web",
+  "description": "Backend API RestFul SQL to Titi web",
   "main": "src/index.js",
   "author": "DarkOS",
   "keywords": [
     "api",
     "restful",
     "sql",
-    "cathot"
+    "titi"
   ],
   "scripts": {
     "build": "babel src -d build",

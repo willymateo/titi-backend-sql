@@ -30,7 +30,7 @@ const api = request(app);
 const testUsers = [
   {
     username: "connor.mcgregor9",
-    password: "cathot2022",
+    password: "titi2022",
     firstNames: "Conor",
     lastNames: "McGregor",
     email: "conormcgrego@gmail.com",
@@ -51,7 +51,7 @@ const testUsers = [
   },
   {
     username: "7mark_zuckerberg",
-    password: "cathot2022",
+    password: "titi2022",
     firstNames: "Mark",
     lastNames: "Zuckerberg",
     email: "mark.zuckerberg@gmail.com",
