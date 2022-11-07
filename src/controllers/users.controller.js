@@ -248,6 +248,7 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
+    const { password, ...payload } = req.body;
     const { id } = req.decodedToken;
 
     const user = await Users.findOne({
@@ -261,10 +262,10 @@ const updateUser = async (req, res) => {
       });
     }
 
-    user.set({ ...req.body });
+    user.set({ ...payload });
 
-    if (req.body.password) {
-      const passwordHash = await Users.encryptPassword(req.body.password);
+    if (password) {
+      const passwordHash = await Users.encryptPassword(password);
       user.set({ passwordHash });
     }
 

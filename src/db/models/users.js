@@ -38,7 +38,7 @@ const Users = sequelize.define(
       unique: true,
       validate: {
         len: [USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH],
-        is: USERNAME_REGEX,
+        is: new RegExp(USERNAME_REGEX),
         isLowercase: true,
         notEmpty: true,
         notNull: true,
