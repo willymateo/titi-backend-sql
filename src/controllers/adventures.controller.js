@@ -66,7 +66,7 @@ const createAdventure = async (req, res) => {
     await newAdventureInstance.validate();
     // Save the register in the DB
     await newAdventureInstance.save();
-    return res.status(200).send({
+    return res.status(201).send({
       message: "Adventure created successfully",
       id: newAdventureInstance.id,
     });

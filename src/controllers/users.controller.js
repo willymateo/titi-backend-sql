@@ -261,30 +261,19 @@ const updateUser = async (req, res) => {
       });
     }
 
-    // Empty body.
-    if (Object.keys(req.body).length === 0) {
-      return res.status(400).send({
-        error: "You must send at least one parameter to update the user",
-      });
-    }
-
     if (req.body.username) {
       user.set({ username: req.body.username });
     }
-
     if (req.body.password) {
       const passwordHash = await Users.encryptPassword(req.body.password);
       user.set({ passwordHash });
     }
-
     if (req.body.firstNames) {
       user.set({ firstNames: req.body.firstNames });
     }
-
     if (req.body.lastNames) {
       user.set({ lastNames: req.body.lastNames });
     }
-
     if (req.body.email) {
       user.set({ email: req.body.email });
     }

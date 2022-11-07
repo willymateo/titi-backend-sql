@@ -21,7 +21,7 @@
     "migrate": "sequelize db:migrate",
     "migrate:undo:all": "sequelize db:migrate:undo:all",
     "prepare": "husky install",
-    "eslinter": "eslint ."
+    "eslint": "eslint ."
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -50,7 +50,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.1",
-    "jest": "^27.5.1",
+    "jest": "^29.0.2",
     "lint-staged": "^13.0.3",
     "nodemon": "^2.0.19",
     "prettier": "2.7.1",
