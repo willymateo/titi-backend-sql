@@ -1,5 +1,9 @@
-import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_REGEX } from "../../config/app.config";
-import Ajv from "ajv";
+import {
+  ajv,
+  USERNAME_REGEX,
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+} from "../../config/app.config";
 
 const schema = {
   required: ["username", "password"],
@@ -18,7 +22,6 @@ const schema = {
   },
 };
 
-const ajv = new Ajv();
 const validate = ajv.compile(schema);
 
 const validateLoginDTO = (req, res, next) => {

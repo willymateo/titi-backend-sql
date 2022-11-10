@@ -1,6 +1,5 @@
-import addFormats from "ajv-formats";
-import Ajv from "ajv";
 import {
+  ajv,
   USERNAME_REGEX,
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
@@ -66,8 +65,6 @@ const updateUserSchema = {
   },
 };
 
-const ajv = new Ajv();
-addFormats(ajv, ["email"]);
 const validateCreateUserAJV = ajv.compile(createUserSchema);
 const validateUpdateUserAJV = ajv.compile(updateUserSchema);
 
