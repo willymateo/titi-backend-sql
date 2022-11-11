@@ -1,5 +1,5 @@
 const createAdventureSchema = {
-  required: ["username", "password"],
+  required: ["title", "description", "startDateTime", "endDateTime", "numInvitations"],
   additionalProperties: false,
   type: "object",
   properties: {

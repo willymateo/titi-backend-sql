@@ -1,3 +1,4 @@
+import { validateCreateAdventureDTO } from "../middlewares/validateDTO/adventures";
 import { verifyToken } from "../middlewares/authJwt";
 import express from "express";
 import {
@@ -15,6 +16,6 @@ router.get("/", verifyToken, getAllAdventures);
 router.get("/:idAdventure", verifyToken, getAdventureById);
 
 // Create an adventure.
-router.post("/", verifyToken, createAdventure);
+router.post("/", validateCreateAdventureDTO, verifyToken, createAdventure);
 
 export default router;

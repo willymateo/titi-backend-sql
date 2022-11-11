@@ -4,13 +4,13 @@ const createUserSchema = {
   additionalProperties: false,
   type: "object",
   required: [
-    "email",
-    "phone",
     "username",
     "password",
-    "location",
-    "lastNames",
     "firstNames",
+    "lastNames",
+    "email",
+    "phone",
+    "location",
     "profileInformation",
   ],
   properties: {
