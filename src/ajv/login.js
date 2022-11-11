@@ -1,4 +1,4 @@
-import { USERNAME_REGEX, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "../../config/app.config";
+import { USERNAME_REGEX, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "../config/app.config";
 
 const loginSchema = {
   required: ["username", "password"],

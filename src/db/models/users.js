@@ -9,8 +9,6 @@ import {
   USERNAME_REGEX,
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
-  LAST_NAMES_MAX_LENGTH,
-  FIRST_NAMES_MAX_LENGTH,
 } from "../../config/app.config";
 
 const Users = sequelize.define(
@@ -55,11 +53,11 @@ const Users = sequelize.define(
       comment: "Encrypted password.",
     },
     firstNames: {
-      type: DataTypes.STRING(FIRST_NAMES_MAX_LENGTH),
+      type: DataTypes.STRING(100),
       allowNull: true,
     },
     lastNames: {
-      type: DataTypes.STRING(LAST_NAMES_MAX_LENGTH),
+      type: DataTypes.STRING(100),
       allowNull: true,
     },
     email: {

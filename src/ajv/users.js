@@ -1,10 +1,4 @@
-import {
-  USERNAME_REGEX,
-  USERNAME_MAX_LENGTH,
-  USERNAME_MIN_LENGTH,
-  LAST_NAMES_MAX_LENGTH,
-  FIRST_NAMES_MAX_LENGTH,
-} from "../../config/app.config";
+import { USERNAME_REGEX, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "../config/app.config";
 
 const createUserSchema = {
   additionalProperties: false,
@@ -31,11 +25,9 @@ const createUserSchema = {
     },
     firstNames: {
       type: "string",
-      maxLength: FIRST_NAMES_MAX_LENGTH,
     },
     lastNames: {
       type: "string",
-      maxLength: LAST_NAMES_MAX_LENGTH,
     },
     email: {
       type: "string",
@@ -65,7 +57,7 @@ const createUserSchema = {
         },
       },
     },
-    location: {
+    profileInformation: {
       type: "object",
       required: ["photoUrl", "biography", "bornDate", "idGender"],
       properties: {
@@ -78,7 +70,7 @@ const createUserSchema = {
         },
         bornDate: {
           type: "string",
-          format: "iso-date-time",
+          format: "date-time",
         },
         idGender: {
           type: "integer",
@@ -104,11 +96,9 @@ const updateUserSchema = {
     },
     firstNames: {
       type: "string",
-      maxLength: FIRST_NAMES_MAX_LENGTH,
     },
     lastNames: {
       type: "string",
-      maxLength: LAST_NAMES_MAX_LENGTH,
     },
     email: {
       type: "string",
