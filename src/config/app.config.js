@@ -1,3 +1,4 @@
+import { loginSchema, createUserSchema, updateUserSchema } from "../ajvSchemas";
 import addFormats from "ajv-formats";
 import "dotenv/config";
 import Ajv from "ajv";
@@ -25,6 +26,9 @@ const USERNAME_MIN_LENGTH = 5;
 // AJV
 const ajv = new Ajv();
 addFormats(ajv, ["email"]);
+const validateLoginSchema = ajv.compile(loginSchema);
+const validateCreateUserSchema = ajv.compile(createUserSchema);
+const validateUpdateUserSchema = ajv.compile(updateUserSchema);
 
 export {
   ajv,
@@ -34,7 +38,10 @@ export {
   USERNAME_REGEX,
   USERNAME_MIN_LENGTH,
   USERNAME_MAX_LENGTH,
+  validateLoginSchema,
   LAST_NAMES_MAX_LENGTH,
   FIRST_NAMES_MAX_LENGTH,
+  validateCreateUserSchema,
+  validateUpdateUserSchema,
   DEFAULT_PHONE_COUNTRY_CODE,
 };

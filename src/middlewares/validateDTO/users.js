@@ -1,75 +1,7 @@
-import {
-  ajv,
-  USERNAME_REGEX,
-  USERNAME_MAX_LENGTH,
-  USERNAME_MIN_LENGTH,
-  LAST_NAMES_MAX_LENGTH,
-  FIRST_NAMES_MAX_LENGTH,
-} from "../../config/app.config";
-
-const createUserSchema = {
-  required: ["username", "password"],
-  additionalProperties: false,
-  type: "object",
-  properties: {
-    username: {
-      type: "string",
-      minLength: USERNAME_MIN_LENGTH,
-      maxLength: USERNAME_MAX_LENGTH,
-      pattern: USERNAME_REGEX,
-    },
-    password: {
-      type: "string",
-    },
-    firstNames: {
-      type: "string",
-      maxLength: FIRST_NAMES_MAX_LENGTH,
-    },
-    lastNames: {
-      type: "string",
-      maxLength: LAST_NAMES_MAX_LENGTH,
-    },
-    email: {
-      type: "string",
-      format: "email",
-    },
-  },
-};
-
-const updateUserSchema = {
-  additionalProperties: false,
-  minProperties: 1,
-  type: "object",
-  properties: {
-    username: {
-      type: "string",
-      minLength: USERNAME_MIN_LENGTH,
-      maxLength: USERNAME_MAX_LENGTH,
-      pattern: USERNAME_REGEX,
-    },
-    password: {
-      type: "string",
-    },
-    firstNames: {
-      type: "string",
-      maxLength: FIRST_NAMES_MAX_LENGTH,
-    },
-    lastNames: {
-      type: "string",
-      maxLength: LAST_NAMES_MAX_LENGTH,
-    },
-    email: {
-      type: "string",
-      format: "email",
-    },
-  },
-};
-
-const validateCreateUserAJV = ajv.compile(createUserSchema);
-const validateUpdateUserAJV = ajv.compile(updateUserSchema);
+import { validateCreateUserSchema, validateUpdateUserSchema } from "../../config/app.config";
 
 const validateCreateUserDTO = (req, res, next) => {
-  const isValid = validateCreateUserAJV(req.body);
+  const isValid = validateCreateUserSchema(req.body);
 
   if (!isValid) {
     return res.status(400).send({
@@ -81,7 +13,7 @@ const validateCreateUserDTO = (req, res, next) => {
 };
 
 const validateUpdateUserDTO = (req, res, next) => {
-  const isValid = validateUpdateUserAJV(req.body);
+  const isValid = validateUpdateUserSchema(req.body);
 
   if (!isValid) {
     return res.status(400).send({
