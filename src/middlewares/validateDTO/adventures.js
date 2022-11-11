@@ -1,16 +1,7 @@
 import { validateCreateAdventureSchema } from "../../config/app.config";
+import { validateDTO } from "./validateDTO";
 
-const validateCreateAdventureDTO = (req, res, next) => {
-  const isValid = validateCreateAdventureSchema(req.body);
-
-  if (!isValid) {
-    console.log(validateCreateAdventureSchema.errors);
-    return res.status(400).send({
-      error: "Invalid body schema",
-    });
-  }
-
-  next();
-};
+const validateCreateAdventureDTO = (req, res, next) =>
+  validateDTO(req, res, next, validateCreateAdventureSchema);
 
 export { validateCreateAdventureDTO };

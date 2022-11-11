@@ -1,27 +1,10 @@
 import { validateCreateUserSchema, validateUpdateUserSchema } from "../../config/app.config";
+import { validateDTO } from "./validateDTO";
 
-const validateCreateUserDTO = (req, res, next) => {
-  const isValid = validateCreateUserSchema(req.body);
+const validateCreateUserDTO = (req, res, next) =>
+  validateDTO(req, res, next, validateCreateUserSchema);
 
-  if (!isValid) {
-    return res.status(400).send({
-      error: "Invalid body schema",
-    });
-  }
-
-  next();
-};
-
-const validateUpdateUserDTO = (req, res, next) => {
-  const isValid = validateUpdateUserSchema(req.body);
-
-  if (!isValid) {
-    return res.status(400).send({
-      error: "Invalid body schema",
-    });
-  }
-
-  next();
-};
+const validateUpdateUserDTO = (req, res, next) =>
+  validateDTO(req, res, next, validateUpdateUserSchema);
 
 export { validateCreateUserDTO, validateUpdateUserDTO };
