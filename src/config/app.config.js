@@ -25,7 +25,7 @@ const USERNAME_MIN_LENGTH = 5;
 
 // AJV
 const ajv = new Ajv();
-addFormats(ajv, ["email"]);
+addFormats(ajv, ["email", "url", "iso-date-time"]);
 const validateLoginSchema = ajv.compile(loginSchema);
 const validateCreateUserSchema = ajv.compile(createUserSchema);
 const validateUpdateUserSchema = ajv.compile(updateUserSchema);
