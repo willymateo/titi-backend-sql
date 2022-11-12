@@ -1,6 +1,6 @@
 {
   "name": "titi-backend-sql",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "description": "Backend API RestFul SQL to Titi web",
   "main": "src/index.js",
