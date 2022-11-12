@@ -27,7 +27,6 @@ module.exports = {
         id_current_state: {
           type: Sequelize.SMALLINT,
           allowNull: false,
-          defaultValue: 1,
           references: {
             model: "user_states", // Table name.
             key: "id",
@@ -36,10 +35,26 @@ module.exports = {
           onUpdate: "CASCADE",
           comment: "FK to current status.",
         },
+        id_gender: {
+          type: Sequelize.SMALLINT,
+          allowNull: false,
+          references: {
+            model: "genders", // Table name.
+            key: "id",
+          },
+          onDelete: "RESTRICT",
+          onUpdate: "CASCADE",
+          comment: "FK to gender.",
+        },
         photo_url: {
           type: Sequelize.STRING,
           allowNull: true,
-          comment: "The url to profile photo.",
+          comment: "The url to profile photo",
+        },
+        born_date: {
+          type: Sequelize.DATEONLY,
+          allowNull: false,
+          comment: "Born date to identify if the user is of legal age",
         },
         biography: {
           type: Sequelize.STRING,

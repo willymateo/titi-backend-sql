@@ -1,35 +1,24 @@
 "use strict";
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      "locations",
+      "genders",
       {
         id: {
-          type: Sequelize.UUID,
-          defaultValue: Sequelize.fn("gen_random_uuid"),
+          type: Sequelize.SMALLINT,
+          autoIncrement: true,
           allowNull: false,
           primaryKey: true,
           unique: true,
           comment: "PK, unique identifier.",
         },
-        id_user: {
-          type: Sequelize.UUID,
+        gender: {
+          type: Sequelize.STRING(50),
           allowNull: false,
-          references: {
-            model: "users", // Table name.
-            key: "id",
-          },
-          onDelete: "CASCADE",
-          onUpdate: "CASCADE",
-          comment: "FK to user that is in the location.",
-        },
-        latitude: {
-          type: Sequelize.STRING(100),
-          allowNull: false,
-        },
-        longitude: {
-          type: Sequelize.STRING(100),
-          allowNull: false,
+          unique: true,
+          comment:
+            "Unique gender identifier. If it contains 2 or more words, they can be separate between underscores.",
         },
         createdAt: {
           field: "created_at",
@@ -54,11 +43,13 @@ module.exports = {
         },
       },
       {
-        comment: "Locations of each users.",
+        comment:
+          "Unique gender identifier. If it contains 2 or more words, they can be separate between underscores.",
       }
     );
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("locations");
+    await queryInterface.dropTable("genders");
   },
 };

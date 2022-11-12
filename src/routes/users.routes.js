@@ -1,24 +1,43 @@
+import { validateCreateUserDTO, validateUpdateUserDTO } from "../middlewares/validateDTO/users";
 import { verifyToken } from "../middlewares/authJwt";
 import express from "express";
 import {
   createUser,
   updateUser,
   getAllUsers,
+  getUserByToken,
   getUserByUsername,
+  uploadProfilePhoto,
+  getAdventuresByToken,
+  getAdventuresByUsername,
 } from "../controllers/users.controller";
 
 const router = express.Router();
 
+// Logged user
+// Get user information
+router.get("/logged", verifyToken, getUserByToken);
+
+// Update user account information.
+router.put("/logged", validateUpdateUserDTO, verifyToken, updateUser);
+
+// Upload user profile photo.
+router.post("/logged/profile/photo", verifyToken, uploadProfilePhoto);
+
+// Get all adventures of an user by token.
+router.get("/logged/adventures", verifyToken, getAdventuresByToken);
+
+// General routes
 // Get all users.
 router.get("/", verifyToken, getAllUsers);
 
 // Get user by username.
 router.get("/:username", verifyToken, getUserByUsername);
 
-// Create an user.
-router.post("/", createUser);
+// Get all adventures of an user by username.
+router.get("/:username/adventures", verifyToken, getAdventuresByUsername);
 
-// Update user account information.
-router.put("/:idUser", verifyToken, updateUser);
+// Create an user.
+router.post("/", validateCreateUserDTO, createUser);
 
 export default router;

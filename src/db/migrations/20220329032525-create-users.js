@@ -1,4 +1,6 @@
 "use strict";
+const { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } = require("../../config/app.config");
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
@@ -15,7 +17,6 @@ module.exports = {
         id_role: {
           type: Sequelize.SMALLINT,
           allowNull: false,
-          defaultValue: 1,
           references: {
             model: "user_roles", // Table name.
             key: "id",
@@ -25,11 +26,10 @@ module.exports = {
           comment: "FK to current user role.",
         },
         username: {
-          type: Sequelize.STRING(30),
+          type: Sequelize.STRING(USERNAME_MAX_LENGTH),
           allowNull: false,
           unique: true,
-          comment:
-            "Unique. Must contain between 5-30 characters. The allow characters are letters in lowercase, numbers and underscores. It must contain at least 1 letter in lowercase.",
+          comment: `Unique. Must contain between ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters. The allow characters are letters in lowercase, numbers and underscores. It must contain at least 1 letter in lowercase.`,
         },
         password_hash: {
           type: Sequelize.STRING(60),
@@ -38,11 +38,11 @@ module.exports = {
         },
         first_names: {
           type: Sequelize.STRING(100),
-          allowNull: false,
+          allowNull: true,
         },
         last_names: {
           type: Sequelize.STRING(100),
-          allowNull: false,
+          allowNull: true,
         },
         email: {
           type: Sequelize.STRING(100),

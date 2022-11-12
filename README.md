@@ -1,6 +1,8 @@
-# CatHot API
+[![Node.js CI](https://github.com/willymateo/cathot-backend-sql/actions/workflows/node.js.yml/badge.svg)](https://github.com/willymateo/cathot-backend-sql/actions/workflows/node.js.yml)
 
-Backend API RestFul SQL to CatHot web.
+# Titi API
+
+Backend API RestFul SQL to Titi web.
 
 ## Specifications
 
@@ -76,14 +78,14 @@ npm test
 
 ### Production
 
-https://cathot.up.railway.app/
+https://titi.up.railway.app/
 
 ### Development
 
-https://cathot-development.up.railway.app/
+https://titi-development.up.railway.app/
 
 ## Documentation
 
 ### Entity Relationship Diagram
 
-[LucidChart](https://lucid.app/lucidchart/8887566c-ab08-4e36-aad1-11405f69a67e/edit?viewport_loc=-1544%2C205%2C1548%2C663%2C0_0&invitationId=inv_986780f9-981b-4492-8249-3345a44e7c64)
+[dbdiagram](https://dbdiagram.io/d/6304fd56f1a9b01b0fca7218)

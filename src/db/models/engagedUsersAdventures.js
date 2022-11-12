@@ -27,12 +27,6 @@ const EngagedUsersAdventures = sequelize.define(
       },
       comment: "PK, composite unique identifier. FK to an engaged user with the adventure.",
     },
-    isPublisher: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-      comment: "Is true when the user is the owner/publisher of the adventure.",
-    },
   },
   {
     paranoid: true,

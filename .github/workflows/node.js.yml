@@ -1,0 +1,37 @@
+name: Node.js CI
+on:
+  push:
+    branches:
+      - main
+      - development
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Unit tests
+        run: |
+          JWT_SECRET=${{secrets.JWT_SECRET}} \
+          JWT_SALT_ROUNDS=${{secrets.JWT_SALT_ROUNDS}} \
+          TEST_DB_USERNAME=${{secrets.TEST_DB_USERNAME}} \
+          TEST_DB_PASSWORD=${{secrets.TEST_DB_PASSWORD}} \
+          TEST_DATABASE=${{secrets.TEST_DATABASE}} \
+          TEST_DB_HOST=${{secrets.TEST_DB_HOST}} \
+          TEST_DB_PORT=${{secrets.TEST_DB_PORT}} \
+          npm test

@@ -15,7 +15,6 @@ module.exports = {
         id_status: {
           type: Sequelize.SMALLINT,
           allowNull: false,
-          defaultValue: 1,
           references: {
             model: "adventure_states", // Table name.
             key: "id",
@@ -23,6 +22,17 @@ module.exports = {
           onDelete: "RESTRICT",
           onUpdate: "CASCADE",
           comment: "FK to current status.",
+        },
+        id_publisher: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: {
+            model: "users", // Table name.
+            key: "id",
+          },
+          onDelete: "RESTRICT",
+          onUpdate: "CASCADE",
+          comment: "FK to publisher user.",
         },
         title: {
           type: Sequelize.STRING(100),

@@ -1,10 +1,15 @@
 "use strict";
-import { saltRounds } from "../../config/app.config";
 import { sequelize } from "../connection";
 import { UserRoles } from "./userRoles";
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
+import {
+  saltRounds,
+  USERNAME_REGEX,
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+} from "../../config/app.config";
 
 const Users = sequelize.define(
   "Users",
@@ -23,22 +28,20 @@ const Users = sequelize.define(
     idRole: {
       type: DataTypes.SMALLINT,
       allowNull: false,
-      defaultValue: 1,
       comment: "FK to current user role.",
     },
     username: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(USERNAME_MAX_LENGTH),
       allowNull: false,
       unique: true,
       validate: {
-        is: /^[a-z0-9_\.]*[a-z]+[a-z0-9_\.]*$/i,
+        len: [USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH],
+        is: new RegExp(USERNAME_REGEX),
         isLowercase: true,
-        len: [5, 30],
-        notNull: true,
         notEmpty: true,
+        notNull: true,
       },
-      comment:
-        "Unique. Must contain between 5-30 characters. The allow characters are letters in lowercase, numbers and underscores. It must contain at least 1 letter in lowercase.",
+      comment: `Unique. Must contain between ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters. The allow characters are letters in lowercase, numbers and underscores. It must contain at least 1 letter in lowercase.`,
     },
     passwordHash: {
       type: DataTypes.STRING(60),
@@ -51,19 +54,11 @@ const Users = sequelize.define(
     },
     firstNames: {
       type: DataTypes.STRING(100),
-      allowNull: false,
-      validate: {
-        notNull: true,
-        notEmpty: true,
-      },
+      allowNull: true,
     },
     lastNames: {
       type: DataTypes.STRING(100),
-      allowNull: false,
-      validate: {
-        notNull: true,
-        notEmpty: true,
-      },
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING(100),
@@ -103,6 +98,25 @@ Users.encryptPassword = async password => {
 Users.prototype.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.passwordHash);
 };
+
+// Hooks
+Users.beforeValidate(async (user, options) => {
+  if (!user.idRole) {
+    const normalRole = await UserRoles.findOne({
+      where: { role: "normal_user" },
+    });
+    user.idRole = normalRole.id;
+  }
+});
+
+Users.beforeCreate(async (user, options) => {
+  if (!user.idRole) {
+    const normalRole = await UserRoles.findOne({
+      where: { role: "normal_user" },
+    });
+    user.idRole = normalRole.id;
+  }
+});
 
 // To correct
 // Users.afterDestroy(async (user, options) => {
