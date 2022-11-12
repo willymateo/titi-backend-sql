@@ -54,13 +54,12 @@ const createAdventure = async (req, res) => {
     const startDateTime = parseISO(req.body.startDateTime);
     const endDateTime = parseISO(req.body.endDateTime);
     const newAdventureData = {
-      numInvitations: req.body.numInvitations,
-      description: req.body.description,
+      ...req.body,
       idPublisher: req.decodedToken.id,
-      title: req.body.title,
       startDateTime,
       endDateTime,
     };
+
     const newAdventureInstance = Adventures.build(newAdventureData);
     // Validate data
     await newAdventureInstance.validate();

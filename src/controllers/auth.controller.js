@@ -6,18 +6,18 @@ const login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const userResult = await Users.findOne({
+    const user = await Users.findOne({
       where: { username },
     });
 
     // Not signed up user.
-    if (!userResult) {
+    if (!user) {
       return res.status(401).send({
         error: `Invalid username or password`,
       });
     }
 
-    const matchPassword = await userResult.comparePassword(password);
+    const matchPassword = await user.comparePassword(password);
     // Incorrect password.
     if (!matchPassword) {
       return res.status(401).send({
@@ -26,9 +26,7 @@ const login = async (req, res) => {
     }
 
     // Token creation.
-    const payload = {
-      id: userResult.id,
-    };
+    const payload = { id: user.id };
 
     jwt.sign(payload, jwtSecret, (err, token) => {
       if (err) {

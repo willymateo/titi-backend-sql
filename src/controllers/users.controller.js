@@ -171,17 +171,15 @@ const uploadProfilePhoto = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const { phone: newPhoneData } = req.body;
-    const { location: newLocationData } = req.body;
-    const { profileInformation: newProfileInformationData } = req.body;
-    const passwordHash = await Users.encryptPassword(req.body.password);
-    const newUserData = {
-      username: req.body.username,
-      passwordHash,
-      firstNames: req.body.firstNames,
-      lastNames: req.body.lastNames,
-      email: req.body.email,
-    };
+    const {
+      password,
+      phone: newPhoneData,
+      location: newLocationData,
+      profileInformation: newProfileInformationData,
+      ...newUserData
+    } = req.body;
+
+    const passwordHash = await Users.encryptPassword(password);
 
     if (!ProfileInformation.isOfLegalAge(newProfileInformationData.bornDate)) {
       return res.status(400).send({
@@ -189,7 +187,7 @@ const createUser = async (req, res) => {
       });
     }
 
-    const newUserInstance = Users.build(newUserData);
+    const newUserInstance = Users.build({ ...newUserData, passwordHash });
     const newPhoneInstance = Phones.build({
       ...newPhoneData,
       idUser: newUserInstance.id,
@@ -220,9 +218,7 @@ const createUser = async (req, res) => {
     ]);
 
     // Token creation.
-    const payload = {
-      id: newUserInstance.id,
-    };
+    const payload = { id: newUserInstance.id };
 
     jwt.sign(payload, jwtSecret, async (err, token) => {
       if (err) {
@@ -262,7 +258,7 @@ const updateUser = async (req, res) => {
       });
     }
 
-    user.set({ ...payload });
+    user.set(payload);
 
     if (password) {
       const passwordHash = await Users.encryptPassword(password);
