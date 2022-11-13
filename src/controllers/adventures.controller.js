@@ -27,8 +27,7 @@ const getAllAdventures = async (req, res) => {
 const getAdventureById = async (req, res) => {
   const { idAdventure } = req.params;
 
-  const adventure = await Adventures.findOne({
-    where: { id: idAdventure },
+  const adventure = await Adventures.findByPk(idAdventure, {
     attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
   });
 

@@ -17,8 +17,7 @@ const getAllGenders = async (req, res) => {
 const getGenderById = async (req, res) => {
   try {
     const { idGender } = req.params;
-    const gender = await Genders.findOne({
-      where: { id: idGender },
+    const gender = await Genders.findByPk(idGender, {
       attributes: ["id", "gender"],
     });
 

@@ -23,11 +23,7 @@ const verifyToken = (req, res, next) => {
     }
 
     try {
-      const user = await Users.findOne({
-        where: {
-          id: decodedToken.id,
-        },
-      });
+      const user = await Users.findByPk(decodedToken.id, {});
 
       // Verify valid user id
       if (!user) {

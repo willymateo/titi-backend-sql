@@ -5,8 +5,7 @@ import { Users } from "../db/models/users";
 const getUserAccount = async (req, res) => {
   const { id } = req.decodedToken;
 
-  const user = await Users.findOne({
-    where: { id },
+  const user = await Users.findByPk(id, {
     attributes: { exclude: ["idRole", "passwordHash", "createdAt", "updatedAt", "deletedAt"] },
   });
 
@@ -32,9 +31,7 @@ const updateUserAccount = async (req, res) => {
     const { password, idGender, ...payload } = req.body;
     const { id } = req.decodedToken;
 
-    const user = await Users.findOne({
-      where: { id },
-    });
+    const user = await Users.findByPk(id, {});
 
     // Not found user.
     if (!user) {
@@ -75,8 +72,8 @@ const updateUserAccount = async (req, res) => {
 const getAdventures = async (req, res) => {
   const { id } = req.decodedToken;
 
-  const user = await Users.findOne({
-    where: { id },
+  const user = await Users.findByPk(id, {
+    attributes: ["id"],
   });
 
   if (!user) {
@@ -109,8 +106,7 @@ const getAdventures = async (req, res) => {
 const uploadProfilePhoto = async (req, res) => {
   const { id } = req.decodedToken;
 
-  const user = await Users.findOne({
-    where: { id },
+  const user = await Users.findByPk(id, {
     attributes: ["id", "photoUrl"],
   });
 
