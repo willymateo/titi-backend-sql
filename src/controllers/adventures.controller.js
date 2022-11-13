@@ -1,4 +1,4 @@
-import { adventureToJson } from "./json/adventures.converter";
+import { adventureWithPublisherToJson } from "./json/adventures.converter";
 import { Adventures } from "../db/models/adventures";
 import { parseISO } from "date-fns";
 
@@ -7,7 +7,7 @@ const getAllAdventures = async (req, res) => {
     let allAdventures = await Adventures.findAll();
     allAdventures = await Promise.all(
       allAdventures.map(async adventure => {
-        const adventureJSON = await adventureToJson(adventure);
+        const adventureJSON = await adventureWithPublisherToJson(adventure);
 
         if (adventureJSON.error) {
           throw adventureJSON.error;
@@ -17,36 +17,35 @@ const getAllAdventures = async (req, res) => {
       })
     );
     return res.status(200).send(allAdventures);
-  } catch (err) {
-    console.log(err);
-    return res.status(409).send({
-      error: `Some error occurred: ${err}`,
-    });
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
   }
 };
 
 const getAdventureById = async (req, res) => {
-  const { idAdventure } = req.params;
+  try {
+    const { idAdventure } = req.params;
 
-  const adventure = await Adventures.findByPk(idAdventure, {
-    attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
-  });
-
-  if (!adventure) {
-    return res.status(409).send({
-      error: "Adventure not found",
+    const adventure = await Adventures.findByPk(idAdventure, {
+      attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
     });
+
+    if (!adventure) {
+      throw new Error("Adventure not found");
+    }
+
+    const adventureJSON = await adventureWithPublisherToJson(adventure);
+
+    if (adventureJSON.error) {
+      throw new Error(adventureJSON.error);
+    }
+
+    return res.status(200).send(adventureJSON);
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
   }
-
-  const adventureJSON = await adventureToJson(adventure);
-
-  if (adventureJSON.error) {
-    return res.status(409).send({
-      error: `Some error occurred: ${adventureJSON.error}`,
-    });
-  }
-
-  return res.status(200).send(adventureJSON);
 };
 
 const createAdventure = async (req, res) => {
@@ -69,11 +68,9 @@ const createAdventure = async (req, res) => {
       message: "Adventure created successfully",
       id: newAdventureInstance.id,
     });
-  } catch (err) {
-    console.log(err);
-    return res.status(409).send({
-      error: `Some error occurred while creating the new adventure: ${err}`,
-    });
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
   }
 };
 

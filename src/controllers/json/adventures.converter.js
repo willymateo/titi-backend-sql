@@ -1,8 +1,8 @@
-import { adventureToJson as externalAdventureToJson } from "./users.converter";
+import { adventureToJson } from "./users.converter";
 
-const adventureToJson = async adventure => {
+const adventureWithPublisherToJson = async adventure => {
   try {
-    const adventureJSON = await externalAdventureToJson(adventure);
+    const adventureJSON = await adventureToJson(adventure);
 
     if (adventureJSON.error) {
       throw adventure.error;
@@ -42,4 +42,4 @@ const adventureToJson = async adventure => {
   }
 };
 
-export { adventureToJson };
+export { adventureWithPublisherToJson };

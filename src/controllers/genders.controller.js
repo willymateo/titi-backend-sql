@@ -5,12 +5,11 @@ const getAllGenders = async (req, res) => {
     const allGenders = await Genders.findAll({
       attributes: ["id", "gender"],
     });
+
     return res.status(200).send(allGenders);
-  } catch (err) {
-    console.log(err);
-    return res.status(409).send({
-      error: `Some error occurred: ${err}`,
-    });
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
   }
 };
 
@@ -26,12 +25,11 @@ const getGenderById = async (req, res) => {
         error: `Gender with id=${idGender} not found`,
       });
     }
+
     return res.status(200).send(gender);
-  } catch (err) {
-    console.log(err);
-    return res.status(409).send({
-      error: `Some error occurred: ${err}`,
-    });
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
   }
 };
 

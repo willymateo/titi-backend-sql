@@ -3,26 +3,23 @@ import { Users } from "../db/models/users";
 import jwt from "jsonwebtoken";
 
 const verifyToken = (req, res, next) => {
-  const { authorization } = req.headers;
+  try {
+    const { authorization } = req.headers;
 
-  if (!authorization || !authorization.toLowerCase().startsWith("bearer")) {
-    return res.status(401).send({
-      error: "Token missing or invalid",
-    });
-  }
-
-  // Skip the Bearer word.
-  const token = authorization.substring(7);
-
-  jwt.verify(token, jwtSecret, async (err, decodedToken) => {
-    if (err) {
-      console.log("Some error occurred while verifying token", err);
-      return res.status(409).send({
+    if (!authorization || !authorization.toLowerCase().startsWith("bearer")) {
+      return res.status(401).send({
         error: "Token missing or invalid",
       });
     }
 
-    try {
+    // Skip the Bearer word.
+    const token = authorization.substring(7);
+
+    jwt.verify(token, jwtSecret, async (error, decodedToken) => {
+      if (error) {
+        throw error;
+      }
+
       const user = await Users.findByPk(decodedToken.id, {});
 
       // Verify valid user id
@@ -34,13 +31,11 @@ const verifyToken = (req, res, next) => {
 
       req.decodedToken = decodedToken;
       next();
-    } catch (err) {
-      console.log("Some error occurred while validating the user role", err);
-      return res.status(409).send({
-        error: "Token missing or invalid",
-      });
-    }
-  });
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
+  }
 };
 
 export { verifyToken };

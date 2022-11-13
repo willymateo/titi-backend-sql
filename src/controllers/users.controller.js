@@ -21,72 +21,74 @@ const getAllUsers = async (req, res) => {
     );
 
     return res.status(200).send(usersResult);
-  } catch (err) {
-    console.log(err);
-    return res.status(409).send({
-      error: `Some error occurred: ${err}`,
-    });
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
   }
 };
 
 const getUserByUsername = async (req, res) => {
-  const { username } = req.params;
+  try {
+    const { username } = req.params;
 
-  const user = await Users.findOne({
-    where: { username },
-    attributes: { exclude: ["idRole", "passwordHash", "createdAt", "updatedAt", "deletedAt"] },
-  });
-
-  if (!user) {
-    return res.status(409).send({
-      error: "User not found",
+    const user = await Users.findOne({
+      where: { username },
+      attributes: { exclude: ["idRole", "passwordHash", "createdAt", "updatedAt", "deletedAt"] },
     });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const userJSON = await userToJson(user);
+
+    if (userJSON.error) {
+      throw userJSON.error;
+    }
+
+    return res.status(200).send(userJSON);
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
   }
-
-  const userJSON = await userToJson(user);
-
-  if (userJSON.error) {
-    return res.status(409).send({
-      error: `Some error occurred: ${userJSON.error}`,
-    });
-  }
-
-  return res.status(200).send(userJSON);
 };
 
 const getAdventuresByUsername = async (req, res) => {
-  const { username } = req.params;
+  try {
+    const { username } = req.params;
 
-  const user = await Users.findOne({
-    where: { username },
-    attributes: ["id"],
-  });
-
-  if (!user) {
-    return res.status(409).send({
-      error: "User not found",
+    const user = await Users.findOne({
+      where: { username },
+      attributes: ["id"],
     });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    let adventures = await user.getAdventures({
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+
+    adventures = await Promise.all(
+      adventures.map(async adventure => {
+        const adventureJSON = await adventureToJson(adventure);
+
+        if (adventureJSON.error) {
+          throw adventureJSON.error;
+        }
+
+        return adventureJSON;
+      })
+    );
+
+    return res.status(200).send(adventures);
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
   }
-
-  let adventures = await user.getAdventures({
-    attributes: {
-      exclude: ["createdAt", "updatedAt", "deletedAt"],
-    },
-  });
-
-  adventures = await Promise.all(
-    adventures.map(async adventure => {
-      const adventureJSON = await adventureToJson(adventure);
-
-      if (adventureJSON.error) {
-        throw adventureJSON.error;
-      }
-
-      return adventureJSON;
-    })
-  );
-
-  return res.status(200).send(adventures);
 };
 
 const createUser = async (req, res) => {
@@ -125,25 +127,19 @@ const createUser = async (req, res) => {
     // Token creation.
     const payload = { id: newUserInstance.id };
 
-    jwt.sign(payload, jwtSecret, async (err, token) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).send({
-          error: `Some error occurred while signing in: ${err}`,
-        });
+    jwt.sign(payload, jwtSecret, async (error, token) => {
+      if (error) {
+        throw error;
       }
 
-      // Return the token.
       return res.status(201).send({
-        message: `Success sign up`,
+        message: "Success sign up",
         token,
       });
     });
-  } catch (err) {
-    console.log(err);
-    return res.status(409).send({
-      error: `Some error occurred while creating the new user: ${err}`,
-    });
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
   }
 };
 
