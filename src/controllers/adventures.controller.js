@@ -1,3 +1,4 @@
+import { adventureToJson } from "./json/adventures.converter";
 import { Adventures } from "../db/models/adventures";
 import { parseISO } from "date-fns";
 
@@ -73,65 +74,6 @@ const createAdventure = async (req, res) => {
     return res.status(409).send({
       error: `Some error occurred while creating the new adventure: ${err}`,
     });
-  }
-};
-
-const adventureToJson = async adventure => {
-  try {
-    if (!adventure) {
-      return { error: "adventure not found" };
-    }
-
-    const publisher = await adventure.getUser({
-      attributes: {
-        exclude: ["passwordHash", "createdAt", "updatedAt", "deletedAt"],
-      },
-    });
-
-    const publisherState = await publisher.getUserState({
-      attributes: {
-        exclude: ["idUser", "createdAt", "updatedAt", "deletedAt"],
-      },
-    });
-
-    const publisherGender = await publisher.getGender({
-      attributes: {
-        exclude: ["createdAt", "updatedAt", "deletedAt"],
-      },
-    });
-
-    const adventureState = await adventure.getAdventureState({
-      attributes: {
-        exclude: ["createdAt", "updatedAt", "deletedAt"],
-      },
-    });
-
-    return {
-      id: adventure.id,
-      title: adventure.title,
-      description: adventure.description,
-      startDateTime: adventure.startDateTime,
-      endDateTime: adventure.endDateTime,
-      numInvitations: adventure.numInvitations,
-      status: adventureState,
-      publisher: {
-        id: publisher.id,
-        username: publisher.username,
-        firstNames: publisher.firstNames,
-        lastNames: publisher.lastNames,
-        email: publisher.email,
-        photoUrl: publisher.photoUrl,
-        bornDate: publisher.bornDate,
-        biography: publisher.biography,
-        numLater: publisher.numLater,
-        numMissing: publisher.numMissing,
-        currentState: publisherState,
-        gender: publisherGender,
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return { error };
   }
 };
 

@@ -1,4 +1,4 @@
-import { adventureToJson, userToJson } from "./users.controller";
+import { adventureToJson, userToJson } from "./json/users.converter";
 import { Genders } from "../db/models/genders";
 import { Users } from "../db/models/users";
 
