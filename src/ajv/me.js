@@ -1,21 +1,9 @@
 import { USERNAME_REGEX, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "../config/app.config";
 
-const createUserSchema = {
+const updateUserSchema = {
   additionalProperties: false,
+  minProperties: 1,
   type: "object",
-  required: [
-    "username",
-    "password",
-    "firstNames",
-    "lastNames",
-    "email",
-    "photoUrl",
-    "biography",
-    "bornDate",
-    "idGender",
-    "phone",
-    "location",
-  ],
   properties: {
     username: {
       type: "string",
@@ -50,31 +38,7 @@ const createUserSchema = {
     idGender: {
       type: "integer",
     },
-    phone: {
-      type: "object",
-      required: ["countryCode", "phoneNumber"],
-      properties: {
-        countryCode: {
-          type: "integer",
-        },
-        phoneNumber: {
-          type: "string",
-        },
-      },
-    },
-    location: {
-      type: "object",
-      required: ["latitude", "longitude"],
-      properties: {
-        latitude: {
-          type: "string",
-        },
-        longitude: {
-          type: "string",
-        },
-      },
-    },
   },
 };
 
-export { createUserSchema };
+export { updateUserSchema };

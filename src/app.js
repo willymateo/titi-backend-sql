@@ -4,6 +4,7 @@ import { morganFormat } from "./config/app.config";
 import usersRouter from "./routes/users.routes";
 import authRouter from "./routes/auth.routes";
 import fileUpload from "express-fileupload";
+import meRouter from "./routes/me.routes";
 import favicon from "serve-favicon";
 import pkg from "../package.json";
 import express from "express";
@@ -37,6 +38,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/adventures", adventuresRouter);
 app.use("/api/genders", gendersRouter);
+app.use("/api/me", meRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
 

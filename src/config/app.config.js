@@ -1,4 +1,7 @@
-import { loginSchema, createUserSchema, updateUserSchema, createAdventureSchema } from "../ajv";
+import { createAdventureSchema } from "../ajv/adventures";
+import { createUserSchema } from "../ajv/users";
+import { updateUserSchema } from "../ajv/me";
+import { loginSchema } from "../ajv/login";
 import addFormats from "ajv-formats";
 import "dotenv/config";
 import Ajv from "ajv";

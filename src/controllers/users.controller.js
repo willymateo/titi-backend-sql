@@ -1,6 +1,5 @@
 import { Locations } from "../db/models/locations";
 import { jwtSecret } from "../config/app.config";
-import { Genders } from "../db/models/genders";
 import { Phones } from "../db/models/phones";
 import { Users } from "../db/models/users";
 import jwt from "jsonwebtoken";
@@ -54,31 +53,6 @@ const getUserByUsername = async (req, res) => {
   return res.status(200).send(userJSON);
 };
 
-const getUserByToken = async (req, res) => {
-  const { id } = req.decodedToken;
-
-  const user = await Users.findOne({
-    where: { id },
-    attributes: { exclude: ["idRole", "passwordHash", "createdAt", "updatedAt", "deletedAt"] },
-  });
-
-  if (!user) {
-    return res.status(409).send({
-      error: "User not found",
-    });
-  }
-
-  const userJSON = await userToJson(user);
-
-  if (userJSON.error) {
-    return res.status(409).send({
-      error: `Some error occurred: ${userJSON.error}`,
-    });
-  }
-
-  return res.status(200).send(userJSON);
-};
-
 const getAdventuresByUsername = async (req, res) => {
   const { username } = req.params;
 
@@ -112,61 +86,6 @@ const getAdventuresByUsername = async (req, res) => {
   );
 
   return res.status(200).send(adventures);
-};
-
-const getAdventuresByToken = async (req, res) => {
-  const { id } = req.decodedToken;
-
-  const user = await Users.findOne({
-    where: { id },
-  });
-
-  if (!user) {
-    return res.status(409).send({
-      error: "User not found",
-    });
-  }
-
-  let adventures = await user.getAdventures({
-    attributes: {
-      exclude: ["createdAt", "updatedAt", "deletedAt"],
-    },
-  });
-
-  adventures = await Promise.all(
-    adventures.map(async adventure => {
-      const adventureJSON = await adventureToJson(adventure);
-
-      if (adventureJSON.error) {
-        throw adventureJSON.error;
-      }
-
-      return adventureJSON;
-    })
-  );
-
-  return res.status(200).send(adventures);
-};
-
-const uploadProfilePhoto = async (req, res) => {
-  const { id } = req.decodedToken;
-
-  const user = await Users.findOne({
-    where: { id },
-    attributes: ["id", "photoUrl"],
-  });
-
-  if (!user) {
-    return res.status(409).send({
-      error: "User not found",
-    });
-  }
-
-  console.log(req.files);
-
-  return res.status(200).send({
-    message: "Photo uploaded successfully",
-  });
 };
 
 const createUser = async (req, res) => {
@@ -223,51 +142,6 @@ const createUser = async (req, res) => {
     console.log(err);
     return res.status(409).send({
       error: `Some error occurred while creating the new user: ${err}`,
-    });
-  }
-};
-
-const updateUser = async (req, res) => {
-  try {
-    const { password, idGender, ...payload } = req.body;
-    const { id } = req.decodedToken;
-
-    const user = await Users.findOne({
-      where: { id },
-    });
-
-    // Not found user.
-    if (!user) {
-      return res.status(404).send({
-        error: "User not found",
-      });
-    }
-
-    user.set(payload);
-
-    if (password) {
-      const passwordHash = await Users.encryptPassword(password);
-      user.set({ passwordHash });
-    }
-
-    if (idGender) {
-      const gender = await Genders.findByPk(idGender);
-      if (gender) {
-        user.idGender = gender.id;
-      } else {
-        throw new Error("Invalid idGender");
-      }
-    }
-
-    await user.validate();
-    await user.save();
-    return res.status(200).send({
-      message: "User updated successfully",
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(409).send({
-      error: `Some error occurred while updating the user: ${err}`,
     });
   }
 };
@@ -345,12 +219,10 @@ const userToJson = async user => {
 };
 
 export {
+  userToJson,
   createUser,
-  updateUser,
   getAllUsers,
-  getUserByToken,
+  adventureToJson,
   getUserByUsername,
-  uploadProfilePhoto,
-  getAdventuresByToken,
   getAdventuresByUsername,
 };
