@@ -6,6 +6,10 @@ import addFormats from "ajv-formats";
 import "dotenv/config";
 import Ajv from "ajv";
 
+// Server
+const nodeEnvironment = process.env.NODE_ENV || "development";
+const port = process.env.PORT || 0;
+
 // morgan
 const morganFormat =
   "● [:date[iso]] [:remote-addr :remote-user] :method :url HTTP/:http-version :status :response-time ms - :res[content-length]";
@@ -34,10 +38,12 @@ const validateCreateAdventureSchema = ajv.compile(createAdventureSchema);
 
 export {
   ajv,
+  port,
   jwtSecret,
   saltRounds,
   morganFormat,
   USERNAME_REGEX,
+  nodeEnvironment,
   USERNAME_MIN_LENGTH,
   USERNAME_MAX_LENGTH,
   validateLoginSchema,
