@@ -101,6 +101,20 @@ const updateUserSchema = {
       type: "string",
       format: "email",
     },
+    photoUrl: {
+      type: "string",
+      format: "url",
+    },
+    biography: {
+      type: "string",
+    },
+    bornDate: {
+      type: "string",
+      format: "date-time",
+    },
+    idGender: {
+      type: "integer",
+    },
   },
 };
 

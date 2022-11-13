@@ -1,5 +1,6 @@
 import { Locations } from "../db/models/locations";
 import { jwtSecret } from "../config/app.config";
+import { Genders } from "../db/models/genders";
 import { Phones } from "../db/models/phones";
 import { Users } from "../db/models/users";
 import jwt from "jsonwebtoken";
@@ -228,7 +229,7 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const { password, ...payload } = req.body;
+    const { password, idGender, ...payload } = req.body;
     const { id } = req.decodedToken;
 
     const user = await Users.findOne({
@@ -247,6 +248,15 @@ const updateUser = async (req, res) => {
     if (password) {
       const passwordHash = await Users.encryptPassword(password);
       user.set({ passwordHash });
+    }
+
+    if (idGender) {
+      const gender = await Genders.findByPk(idGender);
+      if (gender) {
+        user.idGender = gender.id;
+      } else {
+        throw new Error("Invalid idGender");
+      }
     }
 
     await user.validate();
