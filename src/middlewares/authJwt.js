@@ -29,7 +29,7 @@ const verifyToken = (req, res, next) => {
         });
       }
 
-      req.decodedToken = decodedToken;
+      req.decodedToken = { ...decodedToken, user };
       next();
     });
   } catch (error) {

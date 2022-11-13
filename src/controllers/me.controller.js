@@ -4,16 +4,7 @@ import { Users } from "../db/models/users";
 
 const getUserAccount = async (req, res) => {
   try {
-    const { id } = req.decodedToken;
-
-    const user = await Users.findByPk(id, {
-      attributes: { exclude: ["idRole", "passwordHash", "createdAt", "updatedAt", "deletedAt"] },
-    });
-
-    if (!user) {
-      throw new Error("User not found");
-    }
-
+    const { user } = req.decodedToken;
     const userJSON = await userToJson(user);
 
     if (userJSON.error) {
@@ -30,14 +21,7 @@ const getUserAccount = async (req, res) => {
 const updateUserAccount = async (req, res) => {
   try {
     const { password, idGender, ...payload } = req.body;
-    const { id } = req.decodedToken;
-
-    const user = await Users.findByPk(id, {});
-
-    // Not found user.
-    if (!user) {
-      throw new Error("User not found");
-    }
+    const { user } = req.decodedToken;
 
     user.set(payload);
 
@@ -70,15 +54,7 @@ const updateUserAccount = async (req, res) => {
 
 const getAdventures = async (req, res) => {
   try {
-    const { id } = req.decodedToken;
-
-    const user = await Users.findByPk(id, {
-      attributes: ["id"],
-    });
-
-    if (!user) {
-      throw new Error("User not found");
-    }
+    const { user } = req.decodedToken;
 
     let adventures = await user.getAdventures({
       attributes: {
@@ -107,16 +83,7 @@ const getAdventures = async (req, res) => {
 
 const uploadProfilePhoto = async (req, res) => {
   try {
-    const { id } = req.decodedToken;
-
-    const user = await Users.findByPk(id, {
-      attributes: ["id", "photoUrl"],
-    });
-
-    if (!user) {
-      throw new Error("User not found");
-    }
-
+    const { user } = req.decodedToken;
     console.log(req.files);
 
     return res.status(200).send({

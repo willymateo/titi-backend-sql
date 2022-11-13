@@ -50,11 +50,12 @@ const getAdventureById = async (req, res) => {
 
 const createAdventure = async (req, res) => {
   try {
+    const { id: idPublisher } = req.decodedToken;
     const startDateTime = parseISO(req.body.startDateTime);
     const endDateTime = parseISO(req.body.endDateTime);
     const newAdventureData = {
       ...req.body,
-      idPublisher: req.decodedToken.id,
+      idPublisher,
       startDateTime,
       endDateTime,
     };
