@@ -14,8 +14,9 @@ const server = app.listen(port, async () => {
       expressListRoutes(app);
     }
 
+    const { address, port } = server.address();
     console.log(`Environment: ${nodeEnvironment}`);
-    console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on ${address}${port}`);
   } catch (error) {
     console.log(error);
   }
