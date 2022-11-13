@@ -1,4 +1,4 @@
-import { validateCreateAdventureSchema } from "../../config/app.config";
+import { validateCreateAdventureSchema } from "../config/app.config";
 import { validateDTO } from "./validateDTO";
 
 const validateCreateAdventureDTO = (req, res, next) =>

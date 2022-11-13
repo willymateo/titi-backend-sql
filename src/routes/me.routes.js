@@ -1,4 +1,4 @@
-import { validateUpdateUserDTO } from "../middlewares/validateDTO/users";
+import { validateUpdateUserDTO } from "../middlewares/validateUsersDTO";
 import { verifyToken } from "../middlewares/authJwt";
 import express from "express";
 import {

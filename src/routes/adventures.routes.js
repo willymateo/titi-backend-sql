@@ -1,4 +1,4 @@
-import { validateCreateAdventureDTO } from "../middlewares/validateDTO/adventures";
+import { validateCreateAdventureDTO } from "../middlewares/validateAdventuresDTO";
 import { verifyToken } from "../middlewares/authJwt";
 import express from "express";
 import {
