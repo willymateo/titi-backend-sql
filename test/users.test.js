@@ -34,6 +34,10 @@ const testUsers = [
     firstNames: "Conor",
     lastNames: "McGregor",
     email: "conormcgrego@gmail.com",
+    photoUrl: "facebook.com/connormcgregor",
+    biography: "UFC fighter",
+    bornDate: "2000-09-02",
+    idGender: 2,
     phone: {
       countryCode: 593,
       phoneNumber: "950257102",
@@ -42,12 +46,6 @@ const testUsers = [
       latitude: "431431",
       longitude: "43143124",
     },
-    profileInformation: {
-      photoUrl: "facebook.com/connormcgregor",
-      biography: "UFC fighter",
-      bornDate: "2000-09-02",
-      idGender: 2,
-    },
   },
   {
     username: "7mark_zuckerberg",
@@ -55,6 +53,10 @@ const testUsers = [
     firstNames: "Mark",
     lastNames: "Zuckerberg",
     email: "mark.zuckerberg@gmail.com",
+    photoUrl: "facebook.com/markzuckerberg",
+    biography: "Facebook CEO",
+    bornDate: "2004-07-31",
+    idGender: 1,
     phone: {
       countryCode: 593,
       phoneNumber: "949555555",
@@ -62,12 +64,6 @@ const testUsers = [
     location: {
       latitude: "3196727",
       longitude: "6943923",
-    },
-    profileInformation: {
-      photoUrl: "facebook.com/markzuckerberg",
-      biography: "Facebook CEO",
-      bornDate: "2004-07-31",
-      idGender: 1,
     },
   },
 ];
@@ -79,6 +75,19 @@ const userMatch = {
   firstNames: expect.any(String),
   lastNames: expect.any(String),
   email: expect.any(String),
+  photoUrl: expect.any(String),
+  bornDate: expect.any(String),
+  biography: expect.any(String),
+  numLater: expect.any(Number),
+  numMissing: expect.any(Number),
+  currentState: {
+    id: 1,
+    state: expect.any(String),
+  },
+  gender: {
+    id: expect.any(Number),
+    gender: expect.any(String),
+  },
   phone: {
     id: expect.stringMatching(uuidv4Regex),
     countryCode: expect.any(Number),
@@ -88,22 +97,6 @@ const userMatch = {
     id: expect.stringMatching(uuidv4Regex),
     latitude: expect.any(String),
     longitude: expect.any(String),
-  },
-  profileInformation: {
-    id: expect.stringMatching(uuidv4Regex),
-    currentState: {
-      id: 1,
-      state: expect.any(String),
-    },
-    gender: {
-      id: expect.any(Number),
-      gender: expect.any(String),
-    },
-    photoUrl: expect.any(String),
-    bornDate: expect.any(String),
-    biography: expect.any(String),
-    numLater: expect.any(Number),
-    numMissing: expect.any(Number),
   },
 };
 
@@ -158,25 +151,18 @@ describe("Tests with CORRECT data", () => {
         expect(userRes).toHaveProperty("firstNames", testUser.firstNames);
         expect(userRes).toHaveProperty("lastNames", testUser.lastNames);
         expect(userRes).toHaveProperty("email", testUser.email);
+        expect(userRes).toHaveProperty("photoUrl", testUser.photoUrl);
+        expect(userRes).toHaveProperty("biography", testUser.biography);
+        expect(userRes).toHaveProperty("numLater");
+        expect(userRes).toHaveProperty("numMissing");
+        expect(userRes).toHaveProperty("currentState.id");
+        expect(userRes).toHaveProperty("currentState.state");
         expect(userRes.phone).toHaveProperty("id");
         expect(userRes.phone).toHaveProperty("countryCode");
         expect(userRes.phone).toHaveProperty("phoneNumber");
         expect(userRes).toHaveProperty("location.id");
         expect(userRes).toHaveProperty("location.latitude", testUser.location.latitude);
         expect(userRes).toHaveProperty("location.longitude", testUser.location.longitude);
-        expect(userRes).toHaveProperty("profileInformation.id");
-        expect(userRes).toHaveProperty(
-          "profileInformation.photoUrl",
-          testUser.profileInformation.photoUrl
-        );
-        expect(userRes).toHaveProperty(
-          "profileInformation.biography",
-          testUser.profileInformation.biography
-        );
-        expect(userRes).toHaveProperty("profileInformation.numLater");
-        expect(userRes).toHaveProperty("profileInformation.numMissing");
-        expect(userRes).toHaveProperty("profileInformation.currentState.id");
-        expect(userRes).toHaveProperty("profileInformation.currentState.state");
       });
     });
   });

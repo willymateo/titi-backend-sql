@@ -9,9 +9,12 @@ const createUserSchema = {
     "firstNames",
     "lastNames",
     "email",
+    "photoUrl",
+    "biography",
+    "bornDate",
+    "idGender",
     "phone",
     "location",
-    "profileInformation",
   ],
   properties: {
     username: {
@@ -32,6 +35,20 @@ const createUserSchema = {
     email: {
       type: "string",
       format: "email",
+    },
+    photoUrl: {
+      type: "string",
+      format: "url",
+    },
+    biography: {
+      type: "string",
+    },
+    bornDate: {
+      type: "string",
+      format: "date-time",
+    },
+    idGender: {
+      type: "integer",
     },
     phone: {
       type: "object",
@@ -54,26 +71,6 @@ const createUserSchema = {
         },
         longitude: {
           type: "string",
-        },
-      },
-    },
-    profileInformation: {
-      type: "object",
-      required: ["photoUrl", "biography", "bornDate", "idGender"],
-      properties: {
-        photoUrl: {
-          type: "string",
-          format: "url",
-        },
-        biography: {
-          type: "string",
-        },
-        bornDate: {
-          type: "string",
-          format: "date-time",
-        },
-        idGender: {
-          type: "integer",
         },
       },
     },

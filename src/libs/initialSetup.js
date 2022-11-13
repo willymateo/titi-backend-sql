@@ -5,7 +5,6 @@ import { Genders } from "../db/models/genders";
 
 // Load other models
 import "../db/models/engagedUsersAdventures";
-import "../db/models/profileInformation";
 import "../db/models/islandMembers";
 import "../db/models/adventures";
 import "../db/models/locations";

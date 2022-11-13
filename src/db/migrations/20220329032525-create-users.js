@@ -25,6 +25,28 @@ module.exports = {
           onUpdate: "CASCADE",
           comment: "FK to current user role.",
         },
+        id_current_state: {
+          type: Sequelize.SMALLINT,
+          allowNull: false,
+          references: {
+            model: "user_states", // Table name.
+            key: "id",
+          },
+          onDelete: "RESTRICT",
+          onUpdate: "CASCADE",
+          comment: "FK to current status.",
+        },
+        id_gender: {
+          type: Sequelize.SMALLINT,
+          allowNull: false,
+          references: {
+            model: "genders", // Table name.
+            key: "id",
+          },
+          onDelete: "RESTRICT",
+          onUpdate: "CASCADE",
+          comment: "FK to gender.",
+        },
         username: {
           type: Sequelize.STRING(USERNAME_MAX_LENGTH),
           allowNull: false,
@@ -49,6 +71,34 @@ module.exports = {
           allowNull: false,
           unique: true,
           comment: "Email linked with the account. It must be unique.",
+        },
+        photo_url: {
+          type: Sequelize.STRING,
+          allowNull: true,
+          comment: "The url to profile photo",
+        },
+        born_date: {
+          type: Sequelize.DATEONLY,
+          allowNull: false,
+          comment: "Born date to identify if the user is of legal age",
+        },
+        biography: {
+          type: Sequelize.STRING,
+          allowNull: true,
+          comment: "User description or biography.",
+        },
+        num_later: {
+          type: Sequelize.SMALLINT,
+          allowNull: false,
+          defaultValue: 0,
+          comment: "Number of times the user has been engaged in an adventure and he arrived late.",
+        },
+        num_missing: {
+          type: Sequelize.SMALLINT,
+          allowNull: false,
+          defaultValue: 0,
+          comment:
+            "Number of times the user has been engaged in an adventure and he did not attend.",
         },
         createdAt: {
           field: "created_at",

@@ -89,19 +89,13 @@ const adventureToJson = async adventure => {
       },
     });
 
-    const profileInformation = await publisher.getProfileInformation({
+    const publisherState = await publisher.getUserState({
       attributes: {
         exclude: ["idUser", "createdAt", "updatedAt", "deletedAt"],
       },
     });
 
-    const publisherState = await profileInformation.getUserState({
-      attributes: {
-        exclude: ["idUser", "createdAt", "updatedAt", "deletedAt"],
-      },
-    });
-
-    const publisherGender = await profileInformation.getGender({
+    const publisherGender = await publisher.getGender({
       attributes: {
         exclude: ["createdAt", "updatedAt", "deletedAt"],
       },
@@ -127,16 +121,13 @@ const adventureToJson = async adventure => {
         firstNames: publisher.firstNames,
         lastNames: publisher.lastNames,
         email: publisher.email,
-        profileInformation: {
-          id: profileInformation.id,
-          photoUrl: profileInformation.photoUrl,
-          bornDate: profileInformation.bornDate,
-          biography: profileInformation.biography,
-          numLater: profileInformation.numLater,
-          numMissing: profileInformation.numMissing,
-          currentState: publisherState,
-          gender: publisherGender,
-        },
+        photoUrl: publisher.photoUrl,
+        bornDate: publisher.bornDate,
+        biography: publisher.biography,
+        numLater: publisher.numLater,
+        numMissing: publisher.numMissing,
+        currentState: publisherState,
+        gender: publisherGender,
       },
     };
   } catch (error) {

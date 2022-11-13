@@ -1,4 +1,3 @@
-import { ProfileInformation } from "../db/models/profileInformation";
 import { Locations } from "../db/models/locations";
 import { jwtSecret } from "../config/app.config";
 import { Phones } from "../db/models/phones";
@@ -151,12 +150,12 @@ const getAdventuresByToken = async (req, res) => {
 const uploadProfilePhoto = async (req, res) => {
   const { id } = req.decodedToken;
 
-  const profileInformation = await ProfileInformation.findOne({
-    where: { idUser: id },
-    attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
+  const user = await Users.findOne({
+    where: { id },
+    attributes: ["id", "photoUrl"],
   });
 
-  if (!profileInformation) {
+  if (!user) {
     return res.status(409).send({
       error: "User not found",
     });
@@ -171,17 +170,11 @@ const uploadProfilePhoto = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const {
-      password,
-      phone: newPhoneData,
-      location: newLocationData,
-      profileInformation: newProfileInformationData,
-      ...newUserData
-    } = req.body;
+    const { password, phone: newPhoneData, location: newLocationData, ...newUserData } = req.body;
 
     const passwordHash = await Users.encryptPassword(password);
 
-    if (!ProfileInformation.isOfLegalAge(newProfileInformationData.bornDate)) {
+    if (!Users.isOfLegalAge(newUserData.bornDate)) {
       return res.status(400).send({
         error: "The new user are not of legal age",
       });
@@ -196,26 +189,17 @@ const createUser = async (req, res) => {
       ...newLocationData,
       idUser: newUserInstance.id,
     });
-    const newProfileInformationInstance = ProfileInformation.build({
-      ...newProfileInformationData,
-      idUser: newUserInstance.id,
-    });
 
     // Validate data
     await Promise.all([
       newUserInstance.validate(),
       newPhoneInstance.validate(),
       newLocationInstance.validate(),
-      newProfileInformationInstance.validate(),
     ]);
 
     // Save the registers in the DB
     await newUserInstance.save();
-    await Promise.all([
-      newPhoneInstance.save(),
-      newLocationInstance.save(),
-      newProfileInformationInstance.save(),
-    ]);
+    await Promise.all([newPhoneInstance.save(), newLocationInstance.save()]);
 
     // Token creation.
     const payload = { id: newUserInstance.id };
@@ -320,17 +304,11 @@ const userToJson = async user => {
       attributes: ["id", "latitude", "longitude"],
     });
 
-    const profileInformation = await user.getProfileInformation({
-      attributes: {
-        exclude: ["idUser", "createdAt", "updatedAt", "deletedAt"],
-      },
-    });
-
-    const userState = await profileInformation.getUserState({
+    const userState = await user.getUserState({
       attributes: ["id", "state"],
     });
 
-    const gender = await profileInformation.getGender({
+    const gender = await user.getGender({
       attributes: ["id", "gender"],
     });
 
@@ -340,18 +318,15 @@ const userToJson = async user => {
       firstNames: user.firstNames,
       lastNames: user.lastNames,
       email: user.email,
+      photoUrl: user.photoUrl,
+      bornDate: user.bornDate,
+      biography: user.biography,
+      numLater: user.numLater,
+      numMissing: user.numMissing,
+      currentState: userState,
+      gender,
       phone: phone[0],
       location: location[0],
-      profileInformation: {
-        id: profileInformation.id,
-        photoUrl: profileInformation.photoUrl,
-        bornDate: profileInformation.bornDate,
-        biography: profileInformation.biography,
-        numLater: profileInformation.numLater,
-        numMissing: profileInformation.numMissing,
-        currentState: userState,
-        gender,
-      },
     };
   } catch (error) {
     console.log(error);
