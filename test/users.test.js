@@ -19,8 +19,8 @@ afterAll(async () => {
       },
       force: true,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   }
 });
 
@@ -40,12 +40,12 @@ describe("Tests with CORRECT data", () => {
         expect(res.body).toHaveProperty("message", "Success sign up");
         expect(res.body).toHaveProperty("token");
 
-        const token = res.body.token;
+        token = res.body.token;
+      });
 
-        test("Verify the token integrity", () => {
-          const decodedToken = jwt.verify(token, jwtSecret);
-          expect(decodedToken).toHaveProperty("id");
-        });
+      test("Verify the token integrity", () => {
+        const decodedToken = jwt.verify(token, jwtSecret);
+        expect(decodedToken).toHaveProperty("id");
       });
     });
   });
@@ -64,7 +64,7 @@ describe("Tests with CORRECT data", () => {
   });
 
   describe("GET /users/:username => Get the specific user info", () => {
-    testUsers.forEach(testUser => {
+    testUsers.forEach((testUser, index) => {
       test("Should respond with a 200 OK and the user info", async () => {
         const res = await api
           .get(`/api/users/${testUser.username}`)

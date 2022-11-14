@@ -7,9 +7,9 @@ const testUsers = [
     firstNames: "Conor",
     lastNames: "McGregor",
     email: "conormcgrego@gmail.com",
-    photoUrl: "facebook.com/connormcgregor",
+    photoUrl: "https://facebook.com/connor.mcgregor",
     biography: "UFC fighter",
-    bornDate: "2000-09-02",
+    bornDate: "2000-07-29T23:05:07.832Z",
     idGender: 2,
     phone: {
       countryCode: 593,
@@ -26,9 +26,9 @@ const testUsers = [
     firstNames: "Mark",
     lastNames: "Zuckerberg",
     email: "mark.zuckerberg@gmail.com",
-    photoUrl: "facebook.com/markzuckerberg",
+    photoUrl: "https://facebook.com/markzuckerberg",
     biography: "Facebook CEO",
-    bornDate: "2004-07-31",
+    bornDate: "2000-07-29T23:05:07.832Z",
     idGender: 1,
     phone: {
       countryCode: 593,

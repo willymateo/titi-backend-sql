@@ -14,8 +14,12 @@ import {
 // Test hooks
 // ==========================================================
 beforeAll(async () => {
-  const passwordHash = await Users.encryptPassword(testUser.password);
-  await Users.create({ ...testUser, passwordHash });
+  try {
+    const passwordHash = await Users.encryptPassword(testUser.password);
+    await Users.create({ ...testUser, passwordHash });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 afterAll(async () => {
@@ -24,8 +28,8 @@ afterAll(async () => {
       where: { username: testUser.username },
       force: true,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   }
 });
 
@@ -61,7 +65,7 @@ describe("Tests with INCORRECT data", () => {
 
       expect(res.statusCode).toBe(400);
       expect(res.body).toEqual({
-        error: "Incomplete credentials. Should receive 'username' and 'password' params",
+        error: "Invalid body schema",
       });
     });
   });
