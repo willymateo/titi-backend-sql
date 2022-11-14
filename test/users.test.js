@@ -1,3 +1,4 @@
+import { testUsers, userMatch } from "./mock/users.mock";
 import { jwtSecret } from "../src/config/app.config";
 import { Users } from "../src/db/models/users";
 import { app } from "../src/app";
@@ -23,82 +24,7 @@ afterAll(async () => {
   }
 });
 
-// ==========================================================
-// Test data
-// ==========================================================
 const api = request(app);
-const testUsers = [
-  {
-    username: "connor.mcgregor9",
-    password: "titi2022",
-    firstNames: "Conor",
-    lastNames: "McGregor",
-    email: "conormcgrego@gmail.com",
-    photoUrl: "facebook.com/connormcgregor",
-    biography: "UFC fighter",
-    bornDate: "2000-09-02",
-    idGender: 2,
-    phone: {
-      countryCode: 593,
-      phoneNumber: "950257102",
-    },
-    location: {
-      latitude: "431431",
-      longitude: "43143124",
-    },
-  },
-  {
-    username: "7mark_zuckerberg",
-    password: "titi2022",
-    firstNames: "Mark",
-    lastNames: "Zuckerberg",
-    email: "mark.zuckerberg@gmail.com",
-    photoUrl: "facebook.com/markzuckerberg",
-    biography: "Facebook CEO",
-    bornDate: "2004-07-31",
-    idGender: 1,
-    phone: {
-      countryCode: 593,
-      phoneNumber: "949555555",
-    },
-    location: {
-      latitude: "3196727",
-      longitude: "6943923",
-    },
-  },
-];
-
-const uuidv4Regex = /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
-const userMatch = {
-  id: expect.stringMatching(uuidv4Regex),
-  username: expect.any(String),
-  firstNames: expect.any(String),
-  lastNames: expect.any(String),
-  email: expect.any(String),
-  photoUrl: expect.any(String),
-  bornDate: expect.any(String),
-  biography: expect.any(String),
-  numLater: expect.any(Number),
-  numMissing: expect.any(Number),
-  currentState: {
-    id: 1,
-    state: expect.any(String),
-  },
-  gender: {
-    id: expect.any(Number),
-    gender: expect.any(String),
-  },
-  phone: {
-    id: expect.stringMatching(uuidv4Regex),
-    countryCode: expect.any(Number),
-    phoneNumber: expect.any(String),
-  },
-  location: {
-    id: expect.stringMatching(uuidv4Regex),
-    latitude: expect.any(String),
-    longitude: expect.any(String),
-  },
-};
 
 // ==========================================================
 // Test scenarios
@@ -114,12 +40,12 @@ describe("Tests with CORRECT data", () => {
         expect(res.body).toHaveProperty("message", "Success sign up");
         expect(res.body).toHaveProperty("token");
 
-        token = res.body.token;
-      });
+        const token = res.body.token;
 
-      test("Verify the token integrity", () => {
-        const decodedToken = jwt.verify(token, jwtSecret);
-        expect(decodedToken).toHaveProperty("id");
+        test("Verify the token integrity", () => {
+          const decodedToken = jwt.verify(token, jwtSecret);
+          expect(decodedToken).toHaveProperty("id");
+        });
       });
     });
   });

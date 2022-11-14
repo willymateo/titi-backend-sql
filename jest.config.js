@@ -59,10 +59,10 @@ module.exports = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  globalSetup: "./src/config/jest.globalSetup.js",
+  // globalSetup: "./src/config/jest.globalSetup.js",
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  globalTeardown: "./src/config/jest.globalTeardown.js",
+  // globalTeardown: "./src/config/jest.globalTeardown.js",
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
@@ -78,8 +78,8 @@ module.exports = {
   // An array of file extensions your modules use
   moduleFileExtensions: [
     "js",
-    "jsx",
     "mjs",
+    // "jsx",
     // "cjs",
     // "ts",
     // "tsx",
@@ -172,7 +172,7 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    "^.+\\.(js|jsx|mjs|ts|tsx)$": "babel-jest",
+    "^.+\\.(js|mjs)$": "babel-jest",
   },
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
@@ -184,7 +184,7 @@ module.exports = {
   // unmockedModulePathPatterns: undefined,
 
   // Indicates whether each individual test should be reported during the run
-  verbose: true,
+  // verbose: true,
 
   // An array of regexp patterns that are matched against all source file paths before re-running tests in watch mode
   // watchPathIgnorePatterns: [],
