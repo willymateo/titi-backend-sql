@@ -17,7 +17,8 @@ const verifyToken = (req, res, next) => {
 
     jwt.verify(token, jwtSecret, async (error, decodedToken) => {
       if (error) {
-        throw error;
+        console.log(error);
+        return res.status(409).send({ error: `${error.name} - ${error.message}` });
       }
 
       const user = await Users.findByPk(decodedToken.id, {});

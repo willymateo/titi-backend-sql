@@ -30,7 +30,8 @@ const login = async (req, res) => {
 
     jwt.sign(payload, jwtSecret, (error, token) => {
       if (error) {
-        throw error;
+        console.log(error);
+        return res.status(409).send({ error: `${error.name} - ${error.message}` });
       }
 
       return res.status(200).send({
