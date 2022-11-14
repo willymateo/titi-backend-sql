@@ -13,7 +13,7 @@ const login = async (req, res) => {
     // Not signed up user.
     if (!user) {
       return res.status(401).send({
-        error: `Invalid username or password`,
+        error: "Invalid username or password",
       });
     }
 
@@ -21,30 +21,27 @@ const login = async (req, res) => {
     // Incorrect password.
     if (!matchPassword) {
       return res.status(401).send({
-        error: `Invalid username or password`,
+        error: "Invalid username or password",
       });
     }
 
     // Token creation.
     const payload = { id: user.id };
 
-    jwt.sign(payload, jwtSecret, (err, token) => {
-      if (err) {
-        console.log(err);
-        return res.status(409).send({
-          error: `Some error occurred while signing in: ${err}`,
-        });
+    jwt.sign(payload, jwtSecret, (error, token) => {
+      if (error) {
+        console.log(error);
+        return res.status(409).send({ error: `${error.name} - ${error.message}` });
       }
+
       return res.status(200).send({
-        message: `Success authentication`,
+        message: "Success authentication",
         token,
       });
     });
-  } catch (err) {
-    console.log(err);
-    return res.status(409).send({
-      error: `Some error occurred while authenticating user: ${err}`,
-    });
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
   }
 };
 

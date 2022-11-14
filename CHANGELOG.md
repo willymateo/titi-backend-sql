@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 The date format used is DD/MM/YYYY.
 
+## [[1.1.0]](https://github.com/willymateo/titi-backend-sql/pull/5) - 12/11/2022
+
+### Changed
+
+- Merge profileInformation model into users model
+- Move \*/users/logged routes to /me/acccount route
+
 ## [[1.0.0]](https://github.com/willymateo/titi-backend-sql/pull/4) - 11/11/2022
 
 ### Added

@@ -1,9 +1,10 @@
+import { morganFormat, nodeEnvironment } from "./config/app.config";
 import adventuresRouter from "./routes/adventures.routes";
 import gendersRouter from "./routes/genders.routes";
-import { morganFormat } from "./config/app.config";
 import usersRouter from "./routes/users.routes";
 import authRouter from "./routes/auth.routes";
 import fileUpload from "express-fileupload";
+import meRouter from "./routes/me.routes";
 import favicon from "serve-favicon";
 import pkg from "../package.json";
 import express from "express";
@@ -28,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 // Routes.
 app.get("/", (req, res) => {
   res.send({
-    environment: process.env.NODE_ENV,
+    environment: nodeEnvironment,
     name: app.get("pkg").name,
     author: app.get("pkg").author,
     version: app.get("pkg").version,
@@ -37,6 +38,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/adventures", adventuresRouter);
 app.use("/api/genders", gendersRouter);
+app.use("/api/me", meRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
 

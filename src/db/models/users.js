@@ -1,7 +1,10 @@
 "use strict";
+import { intervalToDuration, isValid, parseISO } from "date-fns";
+import { UserStates } from "./userStates";
 import { sequelize } from "../connection";
 import { UserRoles } from "./userRoles";
 import { DataTypes } from "sequelize";
+import { Genders } from "./genders";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import {
@@ -29,6 +32,16 @@ const Users = sequelize.define(
       type: DataTypes.SMALLINT,
       allowNull: false,
       comment: "FK to current user role.",
+    },
+    idCurrentState: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      comment: "FK to current status.",
+    },
+    idGender: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      comment: "FK to gender.",
     },
     username: {
       type: DataTypes.STRING(USERNAME_MAX_LENGTH),
@@ -71,6 +84,42 @@ const Users = sequelize.define(
       },
       comment: "Email linked with the account. It must be unique.",
     },
+    photoUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        isUrl: true,
+      },
+      comment: "The url to profile photo.",
+    },
+    bornDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      comment: "Born date to identify if the user is of legal age",
+    },
+    biography: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      comment: "User description or biography.",
+    },
+    numLater: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      defaultValue: 0,
+      validate: {
+        min: 0,
+      },
+      comment: "Number of times the user has been engaged in an adventure and he arrived late.",
+    },
+    numMissing: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      defaultValue: 0,
+      validate: {
+        min: 0,
+      },
+      comment: "Number of times the user has been engaged in an adventure and he did not attend.",
+    },
   },
   {
     paranoid: true,
@@ -91,12 +140,44 @@ UserRoles.hasMany(Users, {
   onUpdate: "CASCADE",
 });
 
-Users.encryptPassword = async password => {
-  return await bcrypt.hash(password, saltRounds);
-};
+Users.belongsTo(UserStates, {
+  foreignKey: "idCurrentState",
+});
+
+UserStates.hasMany(Users, {
+  foreignKey: "idCurrentState",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Users.belongsTo(Genders, {
+  foreignKey: "idGender",
+});
+
+Genders.hasMany(Users, {
+  foreignKey: "idGender",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
 
 Users.prototype.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.passwordHash);
+};
+
+Users.encryptPassword = async password => await bcrypt.hash(password, saltRounds);
+
+Users.isOfLegalAge = bornDateString => {
+  const bornDate = parseISO(bornDateString);
+  if (!isValid(bornDate)) {
+    return false;
+  }
+
+  const { years } = intervalToDuration({
+    start: bornDate,
+    end: new Date(),
+  });
+
+  return years >= 18;
 };
 
 // Hooks
@@ -107,6 +188,13 @@ Users.beforeValidate(async (user, options) => {
     });
     user.idRole = normalRole.id;
   }
+
+  if (!user.idCurrentState) {
+    const availableState = await UserStates.findOne({
+      where: { state: "available" },
+    });
+    user.idCurrentState = availableState.id;
+  }
 });
 
 Users.beforeCreate(async (user, options) => {
@@ -116,15 +204,17 @@ Users.beforeCreate(async (user, options) => {
     });
     user.idRole = normalRole.id;
   }
+
+  if (!user.idCurrentState) {
+    const availableState = await UserStates.findOne({
+      where: { state: "available" },
+    });
+    user.idCurrentState = availableState.id;
+  }
 });
 
 // To correct
 // Users.afterDestroy(async (user, options) => {
-// const profileInformation = await user.getProfileInformation();
-// if (profileInformation) {
-// await profileInformation.destroy();
-// }
-
 // const locations = await user.getLocations();
 // if (locations) {
 // await locations.destroy();

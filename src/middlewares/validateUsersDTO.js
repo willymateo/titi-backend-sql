@@ -1,4 +1,4 @@
-import { validateCreateUserSchema, validateUpdateUserSchema } from "../../config/app.config";
+import { validateCreateUserSchema, validateUpdateUserSchema } from "../config/app.config";
 import { validateDTO } from "./validateDTO";
 
 const validateCreateUserDTO = (req, res, next) =>

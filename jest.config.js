@@ -14,7 +14,7 @@ module.exports = {
   // cacheDirectory: "/tmp/jest_rs",
 
   // Automatically clear mock calls, instances, contexts and results before every test
-  clearMocks: true,
+  // clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: true,
@@ -59,10 +59,10 @@ module.exports = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  globalSetup: "./src/config/jest.globalSetup.js",
+  // globalSetup: "./src/config/jest.globalSetup.js",
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  globalTeardown: "./src/config/jest.globalTeardown.js",
+  // globalTeardown: "./src/config/jest.globalTeardown.js",
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
@@ -78,8 +78,8 @@ module.exports = {
   // An array of file extensions your modules use
   moduleFileExtensions: [
     "js",
-    "jsx",
     "mjs",
+    // "jsx",
     // "cjs",
     // "ts",
     // "tsx",
@@ -135,7 +135,7 @@ module.exports = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  // setupFilesAfterEnv: [],
+  setupFilesAfterEnv: ["<rootDir>/src/config/jest.afterEnv.js"],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
@@ -159,7 +159,7 @@ module.exports = {
   // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  testPathIgnorePatterns: ["/node_modules/", "/build/"],
+  testPathIgnorePatterns: ["/node_modules/", "/build/", "/test/mock/"],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   testRegex: ["(/test/.*|(\\.|/)(test|spec))\\.(jsx?|js?|tsx?|ts?)$"],
@@ -172,7 +172,7 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    "^.+\\.(js|jsx|mjs|ts|tsx)$": "babel-jest",
+    "^.+\\.(js|mjs)$": "babel-jest",
   },
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
