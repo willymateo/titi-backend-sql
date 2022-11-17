@@ -123,6 +123,8 @@ const createUser = async (req, res, next) => {
     await Promise.all([newPhoneInstance.save(), newLocationInstance.save()]);
 
     req.tokenPayload = { id: newUserInstance.id };
+    req.onSucessMessage = "Success sign up";
+    req.onSucessCode = 201;
     next();
   } catch (error) {
     console.log(error);

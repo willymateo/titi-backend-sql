@@ -40,6 +40,8 @@ const verifyToken = (req, res, next) => {
 };
 
 const createToken = (req, res) => {
+  const message = req.onSucessMessage || "Success authentication";
+  const onSucessCode = req.onSucessCode || 200;
   const payload = req.tokenPayload;
 
   jwt.sign(payload, jwtSecret, (error, token) => {
@@ -48,10 +50,7 @@ const createToken = (req, res) => {
       return res.status(409).send({ error: `${error.name} - ${error.message}` });
     }
 
-    return res.status(200).send({
-      message: "Success authentication",
-      token,
-    });
+    return res.status(onSucessCode).send({ message, token });
   });
 };
 
