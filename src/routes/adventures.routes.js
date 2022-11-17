@@ -1,13 +1,13 @@
 import { validateCreateAdventureDTO } from "../middlewares/validateAdventuresDTO";
 import { verifyToken } from "../middlewares/authJwt";
-import express from "express";
+import { Router } from "express";
 import {
   createAdventure,
   getAllAdventures,
   getAdventureById,
 } from "../controllers/adventures.controller";
 
-const router = express.Router();
+const router = Router();
 
 // Get all adventures.
 router.get("/", verifyToken, getAllAdventures);

@@ -1,6 +1,6 @@
 import { validateCreateUserDTO } from "../middlewares/validateUsersDTO";
-import { verifyToken } from "../middlewares/authJwt";
-import express from "express";
+import { createToken, verifyToken } from "../middlewares/authJwt";
+import { Router } from "express";
 import {
   createUser,
   getAllUsers,
@@ -8,7 +8,7 @@ import {
   getAdventuresByUsername,
 } from "../controllers/users.controller";
 
-const router = express.Router();
+const router = Router();
 
 // Get all users.
 router.get("/", verifyToken, getAllUsers);
@@ -20,6 +20,6 @@ router.get("/:username", verifyToken, getUserByUsername);
 router.get("/:username/adventures", verifyToken, getAdventuresByUsername);
 
 // Create an user.
-router.post("/", validateCreateUserDTO, createUser);
+router.post("/", validateCreateUserDTO, createUser, createToken);
 
 export default router;

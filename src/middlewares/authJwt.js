@@ -39,4 +39,20 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-export { verifyToken };
+const createToken = (req, res) => {
+  const payload = req.tokenPayload;
+
+  jwt.sign(payload, jwtSecret, (error, token) => {
+    if (error) {
+      console.log(error);
+      return res.status(409).send({ error: `${error.name} - ${error.message}` });
+    }
+
+    return res.status(200).send({
+      message: "Success authentication",
+      token,
+    });
+  });
+};
+
+export { verifyToken, createToken };

@@ -1,9 +1,7 @@
 import { adventureToJson, userToJson } from "./json/users.converter";
 import { Locations } from "../db/models/locations";
-import { jwtSecret } from "../config/app.config";
 import { Phones } from "../db/models/phones";
 import { Users } from "../db/models/users";
-import jwt from "jsonwebtoken";
 
 const getAllUsers = async (req, res) => {
   try {
@@ -91,7 +89,7 @@ const getAdventuresByUsername = async (req, res) => {
   }
 };
 
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
   try {
     const { password, phone: newPhoneData, location: newLocationData, ...newUserData } = req.body;
 
@@ -124,20 +122,8 @@ const createUser = async (req, res) => {
     await newUserInstance.save();
     await Promise.all([newPhoneInstance.save(), newLocationInstance.save()]);
 
-    // Token creation.
-    const payload = { id: newUserInstance.id };
-
-    jwt.sign(payload, jwtSecret, async (error, token) => {
-      if (error) {
-        console.log(error);
-        return res.status(409).send({ error: `${error.name} - ${error.message}` });
-      }
-
-      return res.status(201).send({
-        message: "Success sign up",
-        token,
-      });
-    });
+    req.tokenPayload = { id: newUserInstance.id };
+    next();
   } catch (error) {
     console.log(error);
     return res.status(409).send({ error: `${error.name} - ${error.message}` });
