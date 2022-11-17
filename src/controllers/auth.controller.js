@@ -1,8 +1,6 @@
-import { jwtSecret } from "../config/app.config";
 import { Users } from "../db/models/users";
-import jwt from "jsonwebtoken";
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
@@ -25,20 +23,8 @@ const login = async (req, res) => {
       });
     }
 
-    // Token creation.
-    const payload = { id: user.id };
-
-    jwt.sign(payload, jwtSecret, (error, token) => {
-      if (error) {
-        console.log(error);
-        return res.status(409).send({ error: `${error.name} - ${error.message}` });
-      }
-
-      return res.status(200).send({
-        message: "Success authentication",
-        token,
-      });
-    });
+    req.tokenPayload = { id: user.id };
+    next();
   } catch (error) {
     console.log(error);
     return res.status(409).send({ error: `${error.name} - ${error.message}` });

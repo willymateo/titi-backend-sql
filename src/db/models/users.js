@@ -184,7 +184,7 @@ Users.isOfLegalAge = bornDateString => {
 Users.beforeValidate(async (user, options) => {
   if (!user.idRole) {
     const normalRole = await UserRoles.findOne({
-      where: { role: "normal_user" },
+      where: { role: "normal" },
     });
     user.idRole = normalRole.id;
   }
@@ -200,7 +200,7 @@ Users.beforeValidate(async (user, options) => {
 Users.beforeCreate(async (user, options) => {
   if (!user.idRole) {
     const normalRole = await UserRoles.findOne({
-      where: { role: "normal_user" },
+      where: { role: "normal" },
     });
     user.idRole = normalRole.id;
   }

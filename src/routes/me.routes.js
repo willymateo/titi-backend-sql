@@ -1,6 +1,6 @@
 import { validateUpdateUserDTO } from "../middlewares/validateUsersDTO";
 import { verifyToken } from "../middlewares/authJwt";
-import express from "express";
+import { Router } from "express";
 import {
   getAdventures,
   getUserAccount,
@@ -8,7 +8,7 @@ import {
   uploadProfilePhoto,
 } from "../controllers/me.controller";
 
-const router = express.Router();
+const router = Router();
 
 // Get user account information
 router.get("/account", verifyToken, getUserAccount);
