@@ -12,7 +12,7 @@ const port = process.env.PORT || 0;
 
 // morgan
 const morganFormat =
-  "● [:date[iso]] [:remote-addr :remote-user] :method :url HTTP/:http-version :status :response-time ms - :res[content-length]";
+  "\n● [:date[iso]] [:remote-addr :remote-user] :method :url HTTP/:http-version :status :response-time ms - :res[content-length]";
 
 // bcrypt
 const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS);
