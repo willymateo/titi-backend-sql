@@ -1,3 +1,5 @@
+import { Adventures } from "../../db/models/adventures";
+
 const userToJson = async user => {
   try {
     if (!user) {
@@ -18,6 +20,10 @@ const userToJson = async user => {
 
     const gender = await user.getGender({
       attributes: ["id", "gender"],
+    });
+
+    const numAdventures = await Adventures.count({
+      where: { idPublisher: user.id },
     });
 
     const {
@@ -44,6 +50,7 @@ const userToJson = async user => {
       biography,
       numLater,
       numMissing,
+      numAdventures,
       currentState: userState,
       gender,
       phone: phone[0],
