@@ -1,13 +1,12 @@
 import { adventureToJson, userToJson } from "./json/users.converter";
 import { Locations } from "../db/models/locations";
-import { Phones } from "../db/models/phones";
 import { Users } from "../db/models/users";
 
 const getAllUsers = async (req, res) => {
   try {
-    let usersResult = await Users.findAll();
-    usersResult = await Promise.all(
-      usersResult.map(async user => {
+    let users = await Users.findAll();
+    users = await Promise.all(
+      users.map(async user => {
         const userJSON = await userToJson(user);
 
         if (userJSON.error) {
@@ -18,7 +17,7 @@ const getAllUsers = async (req, res) => {
       })
     );
 
-    return res.status(200).send(usersResult);
+    return res.status(200).send(users);
   } catch (error) {
     console.log(error);
     return res.status(409).send({ error: `${error.name} - ${error.message}` });
@@ -91,7 +90,7 @@ const getAdventuresByUsername = async (req, res) => {
 
 const createUser = async (req, res, next) => {
   try {
-    const { password, phone: newPhoneData, location: newLocationData, ...newUserData } = req.body;
+    const { password, location: newLocationData, ...newUserData } = req.body;
 
     const passwordHash = await Users.encryptPassword(password);
 
@@ -102,25 +101,17 @@ const createUser = async (req, res, next) => {
     }
 
     const newUserInstance = Users.build({ ...newUserData, passwordHash });
-    const newPhoneInstance = Phones.build({
-      ...newPhoneData,
-      idUser: newUserInstance.id,
-    });
     const newLocationInstance = Locations.build({
       ...newLocationData,
       idUser: newUserInstance.id,
     });
 
     // Validate data
-    await Promise.all([
-      newUserInstance.validate(),
-      newPhoneInstance.validate(),
-      newLocationInstance.validate(),
-    ]);
+    await Promise.all([newUserInstance.validate(), newLocationInstance.validate()]);
 
     // Save the registers in the DB
     await newUserInstance.save();
-    await Promise.all([newPhoneInstance.save(), newLocationInstance.save()]);
+    await newLocationInstance.save();
 
     req.tokenPayload = { id: newUserInstance.id };
     req.onSucessMessage = "Success sign up";

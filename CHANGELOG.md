@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 The date format used is DD/MM/YYYY.
 
+## [[1.2.0]](https://github.com/willymateo/titi-backend-sql/pull/7) - 04/01/2022
+
+### Removed
+
+- Phone model
+
 ## [[1.1.1]](https://github.com/willymateo/titi-backend-sql/pull/6) - 17/11/2022
 
 ### Added

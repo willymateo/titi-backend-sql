@@ -83,9 +83,6 @@ describe("Tests with CORRECT data", () => {
         expect(userRes).toHaveProperty("numMissing");
         expect(userRes).toHaveProperty("currentState.id");
         expect(userRes).toHaveProperty("currentState.state");
-        expect(userRes.phone).toHaveProperty("id");
-        expect(userRes.phone).toHaveProperty("countryCode");
-        expect(userRes.phone).toHaveProperty("phoneNumber");
         expect(userRes).toHaveProperty("location.id");
         expect(userRes).toHaveProperty("location.latitude", testUser.location.latitude);
         expect(userRes).toHaveProperty("location.longitude", testUser.location.longitude);

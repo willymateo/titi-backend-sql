@@ -219,11 +219,6 @@ Users.beforeCreate(async (user, options) => {
 // if (locations) {
 // await locations.destroy();
 // }
-
-// const phones = await user.getPhones();
-// if (phones) {
-// await phones.destroy();
-// }
 // });
 
 export { Users };

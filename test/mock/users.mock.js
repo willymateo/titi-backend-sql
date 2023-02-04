@@ -11,10 +11,6 @@ const testUsers = [
     biography: "UFC fighter",
     bornDate: "2000-07-29T23:05:07.832Z",
     idGender: 2,
-    phone: {
-      countryCode: 593,
-      phoneNumber: "950257102",
-    },
     location: {
       latitude: "431431",
       longitude: "43143124",
@@ -30,10 +26,6 @@ const testUsers = [
     biography: "Facebook CEO",
     bornDate: "2000-07-29T23:05:07.832Z",
     idGender: 1,
-    phone: {
-      countryCode: 593,
-      phoneNumber: "949555555",
-    },
     location: {
       latitude: "3196727",
       longitude: "6943923",
@@ -59,11 +51,6 @@ const userMatch = {
   gender: {
     id: expect.any(Number),
     gender: expect.any(String),
-  },
-  phone: {
-    id: expect.stringMatching(UUIDV4_REGEX),
-    countryCode: expect.any(Number),
-    phoneNumber: expect.any(String),
   },
   location: {
     id: expect.stringMatching(UUIDV4_REGEX),

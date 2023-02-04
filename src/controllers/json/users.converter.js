@@ -6,10 +6,6 @@ const userToJson = async user => {
       return { error: `User not found` };
     }
 
-    const phone = await user.getPhones({
-      attributes: ["id", "countryCode", "phoneNumber"],
-    });
-
     const location = await user.getLocations({
       attributes: ["id", "latitude", "longitude"],
     });
@@ -53,7 +49,6 @@ const userToJson = async user => {
       numAdventures,
       currentState: userState,
       gender,
-      phone: phone[0],
       location: location[0],
     };
   } catch (error) {
