@@ -83,4 +83,59 @@ const createAdventure = async (req, res) => {
   }
 };
 
-export { getAllAdventures, getAdventureById, createAdventure };
+const updateAdventureById = async (req, res) => {
+  try {
+    const { idAdventure } = req.params;
+
+    const adventure = await Adventures.findByPk(idAdventure, {
+      attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
+    });
+
+    if (!adventure) {
+      throw new Error("Adventure not found");
+    }
+
+    adventure.set(req.body);
+
+    await adventure.validate();
+    await adventure.save();
+
+    return res.status(200).send({
+      message: "Adventure updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
+  }
+};
+
+const deleteAdventureById = async (req, res) => {
+  try {
+    const { idAdventure } = req.params;
+
+    const adventure = await Adventures.findByPk(idAdventure, {
+      attributes: ["id"],
+    });
+
+    if (!adventure) {
+      throw new Error("Adventure not found");
+    }
+
+    await adventure.destroy();
+
+    return res.status(200).send({
+      message: "Adventure updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
+  }
+};
+
+export {
+  updateAdventureById,
+  deleteAdventureById,
+  getAllAdventures,
+  getAdventureById,
+  createAdventure,
+};

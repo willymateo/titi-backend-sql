@@ -5,6 +5,8 @@ import {
   createAdventure,
   getAllAdventures,
   getAdventureById,
+  updateAdventureById,
+  deleteAdventureById,
 } from "../controllers/adventures.controller";
 
 const router = Router();
@@ -17,5 +19,11 @@ router.get("/:idAdventure", verifyToken, getAdventureById);
 
 // Create an adventure.
 router.post("/", validateCreateAdventureDTO, verifyToken, createAdventure);
+
+// Update adventure by id.
+router.patch("/:idAdventure", validateCreateAdventureDTO, verifyToken, updateAdventureById);
+
+// Delete adventure by id.
+router.delete("/:idAdventure", verifyToken, deleteAdventureById);
 
 export default router;
