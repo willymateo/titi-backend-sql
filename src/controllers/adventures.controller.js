@@ -1,10 +1,18 @@
 import { adventureWithPublisherToJson } from "./json/adventures.converter";
 import { Adventures } from "../db/models/adventures";
 import { parseISO } from "date-fns";
+import { Op } from "sequelize";
 
 const getAllAdventures = async (req, res) => {
   try {
-    let allAdventures = await Adventures.findAll();
+    const { id: userId } = req.decodedToken;
+    let allAdventures = await Adventures.findAll({
+      where: {
+        idPublisher: {
+          [Op.ne]: userId,
+        },
+      },
+    });
     allAdventures = await Promise.all(
       allAdventures.map(async adventure => {
         const adventureJSON = await adventureWithPublisherToJson(adventure);

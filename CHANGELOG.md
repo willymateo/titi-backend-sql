@@ -8,6 +8,10 @@ The date format used is DD/MM/YYYY.
 
 ## [[1.2.0]](https://github.com/willymateo/titi-backend-sql/pull/7) - 04/01/2022
 
+### Changed
+
+- in the GET /adventures only send adventures with publisher different that in the token
+
 ### Removed
 
 - Phone model
