@@ -14,7 +14,7 @@ const router = Router();
 router.get("/account", verifyToken, getAccountInformation);
 
 // Update user account information.
-router.put("/account", validateUpdateUserDTO, verifyToken, updateUserAccount);
+router.patch("/account", validateUpdateUserDTO, verifyToken, updateUserAccount);
 
 // Upload user profile photo.
 router.post("/account/photo", verifyToken, uploadProfilePhoto);
