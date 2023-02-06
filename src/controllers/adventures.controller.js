@@ -85,6 +85,7 @@ const createAdventure = async (req, res) => {
 
 const updateAdventureById = async (req, res) => {
   try {
+    const { id: userId } = req.decodedToken;
     const { idAdventure } = req.params;
 
     const adventure = await Adventures.findByPk(idAdventure, {
@@ -93,6 +94,12 @@ const updateAdventureById = async (req, res) => {
 
     if (!adventure) {
       throw new Error("Adventure not found");
+    }
+
+    const { idPublisher } = adventure;
+
+    if (idPublisher !== userId) {
+      throw new Error("You don't have permission to update this adventure");
     }
 
     adventure.set(req.body);
@@ -111,6 +118,7 @@ const updateAdventureById = async (req, res) => {
 
 const deleteAdventureById = async (req, res) => {
   try {
+    const { id: userId } = req.decodedToken;
     const { idAdventure } = req.params;
 
     const adventure = await Adventures.findByPk(idAdventure, {
@@ -119,6 +127,12 @@ const deleteAdventureById = async (req, res) => {
 
     if (!adventure) {
       throw new Error("Adventure not found");
+    }
+
+    const { idPublisher } = adventure;
+
+    if (idPublisher !== userId) {
+      throw new Error("You don't have permission to delete this adventure");
     }
 
     await adventure.destroy();
