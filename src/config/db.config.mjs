@@ -9,9 +9,10 @@ const dbConfig = {
     port: process.env.DEV_DB_PORT,
     dialect: "postgres",
     dialectOptions: {
-      bigNumberStrings: true,
       supportBigNumbers: true,
+      bigNumberStrings: true,
     },
+    logging: false,
   },
   test: {
     username: process.env.TEST_DB_USERNAME,
@@ -21,9 +22,10 @@ const dbConfig = {
     port: process.env.TEST_DB_PORT,
     dialect: "postgres",
     dialectOptions: {
-      bigNumberStrings: true,
       supportBigNumbers: true,
+      bigNumberStrings: true,
     },
+    logging: false,
   },
   production: {
     username: process.env.PROD_DB_USERNAME,
@@ -33,12 +35,13 @@ const dbConfig = {
     port: process.env.PROD_DB_PORT,
     dialect: "postgres",
     dialectOptions: {
-      bigNumberStrings: true,
       supportBigNumbers: true,
+      bigNumberStrings: true,
       // ssl: {
       // ca: fs.readFileSync(__dirname + '/mysql-ca-main.crt')
       // }
     },
+    logging: false,
   },
 };
 
