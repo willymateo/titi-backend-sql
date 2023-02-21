@@ -44,7 +44,7 @@ const createUserSchema = {
     },
     bornDate: {
       type: "string",
-      format: "date-time",
+      format: "date",
     },
     idGender: {
       type: "integer",

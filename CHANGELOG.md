@@ -16,6 +16,7 @@ The date format used is DD/MM/YYYY.
 ### Changed
 
 - in the GET /adventures only send adventures with publisher different that in the token
+- datetime to only date in endpoints with bornDate.
 - Change PUT to PATCH method of /me/account route.
 - Update dependencies
 

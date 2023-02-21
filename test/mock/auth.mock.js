@@ -6,7 +6,7 @@ const testUser = {
   email: "testuser@titi.com",
   photoUrl: "https://facebook.com/testuser",
   biography: "Test User",
-  bornDate: "2000-07-29T23:05:07.832Z",
+  bornDate: "2000-07-29",
   idGender: 2,
 };
 

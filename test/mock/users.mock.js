@@ -9,7 +9,7 @@ const testUsers = [
     email: "conormcgrego@gmail.com",
     photoUrl: "https://facebook.com/connor.mcgregor",
     biography: "UFC fighter",
-    bornDate: "2000-07-29T23:05:07.832Z",
+    bornDate: "2000-07-29",
     idGender: 2,
     location: {
       latitude: "431431",
@@ -24,7 +24,7 @@ const testUsers = [
     email: "mark.zuckerberg@gmail.com",
     photoUrl: "https://facebook.com/markzuckerberg",
     biography: "Facebook CEO",
-    bornDate: "2000-07-29T23:05:07.832Z",
+    bornDate: "2000-07-29",
     idGender: 1,
     location: {
       latitude: "3196727",
