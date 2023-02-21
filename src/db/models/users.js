@@ -164,7 +164,7 @@ Users.prototype.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.passwordHash);
 };
 
-Users.encryptPassword = async password => await bcrypt.hash(password, saltRounds);
+Users.encryptPassword = password => bcrypt.hash(password, saltRounds);
 
 Users.isOfLegalAge = bornDateString => {
   const bornDate = parseISO(bornDateString);
