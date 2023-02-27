@@ -122,7 +122,7 @@ const deleteAdventureById = async (req, res) => {
     const { idAdventure } = req.params;
 
     const adventure = await Adventures.findByPk(idAdventure, {
-      attributes: ["id"],
+      attributes: ["id", "idPublisher"],
     });
 
     if (!adventure) {
