@@ -10,8 +10,9 @@ The date format used is DD/MM/YYYY.
 
 ### Added
 
-- Update adventure
-- Delete adventure
+- latitude and longitude to adventures model
+- Update adventure endpoint
+- Delete adventure endpoint
 
 ### Changed
 
