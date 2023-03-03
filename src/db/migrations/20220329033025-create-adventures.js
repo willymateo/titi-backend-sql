@@ -61,6 +61,16 @@ module.exports = {
           comment:
             "Number of allow users that can engaged with the adventure. This number not include the publisher user.",
         },
+        latitude: {
+          type: Sequelize.STRING(20),
+          allowNull: false,
+          comment: "Latitude of the adventure location.",
+        },
+        longitude: {
+          type: Sequelize.STRING(20),
+          allowNull: false,
+          comment: "Longitude of the adventure location.",
+        },
         createdAt: {
           field: "created_at",
           type: Sequelize.DATE,

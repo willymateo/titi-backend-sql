@@ -15,10 +15,10 @@ const getAllAdventures = async (req, res) => {
     });
     allAdventures = await Promise.all(
       allAdventures.map(async adventure => {
-        const adventureJSON = await adventureWithPublisherToJson(adventure);
+        const { error, ...adventureJSON } = await adventureWithPublisherToJson(adventure);
 
-        if (adventureJSON.error) {
-          throw adventureJSON.error;
+        if (error) {
+          throw error;
         }
 
         return adventureJSON;
@@ -43,10 +43,10 @@ const getAdventureById = async (req, res) => {
       throw new Error("Adventure not found");
     }
 
-    const adventureJSON = await adventureWithPublisherToJson(adventure);
+    const { error, ...adventureJSON } = await adventureWithPublisherToJson(adventure);
 
-    if (adventureJSON.error) {
-      throw new Error(adventureJSON.error);
+    if (error) {
+      throw error;
     }
 
     return res.status(200).send(adventureJSON);
@@ -58,14 +58,17 @@ const getAdventureById = async (req, res) => {
 
 const createAdventure = async (req, res) => {
   try {
-    const { id: idPublisher } = req.decodedToken;
     const startDateTime = parseISO(req.body.startDateTime);
     const endDateTime = parseISO(req.body.endDateTime);
+    const { latitude, longitude } = req.body.location;
+    const { id: idPublisher } = req.decodedToken;
     const newAdventureData = {
       ...req.body,
-      idPublisher,
       startDateTime,
       endDateTime,
+      idPublisher,
+      longitude,
+      latitude,
     };
 
     const newAdventureInstance = Adventures.build(newAdventureData);

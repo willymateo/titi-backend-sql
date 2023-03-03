@@ -7,10 +7,10 @@ const getAllUsers = async (req, res) => {
     let users = await Users.findAll();
     users = await Promise.all(
       users.map(async user => {
-        const userJSON = await userToJson(user);
+        const { error, ...userJSON } = await userToJson(user);
 
-        if (userJSON.error) {
-          throw userJSON.error;
+        if (error) {
+          throw error;
         }
 
         return userJSON;
@@ -37,10 +37,10 @@ const getUserByUsername = async (req, res) => {
       throw new Error("User not found");
     }
 
-    const userJSON = await userToJson(user);
+    const { error, ...userJSON } = await userToJson(user);
 
-    if (userJSON.error) {
-      throw userJSON.error;
+    if (error) {
+      throw error;
     }
 
     return res.status(200).send(userJSON);
@@ -71,10 +71,10 @@ const getAdventuresByUsername = async (req, res) => {
 
     adventures = await Promise.all(
       adventures.map(async adventure => {
-        const adventureJSON = await adventureToJson(adventure);
+        const { error, ...adventureJSON } = await adventureToJson(adventure);
 
-        if (adventureJSON.error) {
-          throw adventureJSON.error;
+        if (error) {
+          throw error;
         }
 
         return adventureJSON;

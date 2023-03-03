@@ -68,6 +68,24 @@ const Adventures = sequelize.define(
       comment:
         "Number of allow users that can engaged with the adventure. This number not include the publisher user.",
     },
+    latitude: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        notNull: true,
+      },
+      comment: "Latitude of the adventure location.",
+    },
+    longitude: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        notNull: true,
+      },
+      comment: "Longitude of the adventure location.",
+    },
   },
   {
     paranoid: true,

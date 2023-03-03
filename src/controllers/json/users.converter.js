@@ -69,16 +69,29 @@ const adventureToJson = async adventure => {
       },
     });
 
-    const { id, title, description, startDateTime, endDateTime, numInvitations } = adventure;
-
-    return {
-      id,
-      title,
-      description,
+    const {
+      numInvitations,
       startDateTime,
       endDateTime,
-      numInvitations,
+      description,
+      longitude,
+      latitude,
+      title,
+      id,
+    } = adventure;
+
+    return {
       status: adventureState,
+      numInvitations,
+      startDateTime,
+      description,
+      endDateTime,
+      title,
+      id,
+      location: {
+        longitude,
+        latitude,
+      },
     };
   } catch (error) {
     console.log(error);
