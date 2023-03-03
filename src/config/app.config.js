@@ -12,16 +12,13 @@ const port = process.env.PORT || 0;
 
 // morgan
 const morganFormat =
-  "● [:date[iso]] [:remote-addr :remote-user] :method :url HTTP/:http-version :status :response-time ms - :res[content-length]";
+  "● [:date[iso]] [:remote-addr :remote-user] :method :url HTTP/:http-version :status :response-time ms - :res[content-length]\n";
 
 // bcrypt
 const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS);
 
 // JWT
 const jwtSecret = process.env.JWT_SECRET;
-
-// phone model
-const DEFAULT_PHONE_COUNTRY_CODE = 593;
 
 // user model
 const USERNAME_REGEX = "^[a-z0-9_.]*[a-z]+[a-z0-9_.]*$";
@@ -30,25 +27,24 @@ const USERNAME_MIN_LENGTH = 5;
 
 // AJV
 const ajv = new Ajv();
-addFormats(ajv, ["email", "url", "date-time"]);
-const validateLoginSchema = ajv.compile(loginSchema);
+addFormats(ajv, ["email", "url", "date-time", "date"]);
+const validateCreateAdventureSchema = ajv.compile(createAdventureSchema);
 const validateCreateUserSchema = ajv.compile(createUserSchema);
 const validateUpdateUserSchema = ajv.compile(updateUserSchema);
-const validateCreateAdventureSchema = ajv.compile(createAdventureSchema);
+const validateLoginSchema = ajv.compile(loginSchema);
 
 export {
-  ajv,
-  port,
-  jwtSecret,
-  saltRounds,
-  morganFormat,
-  USERNAME_REGEX,
-  nodeEnvironment,
-  USERNAME_MIN_LENGTH,
-  USERNAME_MAX_LENGTH,
-  validateLoginSchema,
-  validateCreateUserSchema,
-  validateUpdateUserSchema,
-  DEFAULT_PHONE_COUNTRY_CODE,
   validateCreateAdventureSchema,
+  validateUpdateUserSchema,
+  validateCreateUserSchema,
+  validateLoginSchema,
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+  nodeEnvironment,
+  USERNAME_REGEX,
+  morganFormat,
+  saltRounds,
+  jwtSecret,
+  port,
+  ajv,
 };

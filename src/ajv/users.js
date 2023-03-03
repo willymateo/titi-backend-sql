@@ -13,7 +13,6 @@ const createUserSchema = {
     "biography",
     "bornDate",
     "idGender",
-    "phone",
     "location",
   ],
   properties: {
@@ -45,22 +44,10 @@ const createUserSchema = {
     },
     bornDate: {
       type: "string",
-      format: "date-time",
+      format: "date",
     },
     idGender: {
       type: "integer",
-    },
-    phone: {
-      type: "object",
-      required: ["countryCode", "phoneNumber"],
-      properties: {
-        countryCode: {
-          type: "integer",
-        },
-        phoneNumber: {
-          type: "string",
-        },
-      },
     },
     location: {
       type: "object",

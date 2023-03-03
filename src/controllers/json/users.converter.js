@@ -1,12 +1,10 @@
+import { Adventures } from "../../db/models/adventures";
+
 const userToJson = async user => {
   try {
     if (!user) {
       return { error: `User not found` };
     }
-
-    const phone = await user.getPhones({
-      attributes: ["id", "countryCode", "phoneNumber"],
-    });
 
     const location = await user.getLocations({
       attributes: ["id", "latitude", "longitude"],
@@ -18,6 +16,10 @@ const userToJson = async user => {
 
     const gender = await user.getGender({
       attributes: ["id", "gender"],
+    });
+
+    const numAdventures = await Adventures.count({
+      where: { idPublisher: user.id },
     });
 
     const {
@@ -44,9 +46,9 @@ const userToJson = async user => {
       biography,
       numLater,
       numMissing,
+      numAdventures,
       currentState: userState,
       gender,
-      phone: phone[0],
       location: location[0],
     };
   } catch (error) {
@@ -67,16 +69,29 @@ const adventureToJson = async adventure => {
       },
     });
 
-    const { id, title, description, startDateTime, endDateTime, numInvitations } = adventure;
-
-    return {
-      id,
-      title,
-      description,
+    const {
+      numInvitations,
       startDateTime,
       endDateTime,
-      numInvitations,
+      description,
+      longitude,
+      latitude,
+      title,
+      id,
+    } = adventure;
+
+    return {
       status: adventureState,
+      numInvitations,
+      startDateTime,
+      description,
+      endDateTime,
+      title,
+      id,
+      location: {
+        longitude,
+        latitude,
+      },
     };
   } catch (error) {
     console.log(error);

@@ -2,10 +2,10 @@ import { adventureToJson } from "./users.converter";
 
 const adventureWithPublisherToJson = async adventure => {
   try {
-    const adventureJSON = await adventureToJson(adventure);
+    const { error, ...adventureJSON } = await adventureToJson(adventure);
 
-    if (adventureJSON.error) {
-      throw adventure.error;
+    if (error) {
+      throw error;
     }
 
     const publisher = await adventure.getUser({
@@ -30,10 +30,10 @@ const adventureWithPublisherToJson = async adventure => {
       ...adventureJSON,
       publisher: {
         ...publisher.dataValues,
-        idCurrentState: undefined,
-        idGender: undefined,
         currentState: publisherState,
+        idCurrentState: undefined,
         gender: publisherGender,
+        idGender: undefined,
       },
     };
   } catch (error) {

@@ -1,16 +1,24 @@
 import { adventureWithPublisherToJson } from "./json/adventures.converter";
 import { Adventures } from "../db/models/adventures";
 import { parseISO } from "date-fns";
+import { Op } from "sequelize";
 
 const getAllAdventures = async (req, res) => {
   try {
-    let allAdventures = await Adventures.findAll();
+    const { id: userId } = req.decodedToken;
+    let allAdventures = await Adventures.findAll({
+      where: {
+        idPublisher: {
+          [Op.ne]: userId,
+        },
+      },
+    });
     allAdventures = await Promise.all(
       allAdventures.map(async adventure => {
-        const adventureJSON = await adventureWithPublisherToJson(adventure);
+        const { error, ...adventureJSON } = await adventureWithPublisherToJson(adventure);
 
-        if (adventureJSON.error) {
-          throw adventureJSON.error;
+        if (error) {
+          throw error;
         }
 
         return adventureJSON;
@@ -35,10 +43,10 @@ const getAdventureById = async (req, res) => {
       throw new Error("Adventure not found");
     }
 
-    const adventureJSON = await adventureWithPublisherToJson(adventure);
+    const { error, ...adventureJSON } = await adventureWithPublisherToJson(adventure);
 
-    if (adventureJSON.error) {
-      throw new Error(adventureJSON.error);
+    if (error) {
+      throw error;
     }
 
     return res.status(200).send(adventureJSON);
@@ -50,14 +58,17 @@ const getAdventureById = async (req, res) => {
 
 const createAdventure = async (req, res) => {
   try {
-    const { id: idPublisher } = req.decodedToken;
     const startDateTime = parseISO(req.body.startDateTime);
     const endDateTime = parseISO(req.body.endDateTime);
+    const { latitude, longitude } = req.body.location;
+    const { id: idPublisher } = req.decodedToken;
     const newAdventureData = {
       ...req.body,
-      idPublisher,
       startDateTime,
       endDateTime,
+      idPublisher,
+      longitude,
+      latitude,
     };
 
     const newAdventureInstance = Adventures.build(newAdventureData);
@@ -75,4 +86,73 @@ const createAdventure = async (req, res) => {
   }
 };
 
-export { getAllAdventures, getAdventureById, createAdventure };
+const updateAdventureById = async (req, res) => {
+  try {
+    const { id: userId } = req.decodedToken;
+    const { idAdventure } = req.params;
+
+    const adventure = await Adventures.findByPk(idAdventure, {
+      attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
+    });
+
+    if (!adventure) {
+      throw new Error("Adventure not found");
+    }
+
+    const { idPublisher } = adventure;
+
+    if (idPublisher !== userId) {
+      throw new Error("You don't have permission to update this adventure");
+    }
+
+    adventure.set(req.body);
+
+    await adventure.validate();
+    await adventure.save();
+
+    return res.status(200).send({
+      message: "Adventure updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
+  }
+};
+
+const deleteAdventureById = async (req, res) => {
+  try {
+    const { id: userId } = req.decodedToken;
+    const { idAdventure } = req.params;
+
+    const adventure = await Adventures.findByPk(idAdventure, {
+      attributes: ["id", "idPublisher"],
+    });
+
+    if (!adventure) {
+      throw new Error("Adventure not found");
+    }
+
+    const { idPublisher } = adventure;
+
+    if (idPublisher !== userId) {
+      throw new Error("You don't have permission to delete this adventure");
+    }
+
+    await adventure.destroy();
+
+    return res.status(200).send({
+      message: "Adventure updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(409).send({ error: `${error.name} - ${error.message}` });
+  }
+};
+
+export {
+  updateAdventureById,
+  deleteAdventureById,
+  getAllAdventures,
+  getAdventureById,
+  createAdventure,
+};

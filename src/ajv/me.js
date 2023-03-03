@@ -33,7 +33,7 @@ const updateUserSchema = {
     },
     bornDate: {
       type: "string",
-      format: "date-time",
+      format: "date",
     },
     idGender: {
       type: "integer",

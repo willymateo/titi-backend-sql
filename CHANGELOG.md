@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 The date format used is DD/MM/YYYY.
 
+## [[1.2.0]](https://github.com/willymateo/titi-backend-sql/pull/7) - 04/01/2022
+
+### Added
+
+- latitude and longitude to adventures model
+- Update adventure endpoint
+- Delete adventure endpoint
+
+### Changed
+
+- in the GET /adventures only send adventures with publisher different that in the token
+- datetime to only date in endpoints with bornDate.
+- Change PUT to PATCH method of /me/account route.
+- Update dependencies
+
+### Removed
+
+- Phone model
+
 ## [[1.1.1]](https://github.com/willymateo/titi-backend-sql/pull/6) - 17/11/2022
 
 ### Added

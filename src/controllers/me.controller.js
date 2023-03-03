@@ -2,7 +2,7 @@ import { adventureToJson, userToJson } from "./json/users.converter";
 import { Genders } from "../db/models/genders";
 import { Users } from "../db/models/users";
 
-const getUserAccount = async (req, res) => {
+const getAccountInformation = async (req, res) => {
   try {
     const { user } = req.decodedToken;
     const userJSON = await userToJson(user);
@@ -95,4 +95,4 @@ const uploadProfilePhoto = async (req, res) => {
   }
 };
 
-export { getAdventures, getUserAccount, updateUserAccount, uploadProfilePhoto };
+export { getAdventures, getAccountInformation, updateUserAccount, uploadProfilePhoto };

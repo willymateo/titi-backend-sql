@@ -9,7 +9,6 @@ import "../db/models/islandMembers";
 import "../db/models/adventures";
 import "../db/models/locations";
 import "../db/models/islands";
-import "../db/models/phones";
 import "../db/models/users";
 
 const createUserRoles = async () => {

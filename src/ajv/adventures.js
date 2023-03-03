@@ -1,5 +1,5 @@
 const createAdventureSchema = {
-  required: ["title", "description", "startDateTime", "endDateTime", "numInvitations"],
+  required: ["title", "description", "startDateTime", "endDateTime", "numInvitations", "location"],
   additionalProperties: false,
   type: "object",
   properties: {
@@ -20,6 +20,18 @@ const createAdventureSchema = {
     numInvitations: {
       type: "integer",
       minimum: 1,
+    },
+    location: {
+      type: "object",
+      required: ["latitude", "longitude"],
+      properties: {
+        latitude: {
+          type: "string",
+        },
+        longitude: {
+          type: "string",
+        },
+      },
     },
   },
 };

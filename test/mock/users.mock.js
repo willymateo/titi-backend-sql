@@ -9,12 +9,8 @@ const testUsers = [
     email: "conormcgrego@gmail.com",
     photoUrl: "https://facebook.com/connor.mcgregor",
     biography: "UFC fighter",
-    bornDate: "2000-07-29T23:05:07.832Z",
+    bornDate: "2000-07-29",
     idGender: 2,
-    phone: {
-      countryCode: 593,
-      phoneNumber: "950257102",
-    },
     location: {
       latitude: "431431",
       longitude: "43143124",
@@ -28,12 +24,8 @@ const testUsers = [
     email: "mark.zuckerberg@gmail.com",
     photoUrl: "https://facebook.com/markzuckerberg",
     biography: "Facebook CEO",
-    bornDate: "2000-07-29T23:05:07.832Z",
+    bornDate: "2000-07-29",
     idGender: 1,
-    phone: {
-      countryCode: 593,
-      phoneNumber: "949555555",
-    },
     location: {
       latitude: "3196727",
       longitude: "6943923",
@@ -59,11 +51,6 @@ const userMatch = {
   gender: {
     id: expect.any(Number),
     gender: expect.any(String),
-  },
-  phone: {
-    id: expect.stringMatching(UUIDV4_REGEX),
-    countryCode: expect.any(Number),
-    phoneNumber: expect.any(String),
   },
   location: {
     id: expect.stringMatching(UUIDV4_REGEX),

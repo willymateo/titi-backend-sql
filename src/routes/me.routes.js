@@ -3,18 +3,18 @@ import { verifyToken } from "../middlewares/authJwt";
 import { Router } from "express";
 import {
   getAdventures,
-  getUserAccount,
   updateUserAccount,
   uploadProfilePhoto,
+  getAccountInformation,
 } from "../controllers/me.controller";
 
 const router = Router();
 
 // Get user account information
-router.get("/account", verifyToken, getUserAccount);
+router.get("/account", verifyToken, getAccountInformation);
 
 // Update user account information.
-router.put("/account", validateUpdateUserDTO, verifyToken, updateUserAccount);
+router.patch("/account", validateUpdateUserDTO, verifyToken, updateUserAccount);
 
 // Upload user profile photo.
 router.post("/account/photo", verifyToken, uploadProfilePhoto);
